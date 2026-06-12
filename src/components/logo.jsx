@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import appIcon from "@/app/icon.png";
+import appIcon from "@/app/assets/icon.png";
 import { mozilaHeadline } from "@/app/layout";
 
 
