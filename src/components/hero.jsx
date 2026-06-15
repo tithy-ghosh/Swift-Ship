@@ -4,12 +4,7 @@ import deliveryIcon from '@/app/assets/heroBanner.png'
 
 const Hero = () => {
   return (
-    <section className="grid items-center lg:grid-cols-[1.1fr_0.9fr]"
-    style={{
-      "gap": "2.5rem"
-    
-    }}
-    >
+    <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
       <div className="space-y-7">
         <div className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">

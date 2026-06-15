@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@source "./**/*.{js,jsx,ts,tsx,mdx}";
+@source "../components/**/*.{js,jsx,ts,tsx,mdx}";
+
 @plugin "daisyui" {
   themes: light --default;
 }
@@ -12,4 +15,23 @@ body {
 body {
   background: var(--color-base-100);
   color: var(--color-base-content);
+}
+
+.brand-marquee-track {
+  width: max-content;
+  animation: brand-marquee 28s linear infinite;
+}
+
+.brand-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes brand-marquee {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
