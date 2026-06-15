@@ -15,6 +15,7 @@ body {
 body {
   background: var(--color-base-100);
   color: var(--color-base-content);
+  overflow-x: hidden;
 }
 
 .brand-marquee-track {
@@ -26,7 +27,26 @@ body {
   animation-play-state: paused;
 }
 
+.reviews-marquee-track {
+  width: max-content;
+  animation: reviews-marquee 34s linear infinite;
+}
+
+.reviews-marquee-track:hover {
+  animation-play-state: paused;
+}
+
 @keyframes brand-marquee {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reviews-marquee {
   from {
     transform: translate3d(-50%, 0, 0);
   }

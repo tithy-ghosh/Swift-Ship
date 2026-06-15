@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import Logo from '@/components/logo'
+import Logo from '@/app/components/logo'
 
 const Navbar = () => {
 
@@ -9,10 +9,10 @@ const Navbar = () => {
   <li><Link href="/about">About Us</Link></li>
   </>
   return (
-    <div className="navbar bg-base-100 text-base-content shadow-xl  rounded-full  fixed top-5 inset-x-0 max-w-2xl mx-auto ">
+    <div className="navbar fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-1rem)] max-w-2xl rounded-full bg-base-100 text-base-content shadow-xl sm:top-5 sm:w-[calc(100%-2rem)]">
   <div className="navbar-start">
     <div className="dropdown">
-      <div tabIndex={0} role="button" className="px-1 lg:hidden">
+      <div tabIndex={0} role="button" className="px-2 lg:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
       </div>
       <ul
@@ -21,7 +21,7 @@ const Navbar = () => {
         {navItem}
       </ul>
     </div>
-    <Link href="/" className=" px-1">
+    <Link href="/" className="min-w-0 px-1">
       <Logo />
     </Link>
   </div>
@@ -31,7 +31,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="border border-transparent px-4 py-1.5 rounded-2xl bg-[#83BD75] mr-2 active:scale-95  hover:border-[#83BD75] hover:bg-transparent cursor-pointer">Log In</a>
+    <a className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base">Log In</a>
   </div>
 </div>
   )

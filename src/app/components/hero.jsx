@@ -4,16 +4,16 @@ import deliveryIcon from '@/app/assets/heroBanner.png'
 
 const Hero = () => {
   return (
-    <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="space-y-7">
+    <section className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+      <div className="space-y-6 text-center sm:text-left lg:space-y-7" data-aos="fade-right">
         <div className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
             Fast local delivery
           </p>
-          <h1 className="max-w-3xl text-4xl font-bold leading-tight text-[#1f2a1d] sm:text-5xl lg:text-6xl">
+          <h1 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-[#1f2a1d] sm:mx-0 sm:text-5xl lg:text-6xl">
             Send packages faster with SwiftShip.
           </h1>
-          <p className="max-w-2xl text-base leading-7 text-[#596257] sm:text-lg">
+          <p className="mx-auto max-w-2xl text-base leading-7 text-[#596257] sm:mx-0 sm:text-lg">
             Book reliable pickup, track every shipment in real time, and get your parcels delivered safely across the city.
           </p>
         </div>
@@ -27,7 +27,7 @@ const Hero = () => {
           </button>
         </div>
 
-        <div className="max-w-xl rounded-lg border border-white/70 bg-white/80 p-3 shadow-sm">
+        <div className="mx-auto max-w-xl rounded-lg border border-white/70 bg-white/80 p-3 shadow-sm sm:mx-0">
           <div className="flex flex-col gap-3 sm:flex-row">
             <input
               type="text"
@@ -41,8 +41,8 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex justify-center lg:justify-end">
-        <div className="relative w-full">
+      <div className="flex justify-center lg:justify-end" data-aos="fade-left">
+        <div className="relative w-full max-w-md lg:max-w-none">
           <Image
             src={deliveryIcon}
             alt="SwiftShip delivery"

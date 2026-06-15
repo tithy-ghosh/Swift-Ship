@@ -21,10 +21,13 @@ const serviceIcons = [
 
 const OurServices = () => {
   return (
-    <section className="rounded-lg bg-[#f7faf4] px-5 py-12 sm:px-8 lg:px-10">
+    <section
+      className="rounded-lg bg-[#f7faf4] px-4 py-10 sm:px-8 sm:py-12 lg:px-10"
+      data-aos="fade-up"
+    >
       <div className="mx-auto mb-10 flex max-w-3xl flex-col items-center gap-4 text-center">
         <div>
-          <p className="text-3xl font-semibold uppercase tracking-wide text-[#4d8d41]">
+          <p className="text-2xl font-semibold uppercase tracking-wide text-[#4d8d41] sm:text-3xl">
             Our services
           </p>
           <h2 className="mt-3 max-w-2xl text-2xl font-bold leading-tight text-[#1f2a1d] sm:text-4xl">
@@ -45,9 +48,9 @@ const OurServices = () => {
           return (
             <article
               key={service.title}
-              className={`group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-lg border p-6 transition hover:-translate-y-1 hover:shadow-md border-[#83BD75] bg-[#1f2a1d] text-white md:col-span-2'
-                  
-              }`}
+              className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-lg border border-[#83BD75] bg-[#1f2a1d] p-5 text-white transition hover:-translate-y-1 hover:shadow-md sm:p-6"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
             >
               <div
                 className='absolute -right-8 -top-8 h-28 w-28 rounded-full  bg-white/10'
@@ -71,7 +74,7 @@ const OurServices = () => {
                 </div>
 
                 <h3
-                  className='font-bold leading-snug  max-w-xl text-2xl sm:text-3xl' 
+                  className='max-w-xl text-xl font-bold leading-snug sm:text-2xl' 
                 >
                   {service.title}
                 </h3>
