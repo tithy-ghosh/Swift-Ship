@@ -1,12 +1,21 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
+import { useRouter } from 'next/navigation'
 import { MdLockOutline, MdOutlineMail } from 'react-icons/md'
 import Logo from '../logo'
 import { useForm } from 'react-hook-form'
 import SocialLogin from './SocialLogin'
+import useAuth from '@/app/hooks/useAuth'
+
+const getRedirectPath = () => {
+  const params = new URLSearchParams(window.location.search)
+  return params.get('redirect') || '/'
+}
 
 const LoginUi = () => {
+    const router = useRouter()
+    const { signIn } = useAuth()
     const {
         register,
         handleSubmit,
@@ -14,7 +23,13 @@ const LoginUi = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        console.log(data);
+        signIn(data.email, data.password)
+        .then(() => {
+          router.push(getRedirectPath())
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   return (
     <div className="flex min-h-full flex-col px-5 py-8 sm:px-8 lg:px-12">

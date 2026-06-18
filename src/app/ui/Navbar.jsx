@@ -1,16 +1,32 @@
+'use client'
+
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation'
 import Logo from '@/app/components/logo'
+import useAuth from '@/app/hooks/useAuth'
 
 const Navbar = () => {
+  const router = useRouter()
+  const { user, logOut } = useAuth()
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        router.push('/login')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   const navItem = <>
   <li><Link href="/">Home</Link></li>
   <li><Link href="/about">About Us</Link></li>
+  <li><Link href="/coverage">Coverage</Link></li>
   <li><Link href="/dashboard">Dashboard</Link></li>
   </>
   return (
-    <div className="navbar fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-1rem)] max-w-2xl rounded-full bg-base-100 text-base-content shadow-xl sm:top-5 sm:w-[calc(100%-2rem)]">
+    <div className="navbar fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-1rem)] max-w-3xl rounded-full bg-base-100 text-base-content shadow-xl sm:top-5 sm:w-[calc(100%-2rem)]">
   <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="px-2 lg:hidden">
@@ -32,7 +48,17 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <Link href="/login" className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base">Log In</Link>
+    {user ? (
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base"
+      >
+        Log Out
+      </button>
+    ) : (
+      <Link href="/login" className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base">Log In</Link>
+    )}
   </div>
 </div>
   )

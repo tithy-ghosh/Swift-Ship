@@ -1,14 +1,21 @@
 'use client'
 
+import { useRouter } from "next/navigation"
 import useAuth from "@/app/hooks/useAuth"
 
+const getRedirectPath = () => {
+  const params = new URLSearchParams(window.location.search)
+  return params.get("redirect") || "/"
+}
+
 const SocialLogin = () => {
+    const router = useRouter()
 
     const { signInWithGoogle } = useAuth();
     const handleGoogleSignIn = () =>{
         signInWithGoogle()
-        .then(result =>{
-            console.log(result.user)
+        .then(() =>{
+            router.push(getRedirectPath())
         })
         .catch(error => {
             console.error(error)

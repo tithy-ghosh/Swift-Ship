@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation'
 import { MdLockOutline, MdOutlineMail, MdPersonOutline } from 'react-icons/md'
 import { useForm } from 'react-hook-form'
 import Logo from '../logo'
@@ -9,6 +9,7 @@ import useAuth from '@/app/hooks/useAuth'
 import SocialLogin from './SocialLogin'
 
 const Register = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -18,8 +19,8 @@ const Register = () => {
   const onSubmit = (data) => {
     console.log(data)
     createUser(data.email, data.password)
-    .then( result =>{
-        console.log(result.user)
+    .then(() =>{
+        router.push('/')
     })
     .catch(error =>{
         console.error(error)

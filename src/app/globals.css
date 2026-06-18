@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 @source "./**/*.{js,jsx,ts,tsx,mdx}";
 @source "../components/**/*.{js,jsx,ts,tsx,mdx}";
@@ -16,6 +17,17 @@ body {
   background: var(--color-base-100);
   color: var(--color-base-content);
   overflow-x: hidden;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-container img,
+.leaflet-container svg {
+  max-width: none;
+  max-height: none;
 }
 
 .brand-marquee-track {
