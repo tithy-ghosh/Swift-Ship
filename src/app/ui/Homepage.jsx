@@ -1,11 +1,11 @@
 import React from 'react'
-import Hero from '@/app/components/hero'
-import Works from '@/app/components/works'
-import OurServices from '@/app/components/ourServices'
-import Brand from '@/app/components/brand'
-import Speciality from '@/app/components/speciality'
-import BeMarchent from '@/app/components/beMarchent'
-import Reviews from '@/app/components/reviews'
+import Hero from '@/app/components/homepage/hero'
+import Works from '@/app/components/homepage/works'
+import OurServices from '@/app/components/homepage/ourServices'
+import Brand from '@/app/components/homepage/brand'
+import Speciality from '@/app/components/homepage/speciality'
+import BeMarchent from '@/app/components/homepage/beMarchent'
+import Reviews from '@/app/components/homepage/reviews'
 
 const Homepage = () => {
   return (

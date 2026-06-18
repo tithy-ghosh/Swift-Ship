@@ -7,6 +7,7 @@ const Navbar = () => {
   const navItem = <>
   <li><Link href="/">Home</Link></li>
   <li><Link href="/about">About Us</Link></li>
+  <li><Link href="/dashboard">Dashboard</Link></li>
   </>
   return (
     <div className="navbar fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-1rem)] max-w-2xl rounded-full bg-base-100 text-base-content shadow-xl sm:top-5 sm:w-[calc(100%-2rem)]">
@@ -31,7 +32,7 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base">Log In</a>
+    <Link href="/login" className="mr-1 cursor-pointer rounded-2xl border border-transparent bg-[#83BD75] px-3 py-1.5 text-sm active:scale-95 hover:border-[#83BD75] hover:bg-transparent sm:mr-2 sm:px-4 sm:text-base">Log In</Link>
   </div>
 </div>
   )

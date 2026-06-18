@@ -1,13 +1,18 @@
 import Image from "next/image";
+import { Mozilla_Headline } from "next/font/google";
 
 import appIcon from "@/app/assets/icon.png";
-import { mozilaHeadline } from "@/app/layout";
+import Link from "next/link";
 
 
+const mozilaHeadline = Mozilla_Headline({
+  subsets: ["latin"],
+});
 
 const Logo = () => {
   return (
-    <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+   <Link href='/'>
+     <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
       <Image
         src={appIcon}
         alt="SwiftShip logo"
@@ -21,6 +26,8 @@ const Logo = () => {
         <span className="text-[#83BD75]">Ship</span>
       </h2>
     </div>
+
+   </Link>
   );
 };
 
