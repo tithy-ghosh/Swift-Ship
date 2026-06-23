@@ -3,6 +3,7 @@ import "./globals.css";
 import "aos/dist/aos.css";
 import AosInit from "@/app/components/AosInit";
 import AuthProvider from "./contexts/AuthContext/AuthProvider";
+import SiteShell from "@/app/ui/SiteShell";
 
 const urbanist = Urbanist({
   subsets: ["latin"]
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-base-100 text-base-content">
         <AuthProvider>
           <AosInit />
-           {children}
+          <SiteShell>
+            {children}
+          </SiteShell>
         </AuthProvider>
       </body>
     </html>
