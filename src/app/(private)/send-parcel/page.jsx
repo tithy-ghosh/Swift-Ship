@@ -21,32 +21,80 @@ const getServiceCenters = (region) => {
     .sort()
 }
 
-const calculateDeliveryCost = ({
+const calculateDeliveryCharge = ({
   type,
   weight,
-  senderRegion,
-  receiverRegion,
   senderServiceCenter,
   receiverServiceCenter,
 }) => {
   const parcelWeight = Number(weight) || 1
-  const isSameRegion = senderRegion === receiverRegion
-  const isSameServiceCenter = senderServiceCenter === receiverServiceCenter
+  const isWithinCity = senderServiceCenter === receiverServiceCenter
+  const deliveryZone = isWithinCity ? 'Within City' : 'Outside City/District'
 
   if (type === 'document') {
-    if (isSameServiceCenter) return 60
-    return isSameRegion ? 80 : 120
+    const deliveryCost = isWithinCity ? 50 : 80
+
+    return {
+      deliveryCost,
+      deliveryZone,
+      costBreakdown: [
+        {
+          label: `Document delivery (${deliveryZone})`,
+          amount: deliveryCost,
+        },
+      ],
+    }
   }
 
-  const baseCost = isSameServiceCenter ? 90 : isSameRegion ? 120 : 170
-  const extraWeightCost = Math.max(parcelWeight - 1, 0) * 30
+  const baseCost = isWithinCity ? 80 : 130
 
-  return baseCost + extraWeightCost
+  if (parcelWeight <= 3) {
+    return {
+      deliveryCost: baseCost,
+      deliveryZone,
+      costBreakdown: [
+        {
+          label: `Non-document base charge up to 3 kg (${deliveryZone})`,
+          amount: baseCost,
+        },
+      ],
+    }
+  }
+
+  const extraWeight = Math.ceil(parcelWeight - 3)
+  const extraWeightCost = extraWeight * 20
+  const outsideCityCharge = isWithinCity ? 0 : 20
+  const deliveryCost = baseCost + extraWeightCost + outsideCityCharge
+  const costBreakdown = [
+    {
+      label: `Non-document base charge up to 3 kg (${deliveryZone})`,
+      amount: baseCost,
+    },
+    {
+      label: `Extra weight charge (${extraWeight} kg x BDT 20)`,
+      amount: extraWeightCost,
+    },
+  ]
+
+  if (outsideCityCharge) {
+    costBreakdown.push({
+      label: 'Outside city/district charge',
+      amount: outsideCityCharge,
+    })
+  }
+
+  return {
+    deliveryCost,
+    deliveryZone,
+    costBreakdown,
+  }
 }
 
 export default function SendParcelPage() {
   const { user } = useAuth()
   const [costInfo, setCostInfo] = useState(null)
+  const currentUserEmail = user?.email || ''
+  const currentUserName = user?.displayName || user?.email?.split('@')[0] || ''
 
   const {
     register,
@@ -71,12 +119,10 @@ export default function SendParcelPage() {
   const receiverServiceCenters = useMemo(() => getServiceCenters(receiverRegion), [receiverRegion])
 
   useEffect(() => {
-    const senderName = user?.displayName || user?.email?.split('@')[0] || ''
-
-    if (senderName) {
-      setValue('senderName', senderName)
+    if (currentUserName) {
+      setValue('senderName', currentUserName)
     }
-  }, [setValue, user])
+  }, [currentUserName, setValue])
 
   useEffect(() => {
     setValue('senderServiceCenter', '')
@@ -87,21 +133,32 @@ export default function SendParcelPage() {
   }, [receiverRegion, setValue])
 
   const onSubmit = (data) => {
-    const deliveryCost = calculateDeliveryCost(data)
+    const { costBreakdown, deliveryCost, deliveryZone } = calculateDeliveryCharge(data)
 
     setCostInfo({
+      costBreakdown,
       deliveryCost,
       parcelData: {
         ...data,
         deliveryCost,
+        deliveryZone,
       },
     })
   }
 
   const handleConfirm = () => {
+    const createdAt = new Date().toISOString()
     const parcelInfo = {
       ...costInfo.parcelData,
-      creation_date: new Date().toISOString(),
+      costBreakdown: costInfo.costBreakdown,
+      createdBy: {
+        email: currentUserEmail,
+        name: currentUserName,
+        uid: user?.uid || '',
+      },
+      createdByEmail: currentUserEmail,
+      creation_date: createdAt,
+      status: 'pending',
     }
 
     console.log('Ready to save parcel:', parcelInfo)
@@ -110,7 +167,7 @@ export default function SendParcelPage() {
       type: 'document',
       title: '',
       weight: '',
-      senderName: user?.displayName || user?.email?.split('@')[0] || '',
+      senderName: currentUserName,
       senderContact: '',
       senderRegion: '',
       senderServiceCenter: '',
