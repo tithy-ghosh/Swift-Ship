@@ -61,7 +61,7 @@ const SendParcel = ({
                 <span className="label-text pb-2 font-semibold">Parcel Name</span>
                 <input
                   type="text"
-                  placeholder="Describe Your ParcelI"
+                  placeholder="Describe Your Parcel"
                   className="input input-bordered w-full"
                   {...register('title', { required: 'Parcel title is required' })}
                 />

@@ -38,9 +38,9 @@ const Navbar = () => {
         {navItem}
       </ul>
     </div>
-    <Link href="/" className="min-w-0 px-1">
-      <Logo />
-    </Link>
+    <div  href = '/'className="min-w-0 px-1">
+      <Logo />  
+    </div>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1 ">

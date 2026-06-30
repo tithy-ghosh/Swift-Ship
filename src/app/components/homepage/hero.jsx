@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import deliveryIcon from '@/app/assets/heroBanner.png'
+import Link from 'next/link'
 
 const Hero = () => {
   return (
@@ -19,9 +20,9 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button className="rounded-full bg-[#83BD75] px-6 py-3 font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-95">
+          <Link href='/send-parcel' className="rounded-full bg-[#83BD75] px-6 py-3 font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-95">
             Book Delivery
-          </button>
+          </Link>
           <button className="rounded-full border border-[#83BD75] px-6 py-3 font-semibold text-[#31542b] transition hover:bg-white active:scale-95">
             Track Package
           </button>

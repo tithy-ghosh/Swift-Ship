@@ -9,7 +9,12 @@ import useAuth from '@/app/hooks/useAuth'
 const getUniqueValues = (items, key) => {
   return [...new Set(items.map((item) => item[key]))].sort()
 }
-
+const generateTrackingID = () => {
+  const data = new Date()
+  const datePart = data.toISOString().split("T")[0].replace(/-/g,"")
+  const rand = Math.random.toString(36).substring(2,7).toUpperCase()
+  return `PCL-${datePart}-${rand}`
+}
 const getServiceCenters = (region) => {
   if (!region) {
     return []
@@ -19,6 +24,13 @@ const getServiceCenters = (region) => {
     .filter((warehouse) => warehouse.region === region)
     .map((warehouse) => warehouse.district)
     .sort()
+}
+
+const generateTrackingId = () => {
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+  const randomPart = Math.random().toString(36).slice(2, 8).toUpperCase()
+
+  return `SS-${date}-${randomPart}`
 }
 
 const calculateDeliveryCharge = ({
@@ -148,6 +160,7 @@ export default function SendParcelPage() {
 
   const handleConfirm = () => {
     const createdAt = new Date().toISOString()
+    const trackingId = generateTrackingId()
     const parcelInfo = {
       ...costInfo.parcelData,
       costBreakdown: costInfo.costBreakdown,
@@ -159,6 +172,7 @@ export default function SendParcelPage() {
       createdByEmail: currentUserEmail,
       creation_date: createdAt,
       status: 'pending',
+      trackingId,
     }
 
     console.log('Ready to save parcel:', parcelInfo)
