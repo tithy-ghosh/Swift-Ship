@@ -5,15 +5,11 @@ import { useForm, useWatch } from 'react-hook-form'
 import SendParcel from '@/app/components/parcelSending/sendParcel'
 import warehouses from '@/app/data/warehouse.data.json'
 import useAuth from '@/app/hooks/useAuth'
+import { type } from 'firebase/firestore/pipelines'
+import { db } from '@/app/firebase/firebase.init'
 
 const getUniqueValues = (items, key) => {
   return [...new Set(items.map((item) => item[key]))].sort()
-}
-const generateTrackingID = () => {
-  const data = new Date()
-  const datePart = data.toISOString().split("T")[0].replace(/-/g,"")
-  const rand = Math.random.toString(36).substring(2,7).toUpperCase()
-  return `PCL-${datePart}-${rand}`
 }
 const getServiceCenters = (region) => {
   if (!region) {
@@ -26,85 +22,14 @@ const getServiceCenters = (region) => {
     .sort()
 }
 
-const generateTrackingId = () => {
-  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-  const randomPart = Math.random().toString(36).slice(2, 8).toUpperCase()
 
-  return `SS-${date}-${randomPart}`
-}
-
-const calculateDeliveryCharge = ({
-  type,
-  weight,
-  senderServiceCenter,
-  receiverServiceCenter,
-}) => {
-  const parcelWeight = Number(weight) || 1
-  const isWithinCity = senderServiceCenter === receiverServiceCenter
-  const deliveryZone = isWithinCity ? 'Within City' : 'Outside City/District'
-
-  if (type === 'document') {
-    const deliveryCost = isWithinCity ? 50 : 80
-
-    return {
-      deliveryCost,
-      deliveryZone,
-      costBreakdown: [
-        {
-          label: `Document delivery (${deliveryZone})`,
-          amount: deliveryCost,
-        },
-      ],
-    }
-  }
-
-  const baseCost = isWithinCity ? 80 : 130
-
-  if (parcelWeight <= 3) {
-    return {
-      deliveryCost: baseCost,
-      deliveryZone,
-      costBreakdown: [
-        {
-          label: `Non-document base charge up to 3 kg (${deliveryZone})`,
-          amount: baseCost,
-        },
-      ],
-    }
-  }
-
-  const extraWeight = Math.ceil(parcelWeight - 3)
-  const extraWeightCost = extraWeight * 20
-  const outsideCityCharge = isWithinCity ? 0 : 20
-  const deliveryCost = baseCost + extraWeightCost + outsideCityCharge
-  const costBreakdown = [
-    {
-      label: `Non-document base charge up to 3 kg (${deliveryZone})`,
-      amount: baseCost,
-    },
-    {
-      label: `Extra weight charge (${extraWeight} kg x BDT 20)`,
-      amount: extraWeightCost,
-    },
-  ]
-
-  if (outsideCityCharge) {
-    costBreakdown.push({
-      label: 'Outside city/district charge',
-      amount: outsideCityCharge,
-    })
-  }
-
-  return {
-    deliveryCost,
-    deliveryZone,
-    costBreakdown,
-  }
-}
 
 export default function SendParcelPage() {
   const { user } = useAuth()
   const [costInfo, setCostInfo] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [ error, setError ] = useState(null)
+
   const currentUserEmail = user?.email || ''
   const currentUserName = user?.displayName || user?.email?.split('@')[0] || ''
 
@@ -147,59 +72,102 @@ export default function SendParcelPage() {
   const onSubmit = (data) => {
     const { costBreakdown, deliveryCost, deliveryZone } = calculateDeliveryCharge(data)
 
-    setCostInfo({
-      costBreakdown,
-      deliveryCost,
-      parcelData: {
-        ...data,
+  //  Calls the API route to calculate price and generate tracking ID server-side
+   const onSubmit = async (data) => {
+    setLoading(true);
+    setError(null)
+
+    try {
+      const res = await fetch('/api/parcels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: data.type,
+          weight: data.weight,
+          senderServiceCenter: data.senderServiceCenter,
+          receiverServiceCenter: data.receiverServiceCenter
+        }),
+
+      })
+      const result = await res.json()
+      if(!res.ok){
+        setError(result.error || 'Failed to calculate price.')
+        return
+      }
+      const { trackingId, deliveryZone, costBreakdown } = result
+
+      setCostInfo({
+        costBreakdown,
         deliveryCost,
-        deliveryZone,
-      },
-    })
-  }
-
-  const handleConfirm = () => {
-    const createdAt = new Date().toISOString()
-    const trackingId = generateTrackingId()
-    const parcelInfo = {
-      ...costInfo.parcelData,
-      costBreakdown: costInfo.costBreakdown,
-      createdBy: {
-        email: currentUserEmail,
-        name: currentUserName,
-        uid: user?.uid || '',
-      },
-      createdByEmail: currentUserEmail,
-      creation_date: createdAt,
-      status: 'pending',
-      trackingId,
+        parcelData: {
+          ...data,
+          deliveryCost, 
+          deliveryZone,
+          trackingId
+        }
+      })
+    } catch (error) {
+      setError('Something went wrong. Please try again.')
+      console.error(error)
+    } finally{
+      setLoading(false)
     }
-
-    console.log('Ready to save parcel:', parcelInfo)
-    setCostInfo(null)
-    reset({
-      type: 'document',
-      title: '',
-      weight: '',
-      senderName: currentUserName,
-      senderContact: '',
-      senderRegion: '',
-      senderServiceCenter: '',
-      senderAddress: '',
-      pickupInstruction: '',
-      receiverName: '',
-      receiverContact: '',
-      receiverRegion: '',
-      receiverServiceCenter: '',
-      receiverAddress: '',
-      deliveryInstruction: '',
-    })
+   }
   }
 
+  // Saves the confirmed parcel to firestore
+  const handleConfirm = async () => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const parcelInfo = {
+        ...constInfo.parcelData,
+        costBreakdown: constInfo.costBreakdown,
+        createdBy: {
+          email: currentUserEmail,
+          name: currentUserName,
+          uid: user?.uid || '' ,
+
+        },
+        createdByEmail: currentUserEmail,
+        creation_date: new Date().toISOString(),
+        status : 'pending',
+      }
+      const docRef = await addDoc(collection(db, 'parcels'), parcelInfo)
+      console.log('Parcel saved with ID: ', docRef.id)
+      setCostInfo(null)
+      reset({
+        type: 'document',
+        title: '',
+        weight: '',
+        senderName: currentUserName,
+        senderContact: '',
+        senderRegion: '',
+        senderServiceCenter: '',
+        senderAddress: '',
+        pickupInstruction: '',
+        receiverName: '',
+        receiverContact: '',
+        receiverRegion: '',
+        receiverServiceCenter: '',
+        receiverAddress: '',
+        deliveryInstruction: '',
+      })
+    } catch (error) {
+    setError('Failed to save parcel. Please try again.')
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }  
+    
+  }
   return (
     <SendParcel
       costInfo={costInfo}
       errors={errors}
+      error={error}
+      loading={loading}
       handleConfirm={handleConfirm}
       handleSubmit={handleSubmit}
       onCancelConfirm={() => setCostInfo(null)}
