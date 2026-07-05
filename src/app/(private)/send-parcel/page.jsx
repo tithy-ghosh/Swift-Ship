@@ -5,30 +5,43 @@ import { useForm, useWatch } from 'react-hook-form'
 import SendParcel from '@/app/components/parcelSending/sendParcel'
 import warehouses from '@/app/data/warehouse.data.json'
 import useAuth from '@/app/hooks/useAuth'
-import { type } from 'firebase/firestore/pipelines'
-import { db } from '@/app/firebase/firebase.init'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+const readApiResponse = async (res) => {
+  const contentType = res.headers.get('content-type') || ''
+
+  if (contentType.includes('application/json')) {
+    return res.json()
+  }
+
+  const text = await res.text()
+  const isHtml = text.trimStart().startsWith('<!DOCTYPE') || text.trimStart().startsWith('<html')
+
+  return {
+    error: isHtml
+      ? 'Backend API returned an HTML page instead of JSON. Check the API URL and backend route.'
+      : text || 'Backend API did not return JSON.',
+  }
+}
 
 const getUniqueValues = (items, key) => {
   return [...new Set(items.map((item) => item[key]))].sort()
 }
-const getServiceCenters = (region) => {
-  if (!region) {
-    return []
-  }
 
+const getServiceCenters = (region) => {
+  if (!region) return []
   return warehouses
     .filter((warehouse) => warehouse.region === region)
     .map((warehouse) => warehouse.district)
     .sort()
 }
 
-
-
 export default function SendParcelPage() {
   const { user } = useAuth()
   const [costInfo, setCostInfo] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [ error, setError ] = useState(null)
+  const [error, setError] = useState(null)
 
   const currentUserEmail = user?.email || ''
   const currentUserName = user?.displayName || user?.email?.split('@')[0] || ''
@@ -56,9 +69,7 @@ export default function SendParcelPage() {
   const receiverServiceCenters = useMemo(() => getServiceCenters(receiverRegion), [receiverRegion])
 
   useEffect(() => {
-    if (currentUserName) {
-      setValue('senderName', currentUserName)
-    }
+    if (currentUserName) setValue('senderName', currentUserName)
   }, [currentUserName, setValue])
 
   useEffect(() => {
@@ -69,73 +80,94 @@ export default function SendParcelPage() {
     setValue('receiverServiceCenter', '')
   }, [receiverRegion, setValue])
 
-  const onSubmit = (data) => {
-    const { costBreakdown, deliveryCost, deliveryZone } = calculateDeliveryCharge(data)
+  // Get Firebase token for backend requests
+  const getToken = async () => {
+    if (!user) throw new Error('Not logged in')
+    return await user.getIdToken()
+  }
 
-  //  Calls the API route to calculate price and generate tracking ID server-side
-   const onSubmit = async (data) => {
-    setLoading(true);
+  // Step 1 — Get price quote from Express backend
+  const onSubmit = async (data) => {
+    setLoading(true)
     setError(null)
-
     try {
-      const res = await fetch('/api/parcels', {
+      if (!API_URL) {
+        setError('Backend API URL is missing.')
+        return
+      }
+
+      const token = await getToken()
+
+      const res = await fetch(`${API_URL}/api/parcels/quote`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           type: data.type,
           weight: data.weight,
           senderServiceCenter: data.senderServiceCenter,
-          receiverServiceCenter: data.receiverServiceCenter
+          receiverServiceCenter: data.receiverServiceCenter,
         }),
-
       })
-      const result = await res.json()
-      if(!res.ok){
+
+      const result = await readApiResponse(res)
+
+      if (!res.ok) {
         setError(result.error || 'Failed to calculate price.')
         return
       }
-      const { trackingId, deliveryZone, costBreakdown } = result
+
+      const { trackingId, deliveryCost, deliveryZone, costBreakdown } = result
 
       setCostInfo({
         costBreakdown,
         deliveryCost,
         parcelData: {
           ...data,
-          deliveryCost, 
+          deliveryCost,
           deliveryZone,
-          trackingId
-        }
+          trackingId,
+        },
       })
-    } catch (error) {
+    } catch (err) {
       setError('Something went wrong. Please try again.')
-      console.error(error)
-    } finally{
+      console.error(err)
+    } finally {
       setLoading(false)
     }
-   }
   }
 
-  // Saves the confirmed parcel to firestore
+  // Step 2 — Save confirmed parcel to MongoDB via Express backend
   const handleConfirm = async () => {
     setLoading(true)
     setError(null)
-
     try {
-      const parcelInfo = {
-        ...constInfo.parcelData,
-        costBreakdown: constInfo.costBreakdown,
-        createdBy: {
-          email: currentUserEmail,
-          name: currentUserName,
-          uid: user?.uid || '' ,
-
-        },
-        createdByEmail: currentUserEmail,
-        creation_date: new Date().toISOString(),
-        status : 'pending',
+      if (!API_URL) {
+        setError('Backend API URL is missing.')
+        return
       }
-      const docRef = await addDoc(collection(db, 'parcels'), parcelInfo)
-      console.log('Parcel saved with ID: ', docRef.id)
+
+      const token = await getToken()
+
+      const res = await fetch(`${API_URL}/api/parcels`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(costInfo.parcelData),
+      })
+
+      const result = await readApiResponse(res)
+
+      if (!res.ok) {
+        setError(result.error || 'Failed to save parcel.')
+        return
+      }
+
+      console.log('Parcel saved:', result.trackingId)
       setCostInfo(null)
       reset({
         type: 'document',
@@ -154,14 +186,14 @@ export default function SendParcelPage() {
         receiverAddress: '',
         deliveryInstruction: '',
       })
-    } catch (error) {
-    setError('Failed to save parcel. Please try again.')
-      console.error(error)
+    } catch (err) {
+      setError('Failed to save parcel. Please try again.')
+      console.error(err)
     } finally {
       setLoading(false)
-    }  
-    
+    }
   }
+
   return (
     <SendParcel
       costInfo={costInfo}

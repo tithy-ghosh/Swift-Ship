@@ -73,10 +73,24 @@ const BangladeshMap = ({ selectedWarehouse }) => {
 
     mapRef.current = map
 
+    let isActive = true
+    const animationFrames = new Set()
     const resize = () => {
-      window.requestAnimationFrame(() => {
-        map.invalidateSize()
+      if (!isActive || !containerRef.current) {
+        return
+      }
+
+      const frameId = window.requestAnimationFrame(() => {
+        animationFrames.delete(frameId)
+
+        if (!isActive || !containerRef.current || mapRef.current !== map) {
+          return
+        }
+
+        map.invalidateSize({ pan: false })
       })
+
+      animationFrames.add(frameId)
     }
 
     resize()
@@ -89,7 +103,9 @@ const BangladeshMap = ({ selectedWarehouse }) => {
     observer.observe(containerRef.current)
 
     return () => {
+      isActive = false
       timers.forEach((timer) => window.clearTimeout(timer))
+      animationFrames.forEach((frameId) => window.cancelAnimationFrame(frameId))
       observer.disconnect()
       map.remove()
       mapRef.current = null

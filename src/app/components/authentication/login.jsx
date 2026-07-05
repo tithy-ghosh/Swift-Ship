@@ -33,9 +33,9 @@ const LoginUi = () => {
     }
   return (
     <div className="flex min-h-full flex-col px-5 py-8 sm:px-8 lg:px-12">
-          <Link href="/" className="mx-auto inline-flex h-10 w-full max-w-md items-center gap-2 text-lg font-bold">
+          <div className="mx-auto inline-flex h-10 w-full max-w-md items-center gap-2 text-lg font-bold">
            <Logo />
-          </Link>
+          </div>
 
           <div className="flex min-h-0 flex-1 items-center">
             <div className="mx-auto w-full max-w-md space-y-6">
