@@ -49,8 +49,8 @@ const DashboardPage = () => {
     fetchParcels()
   }, [user])
   return (
-    <main className="min-h-screen bg-[#f7fbf5] px-5 py-28 text-[#1f2a1d]">
-      <section className="mx-auto max-w-5xl space-y-8">
+    <main className="min-h-screen bg-[#f7fbf5] px-5  text-[#1f2a1d]">
+      <section className="mx-auto max-w-5xl space-y-8 ">
         {/* Header */}
         <div className="space-y-2 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
