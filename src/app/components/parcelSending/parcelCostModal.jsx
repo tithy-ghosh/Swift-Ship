@@ -1,4 +1,14 @@
-import { MdArrowForward, MdLocalShipping, MdOutlineReceiptLong, MdPayments, MdLocalAtm } from 'react-icons/md'
+import {
+  MdArrowForward,
+  MdCheckCircle,
+  MdCreditCard,
+  MdLocalAtm,
+  MdLocalShipping,
+  MdLockOutline,
+  MdOutlineReceiptLong,
+  MdPayments,
+  MdPhoneAndroid,
+} from 'react-icons/md'
 
 const InfoPill = ({ label, value }) => {
   return (
@@ -83,26 +93,43 @@ const PAYMENT_OPTIONS = [
     value: 'online',
     icon: MdPayments,
     title: 'Pay Online',
-    description: 'Pay now via card, mobile banking, or internet banking (SSLCommerz).',
+    description: 'Complete payment securely through SSLCommerz.',
   },
 ]
 
+const ONLINE_CHANNELS = [
+  { name: 'bKash', type: 'Mobile wallet', color: 'bg-[#e2136e]', icon: MdPhoneAndroid },
+  { name: 'Nagad', type: 'Mobile wallet', color: 'bg-[#ed1c24]', icon: MdPhoneAndroid },
+  { name: 'Rocket', type: 'Mobile wallet', color: 'bg-[#8b2a88]', icon: MdPhoneAndroid },
+  { name: 'Card', type: 'Visa · Mastercard', color: 'bg-[#087f5b]', icon: MdCreditCard },
+]
+
 const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
-  <section className="mt-3 overflow-hidden rounded-lg border border-base-300 bg-base-100">
-    <div className="flex items-center gap-2 border-b border-base-300 px-3 py-2">
-      <MdPayments className="size-5 text-[#4d8d41]" />
-      <p className="text-sm font-black text-base-content">Choose Payment Method</p>
+  <section className="mt-3 overflow-hidden rounded-2xl border border-[#dce8d8] bg-white shadow-sm">
+    <div className="flex items-center justify-between gap-3 border-b border-[#e8f0e5] px-4 py-3">
+      <div className="flex items-center gap-2">
+        <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef7eb] text-[#4d8d41]">
+          <MdPayments className="size-5" />
+        </span>
+        <div>
+          <p className="text-sm font-black text-base-content">How would you like to pay?</p>
+          <p className="text-[11px] text-base-content/55">Choose one option to continue</p>
+        </div>
+      </div>
+      <span className="hidden items-center gap-1 rounded-full bg-[#f1f8ef] px-2.5 py-1 text-[11px] font-bold text-[#3e7735] sm:flex">
+        <MdLockOutline className="size-3.5" /> Secure
+      </span>
     </div>
-    <div className="grid gap-2 p-3 sm:grid-cols-2">
+    <div className="grid gap-3 p-4 sm:grid-cols-2">
       {PAYMENT_OPTIONS.map(({ value, icon: Icon, title, description }) => {
         const isSelected = paymentMethod === value
         return (
           <label
             key={value}
-            className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
+            className={`relative flex cursor-pointer items-start gap-3 rounded-xl border-2 p-3.5 transition-all ${
               isSelected
-                ? 'border-[#83BD75] bg-[#f7fcf4] ring-1 ring-[#83BD75]'
-                : 'border-base-300 hover:border-[#83BD75]/60'
+                ? 'border-[#83BD75] bg-[#f5fbf2] shadow-[0_8px_24px_rgba(77,141,65,0.1)]'
+                : 'border-slate-200 bg-white hover:border-[#83BD75]/60'
             }`}
           >
             <input
@@ -111,19 +138,54 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
               value={value}
               checked={isSelected}
               onChange={() => onPaymentMethodChange(value)}
-              className="radio radio-sm mt-0.5 checked:bg-[#4d8d41]"
+              className="sr-only"
             />
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#eef7eb] text-[#4d8d41]">
+            <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${
+              isSelected ? 'bg-[#83BD75] text-[#172015]' : 'bg-slate-100 text-slate-500'
+            }`}>
               <Icon className="size-5" />
             </span>
             <span className="min-w-0">
               <span className="block text-sm font-bold text-base-content">{title}</span>
               <span className="mt-0.5 block text-xs leading-5 text-base-content/60">{description}</span>
             </span>
+            {isSelected && <MdCheckCircle className="absolute right-2.5 top-2.5 size-5 text-[#4d8d41]" />}
           </label>
         )
       })}
     </div>
+
+    {paymentMethod === 'online' && (
+      <div className="border-t border-[#e8f0e5] bg-[#fafcf9] px-4 py-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-black uppercase tracking-wide text-base-content/70">Available at secure checkout</p>
+            <p className="mt-0.5 text-[11px] text-base-content/50">Select your provider on the next screen</p>
+          </div>
+          <span className="rounded-full border border-[#d9ead4] bg-white px-2.5 py-1 text-[10px] font-bold text-[#4d8d41]">
+            SSLCommerz
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {ONLINE_CHANNELS.map(({ name, type, color, icon: Icon }) => (
+            <div key={name} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+              <span className={`flex size-8 items-center justify-center rounded-lg text-white ${color}`}>
+                <Icon className="size-4" />
+              </span>
+              <p className="mt-2 text-sm font-black text-slate-800">{name}</p>
+              <p className="mt-0.5 truncate text-[10px] font-medium text-slate-400">{type}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex items-start gap-2 rounded-xl bg-[#edf7ea] px-3 py-2.5 text-[11px] leading-4 text-[#365f30]">
+          <MdLockOutline className="mt-0.5 size-4 shrink-0" />
+          <p>
+            Your mobile number, OTP, PIN, or card information is entered only on SSLCommerz&apos;s secure page.
+            SwiftShip never collects or stores it.
+          </p>
+        </div>
+      </div>
+    )}
   </section>
 )
 
@@ -145,7 +207,7 @@ const ParcelCostModal = ({
   }
 
   const confirmLabel =
-    paymentMethod === 'online' ? 'Continue to Payment' : 'Confirm Cash on Delivery'
+    paymentMethod === 'online' ? 'Continue to Secure Payment' : 'Confirm Cash on Delivery'
 
   return (
     <div className="modal modal-open p-3 sm:p-5">

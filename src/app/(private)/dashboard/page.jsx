@@ -105,7 +105,7 @@ const DashboardContent = () => {
 
   return (
     <main className="text-[#1f2a1d]">
-      <section className="mx-auto max-w-6xl space-y-8">
+      <section className="mx-auto max-w-6nxl space-y-8">
         {/* Header */}
         <div className="space-y-2 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
