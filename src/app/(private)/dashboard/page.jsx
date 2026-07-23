@@ -1,8 +1,10 @@
 'use client'
 
+import { Suspense } from "react"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import useAuth from "@/app/hooks/useAuth"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { MdDeleteOutline } from "react-icons/md"
+import { MdDeleteOutline, MdCheckCircle, MdError, MdCancel } from "react-icons/md"
 
 const API_URI = process.env.NEXT_PUBLIC_API_URL
 
@@ -13,6 +15,21 @@ const statusColors = {
   'in-transit': 'bg-orange-100 text-orange-700',
   delivered: 'bg-green-100 text-green-700',
   cancelled: 'bg-red-100 text-red-700',
+}
+
+const paymentStatusColors = {
+  paid: 'bg-green-100 text-green-700',
+  pending: 'bg-yellow-100 text-yellow-700',
+  failed: 'bg-red-100 text-red-700',
+  cancelled: 'bg-gray-100 text-gray-600',
+}
+
+const paymentBanners = {
+  success: { icon: MdCheckCircle, style: 'border-green-200 bg-green-50 text-green-700', text: 'Payment successful! Your parcel is confirmed.' },
+  failed: { icon: MdError, style: 'border-red-200 bg-red-50 text-red-600', text: 'Payment failed. You can retry from the parcel row once retry support is added, or send the parcel again.' },
+  cancelled: { icon: MdCancel, style: 'border-gray-200 bg-gray-50 text-gray-600', text: 'Payment was cancelled.' },
+  invalid: { icon: MdError, style: 'border-red-200 bg-red-50 text-red-600', text: "Payment couldn't be verified. Please contact support if you were charged." },
+  error: { icon: MdError, style: 'border-red-200 bg-red-50 text-red-600', text: 'Something went wrong confirming your payment. Please contact support if you were charged.' },
 }
 
 const fetchMyParcels = async (user) => {
@@ -38,10 +55,19 @@ const deleteParcel = async ({ user, parcelId }) => {
   return res.json()
 }
 
-const DashboardPage = () => {
+const DashboardContent = () => {
 
   const { user } = useAuth()
   const queryClient = useQueryClient()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const paymentParam = searchParams.get('payment')
+  const trackingParam = searchParams.get('tracking')
+  const banner = paymentParam ? paymentBanners[paymentParam] : null
+
+  const dismissBanner = () => router.replace(pathname)
 
   const {
     data: parcels = [],
@@ -78,8 +104,8 @@ const DashboardPage = () => {
   ]
 
   return (
-    <main className="min-h-screen bg-[#f7fbf5] px-5  text-[#1f2a1d]">
-      <section className="mx-auto max-w-5xl space-y-8 ">
+    <main className="text-[#1f2a1d]">
+      <section className="mx-auto max-w-6xl space-y-8">
         {/* Header */}
         <div className="space-y-2 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
@@ -101,6 +127,23 @@ const DashboardPage = () => {
             ))
           }
         </div>
+
+        {banner && (
+          <div className={`flex items-start justify-between gap-3 rounded-lg border px-4 py-3 text-sm ${banner.style}`}>
+            <div className="flex items-start gap-2">
+              <banner.icon className="mt-0.5 size-5 shrink-0" />
+              <span>
+                {banner.text}
+                {trackingParam && paymentParam === 'success' && (
+                  <span className="ml-1 font-mono font-semibold">({trackingParam})</span>
+                )}
+              </span>
+            </div>
+            <button type="button" onClick={dismissBanner} className="text-xs font-semibold underline">
+              Dismiss
+            </button>
+          </div>
+        )}
 
         {deleteMutation.isError && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
@@ -133,6 +176,7 @@ const DashboardPage = () => {
                     <th className="px-6 py-3">Route</th>
                     <th className="px-6 py-3">Type</th>
                     <th className="px-6 py-3">Cost</th>
+                    <th className="px-6 py-3">Payment</th>
                     <th className="px-6 py-3">Status</th>
                     <th className="px-6 py-3">Date</th>
                     <th className="px-6 py-3 text-right">Actions</th>
@@ -155,6 +199,12 @@ const DashboardPage = () => {
                         </td>
                         <td className="px-6 py-4 capitalize">{parcel.type}</td>
                         <td className="px-6 py-4 font-semibold">BDT {parcel.deliveryCost}</td>
+                        <td className="px-6 py-4">
+                          <p className="text-xs font-medium uppercase text-[#596257]">{parcel.paymentMethod || '—'}</p>
+                          <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${paymentStatusColors[parcel.paymentStatus] || 'bg-gray-100 text-gray-600'}`}>
+                            {parcel.paymentStatus || 'pending'}
+                          </span>
+                        </td>
                         <td className="px-6 py-4">
                           <span className={`rounded-full px-2 py-1 text-xs font-semibold capitalize ${statusColors[parcel.status] || 'bg-gray-100 text-gray-600'}`}>
                             {parcel.status}
@@ -188,5 +238,17 @@ const DashboardPage = () => {
     </main>
   )
 }
+
+const DashboardPage = () => (
+  <Suspense
+    fallback={
+      <main className="flex min-h-screen items-center justify-center bg-[#f7fbf5] text-[#596257]">
+        Loading your dashboard…
+      </main>
+    }
+  >
+    <DashboardContent />
+  </Suspense>
+)
 
 export default DashboardPage

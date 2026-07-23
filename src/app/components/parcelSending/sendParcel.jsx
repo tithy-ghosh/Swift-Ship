@@ -1,6 +1,10 @@
 import { MdInventory2, MdLocalShipping, MdOutlinePerson } from 'react-icons/md'
 import ParcelCostModal from './parcelCostModal'
 
+/**
+ * Presentational parcel form. Booking state and API side effects are injected
+ * by the route so this component stays focused on fields and validation UI.
+ */
 const FieldError = ({ children }) => {
   return <p className="mt-1 text-sm font-medium text-error">{children}</p>
 }
@@ -19,6 +23,8 @@ const SectionTitle = ({ icon: Icon, title }) => {
 const SendParcel = ({
   costInfo,
   errors,
+  error,
+  loading,
   handleConfirm,
   handleSubmit,
   onCancelConfirm,
@@ -30,6 +36,10 @@ const SendParcel = ({
   register,
   senderRegion,
   senderServiceCenters,
+  paymentMethod,
+  onPaymentMethodChange,
+  confirmLoading,
+  confirmError,
 }) => {
   return (
     <main className="min-h-screen bg-base-200 px-4 pb-12 pt-28 text-base-content sm:px-6">
@@ -258,18 +268,33 @@ const SendParcel = ({
             </section>
           </div>
 
+          {error && (
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
+              {error}
+            </p>
+          )}
+
           <div className="flex justify-end">
             <button
               type="submit"
-              className="btn border-0 bg-[#83BD75] px-8 font-semibold text-[#172015] hover:bg-[#74ad68]"
+              disabled={loading}
+              className="btn border-0 bg-[#83BD75] px-8 font-semibold text-[#172015] hover:bg-[#74ad68] disabled:opacity-70"
             >
-              Submit
+              {loading ? 'Please wait…' : 'Submit'}
             </button>
           </div>
         </form>
       </section>
 
-      <ParcelCostModal costInfo={costInfo} handleConfirm={handleConfirm} onCancelConfirm={onCancelConfirm} />
+      <ParcelCostModal
+        costInfo={costInfo}
+        handleConfirm={handleConfirm}
+        onCancelConfirm={onCancelConfirm}
+        paymentMethod={paymentMethod}
+        onPaymentMethodChange={onPaymentMethodChange}
+        loading={confirmLoading}
+        error={confirmError}
+      />
     </main>
   )
 }

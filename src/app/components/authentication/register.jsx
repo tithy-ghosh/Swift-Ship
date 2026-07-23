@@ -9,6 +9,19 @@ import useAuth from '@/app/hooks/useAuth'
 import SocialLogin from './SocialLogin'
 import { useState } from 'react'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+const readApiError = async (response) => {
+  const contentType = response.headers.get('content-type') || ''
+
+  if (contentType.includes('application/json')) {
+    const result = await response.json()
+    return result.error || result.message
+  }
+
+  return await response.text()
+}
+
 const Register = () => {
   const router = useRouter()
   const [error, setError] = useState('')
@@ -36,7 +49,11 @@ const Register = () => {
       const token = await result.user.getIdToken()
 
       // 4. Save user to MongoDB via backend
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
+      if (!API_URL) {
+        throw new Error('Backend API URL is missing.')
+      }
+
+      const response = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,13 +66,20 @@ const Register = () => {
         }),
       })
 
+      if (!response.ok) {
+        const message = await readApiError(response)
+        throw new Error(message || 'Could not save your account details.')
+      }
+
       router.push('/')
     } catch (err) {
       console.error(err)
       if (err.code === 'auth/email-already-in-use') {
         setError('This email is already registered. Please login.')
+      } else if (err instanceof TypeError) {
+        setError('Could not connect to the server. Make sure the backend is running and try again.')
       } else {
-        setError('Something went wrong. Please try again.')
+        setError(err.message || 'Something went wrong. Please try again.')
       }
     } finally {
       setLoading(false)

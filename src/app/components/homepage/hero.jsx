@@ -1,7 +1,15 @@
-import Image from 'next/image'
 import React from 'react'
-import deliveryIcon from '@/app/assets/heroBanner.png'
 import Link from 'next/link'
+import Image from 'next/image'
+import { FaBoxOpen, FaLocationDot, FaRoute, FaTruckFast } from 'react-icons/fa6'
+import heroBanner  from '../../assets/heroBanner.png'
+
+const deliveryIcons = [
+  { name: 'package', Icon: FaBoxOpen, position: 'left-2 top-10 sm:left-4 lg:-left-2' },
+  { name: 'truck', Icon: FaTruckFast, position: 'right-2 top-16 sm:right-4 lg:-right-2' },
+  { name: 'location', Icon: FaLocationDot, position: 'bottom-16 left-3 sm:left-7 lg:-left-1' },
+  { name: 'route', Icon: FaRoute, position: 'bottom-8 right-5 sm:right-10 lg:right-3' },
+]
 
 const Hero = () => {
   return (
@@ -42,12 +50,25 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex justify-center lg:justify-end" data-aos="fade-left">
-        <div className="relative w-full max-w-md lg:max-w-none">
+      <div className="flex items-center justify-center lg:justify-end" data-aos="fade-left">
+        <div className="relative isolate w-full max-w-md py-8 lg:max-w-none">
+          <div className="absolute inset-x-6 bottom-10 top-14 z-0 rounded-[42%_58%_48%_52%/55%_38%_62%_45%] bg-gradient-to-br from-[#dff2d9] via-[#b9ddaf] to-[#83BD75]/80 shadow-[0_24px_70px_rgba(77,141,65,0.22)]" />
+
+          <div className="absolute inset-0 z-20" aria-hidden="true">
+            {deliveryIcons.map(({ name, Icon, position }) => (
+              <div
+                key={name}
+                className={`absolute flex size-11 items-center justify-center rounded-2xl border border-white/80 bg-white/95 text-lg text-[#4d8d41] shadow-lg backdrop-blur-sm sm:size-12 lg:size-14 lg:text-xl ${position}`}
+              >
+                <Icon />
+              </div>
+            ))}
+          </div>
+
           <Image
-            src={deliveryIcon}
-            alt="SwiftShip delivery"
-            className="h-full w-full object-contain"
+            src={heroBanner}
+            alt="Hero banner"
+            className="relative z-10 mx-auto h-auto max-h-[460px] w-auto max-w-full lg:mr-0 lg:max-h-[600px]"
             priority
           />
         </div>

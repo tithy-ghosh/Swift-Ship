@@ -6,11 +6,13 @@ import Brand from '@/app/components/homepage/brand'
 import Speciality from '@/app/components/homepage/speciality'
 import BeMarchent from '@/app/components/homepage/beMarchent'
 import Reviews from '@/app/components/homepage/reviews'
+import PricingTiers from '../components/homepage/pricingTiers'
 
 const Homepage = () => {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 sm:gap-16 sm:px-6 lg:gap-20 lg:px-8">
       <Hero />
+      <PricingTiers />
       <Works />
       <OurServices />
       <Brand />
