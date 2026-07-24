@@ -2,13 +2,17 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { FaMoneyBill } from 'react-icons/fa'
+import { FaPaypal } from 'react-icons/fa6'
 import { MdLocalShipping, MdSpaceDashboard } from 'react-icons/md'
 import { TbTruckDelivery } from 'react-icons/tb'
 
 const NAVIGATION_ITEMS = [
+
   { href: '/dashboard', label: 'Overview', icon: MdSpaceDashboard },
   { href: '/send-parcel', label: 'Send a Parcel', icon: MdLocalShipping },
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
+  { href: '/dashboard/payments', label: 'Payment History', icon: FaMoneyBill },
 ]
 
 /**

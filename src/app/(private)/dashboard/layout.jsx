@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }) {
     <div className="min-h-screen bg-[#f7fbf5]">
       <div className="mx-auto flex w-full max-w-7xl items-start">
         {/* Desktop navigation remains visible while the page content scrolls. */}
-        <div className="sticky top-4 hidden h-[calc(100dvh-2rem)] w-64 shrink-0 py-4 pl-4 lg:block">
+        <div className="sticky top-20 hidden h-[calc(100dvh-2rem)] w-64 shrink-0 py-4 pl-4 lg:block">
           <DashboardSideBar />
         </div>
 

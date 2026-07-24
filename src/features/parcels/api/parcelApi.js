@@ -68,6 +68,10 @@ export const createParcel = (parcel, token) =>
 export const initializeParcelPayment = (parcelId, token) =>
   request(`/api/payment/init/${parcelId}`, token, { method: 'POST' })
 
+/** Returns the authenticated user's own payment history. */
+export const getMyPaymentHistory = (token, page = 1, limit = 20) =>
+  request(`/api/payment/history/my?page=${page}&limit=${limit}`, token)
+
 /** Converts transport and API failures into safe messages for the UI. */
 export const getRequestErrorMessage = (error, fallback = 'Something went wrong. Please try again.') => {
   if (error instanceof TypeError) {

@@ -10,7 +10,7 @@ import PricingTiers from '../components/homepage/pricingTiers'
 
 const Homepage = () => {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 sm:gap-16 sm:px-6 lg:gap-20 lg:px-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 sm:gap-16 sm:px-6 lg:gap-20 lg:px-8 pt-18">
       <Hero />
       <PricingTiers />
       <Works />

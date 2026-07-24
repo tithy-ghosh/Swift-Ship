@@ -42,7 +42,7 @@ const SendParcel = ({
   confirmError,
 }) => {
   return (
-    <main className="min-h-screen bg-base-200 px-4 pb-12 pt-10 text-base-content sm:px-6">
+    <main className="min-h-screen bg-base-200 px-4 pb-12 pt-28 text-base-content sm:px-6">
       <section className="mx-auto max-w-6xl">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">Send a Percel</p>
