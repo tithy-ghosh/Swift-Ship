@@ -8,19 +8,7 @@ import Logo from '../logo'
 import useAuth from '@/app/hooks/useAuth'
 import SocialLogin from './SocialLogin'
 import { useState } from 'react'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
-
-const readApiError = async (response) => {
-  const contentType = response.headers.get('content-type') || ''
-
-  if (contentType.includes('application/json')) {
-    const result = await response.json()
-    return result.error || result.message
-  }
-
-  return await response.text()
-}
+import { ensureUserProfile } from '@/features/users/api/userApi'
 
 const Register = () => {
   const router = useRouter()
@@ -28,7 +16,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
 
   const {
-    register,
+    register ,
     handleSubmit,
     formState: { errors },
   } = useForm()
@@ -45,31 +33,8 @@ const Register = () => {
       // 2. Update Firebase display name
       await updateUserProfile(data.name)
 
-      // 3. Get Firebase ID token
-      const token = await result.user.getIdToken()
-
-      // 4. Save user to MongoDB via backend
-      if (!API_URL) {
-        throw new Error('Backend API URL is missing.')
-      }
-
-      const response = await fetch(`${API_URL}/api/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-        }),
-      })
-
-      if (!response.ok) {
-        const message = await readApiError(response)
-        throw new Error(message || 'Could not save your account details.')
-      }
+      // 3. Create the database profile if it does not exist. 
+      await ensureUserProfile(result.user, { name: data.name, phone: data.phone })
 
       router.push('/')
     } catch (err) {

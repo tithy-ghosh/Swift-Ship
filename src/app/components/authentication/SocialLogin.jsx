@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation"
 import useAuth from "@/app/hooks/useAuth"
+import { ensureUserProfile } from "@/features/users/api/userApi"
+import { useState } from "react"
 
 const getRedirectPath = () => {
   const params = new URLSearchParams(window.location.search)
@@ -10,16 +12,23 @@ const getRedirectPath = () => {
 
 const SocialLogin = () => {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
     const { signInWithGoogle } = useAuth();
-    const handleGoogleSignIn = () =>{
-        signInWithGoogle()
-        .then(() =>{
+    const handleGoogleSignIn = async () =>{
+      setLoading(true)
+      setError("")
+      try {
+        const result = await signInWithGoogle()
+        await ensureUserProfile(result.user)
             router.push(getRedirectPath())
-        })
-        .catch(error => {
-            console.error(error)
-        })
+      } catch (signInError) {
+        console.error(signInError)
+        setError(signInError.message || "Google sign-in failed. Please try again.")
+      } finally {
+        setLoading(false)
+      }
     }
   return (
     <div className="space-y-4">
@@ -33,8 +42,9 @@ const SocialLogin = () => {
 
       <button
       onClick={handleGoogleSignIn}
+        disabled={loading}
         type="button"
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-[#dbe7d8] bg-white px-4 font-semibold text-[#1f2a1d] shadow-sm transition hover:border-[#83BD75] hover:bg-[#f7fbf5] active:scale-[0.99]"
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-[#dbe7d8] bg-white px-4 font-semibold text-[#1f2a1d] shadow-sm transition hover:border-[#83BD75] hover:bg-[#f7fbf5] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
       >
         <svg
           aria-hidden="true"
@@ -49,8 +59,9 @@ const SocialLogin = () => {
           <path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73" />
           <path fill="#ea4335" d="M153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55" />
         </svg>
-        Continue with Google
+        {loading ? "Signing in..." : "Continue with Google"}
       </button>
+      {error && <p className="text-center text-sm text-red-600">{error}</p>}
     </div>
   )
 }

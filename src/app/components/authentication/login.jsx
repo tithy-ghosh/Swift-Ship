@@ -7,6 +7,8 @@ import Logo from '../logo'
 import { useForm } from 'react-hook-form'
 import SocialLogin from './SocialLogin'
 import useAuth from '@/app/hooks/useAuth'
+import { ensureUserProfile } from '@/features/users/api/userApi'
+import { useState } from 'react'
 
 const getRedirectPath = () => {
   const params = new URLSearchParams(window.location.search)
@@ -15,6 +17,8 @@ const getRedirectPath = () => {
 
 const LoginUi = () => {
     const router = useRouter()
+    const [submitError, setSubmitError] = useState('')
+    const [loading, setLoading] = useState(false)
     const { signIn } = useAuth()
     const {
         register,
@@ -22,14 +26,19 @@ const LoginUi = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
-        signIn(data.email, data.password)
-        .then(() => {
+    const onSubmit = async (data) => {
+      setSubmitError('')
+      setLoading(true)
+      try {
+        const result = await signIn(data.email, data.password)
+        await ensureUserProfile(result.user)
           router.push(getRedirectPath())
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      } catch (signInError) {
+        console.error(signInError)
+        setSubmitError(signInError.message || 'Login failed. Please try again.')
+      } finally {
+        setLoading(false)
+      }
     }
   return (
     <div className="flex min-h-full flex-col px-5 py-8 sm:px-8 lg:px-12">
@@ -51,6 +60,9 @@ const LoginUi = () => {
                 </p>
               </div>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {submitError && (
+                  <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-600">{submitError}</p>
+                )}
                 <label className="form-control">
                   <span className="label-text pb-2 font-semibold text-[#31542b]">Email address</span>
                   <div className="relative">
@@ -98,8 +110,8 @@ const LoginUi = () => {
                   </Link>
                 </div>
 
-                <button className="h-12 w-full rounded-md bg-[#83BD75] font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-[0.99]">
-                  Login
+                <button disabled={loading} className="h-12 w-full rounded-md bg-[#83BD75] font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60">
+                  {loading ? 'Logging in...' : 'Login'}
                 </button>
               </form>
 
