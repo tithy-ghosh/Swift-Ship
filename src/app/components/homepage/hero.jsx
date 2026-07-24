@@ -8,9 +8,9 @@ import { FaBoxOpen, FaLocationDot, FaRoute, FaTruckFast } from 'react-icons/fa6'
 import heroBanner  from '../../assets/heroBanner.png'
 
 const deliveryIcons = [
-  { name: 'package', Icon: FaBoxOpen, position: 'left-2 top-10 sm:left-4 lg:-left-2' },
-  { name: 'truck', Icon: FaTruckFast, position: 'right-2 top-16 sm:right-4 lg:-right-2' },
-  { name: 'location', Icon: FaLocationDot, position: 'bottom-16 left-3 sm:left-7 lg:-left-1' },
+  { name: 'package', Icon: FaBoxOpen, position: ' top-20 left-18 right-20' },
+  { name: 'truck', Icon: FaTruckFast, position: 'top-10 -right-4' },
+  { name: 'location', Icon: FaLocationDot, position: 'bottom-16 left-14' },
   { name: 'route', Icon: FaRoute, position: 'bottom-8 right-5 sm:right-10 lg:right-3' },
 ]
 
@@ -92,7 +92,7 @@ const Hero = () => {
 
       <div className="flex items-center justify-center lg:justify-end" data-aos="fade-left">
         <div className="relative isolate w-full max-w-md py-8 lg:max-w-none">
-          <div className="absolute inset-x-6 bottom-10 top-14 z-0 rounded-[42%_58%_48%_52%/55%_38%_62%_45%] bg-gradient-to-br from-[#dff2d9] via-[#b9ddaf] to-[#83BD75]/80 shadow-[0_24px_70px_rgba(77,141,65,0.22)]" />
+          <div className="absolute  bottom-10 top-14 -left-6 -right-80 z-0 rounded-[42%_58%_48%_52%/55%_38%_62%_45%] bg-gradient-to-br from-[#dff2d9] via-[#b9ddaf] to-[#83BD75]/80 shadow-[0_24px_70px_rgba(77,141,65,0.22)]" />
 
           <div className="absolute inset-0 z-20" aria-hidden="true">
             {deliveryIcons.map(({ name, Icon, position }) => (
