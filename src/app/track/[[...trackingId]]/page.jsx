@@ -118,11 +118,11 @@ export default function TrackParcelPage() {
 
   const parcel = result?.parcel || result?.shipment || result || null;
   const history = useMemo(() => {
-    const updates = result?.history || result?.tracking || result?.updates || [];
+    const updates = result?.events || [];
     return [...updates].sort(
       (first, second) =>
-        new Date(second.timestamp || second.createdAt) -
-        new Date(first.timestamp || first.createdAt),
+        new Date(second.eventTime || second.createdAt) -
+        new Date(first.eventTime || first.createdAt),
     );
   }, [result]);
 
@@ -251,7 +251,7 @@ export default function TrackParcelPage() {
               </div>
               <div className="p-5">
                 <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Last updated</p>
-                <p className="mt-1 text-sm font-bold">{formatDate(history[0]?.timestamp || history[0]?.createdAt || parcel?.updatedAt)}</p>
+                <p className="mt-1 text-sm font-bold">{formatDate(history[0]?.eventTime || history[0]?.createdAt || parcel?.updatedAt)}</p>
               </div>
             </div>
 
@@ -288,7 +288,7 @@ export default function TrackParcelPage() {
                             <p className="font-black text-slate-800">{meta.label}</p>
                             <p className="flex shrink-0 items-center gap-1 text-xs font-medium text-slate-400">
                               <MdOutlineAccessTime className="size-4" />
-                              {formatDate(update.timestamp || update.createdAt)}
+                              {formatDate(update.eventTime || update.createdAt)}
                             </p>
                           </div>
                           {update.location && (
@@ -296,7 +296,7 @@ export default function TrackParcelPage() {
                               <MdLocationOn className="size-4 shrink-0" /> {update.location}
                             </p>
                           )}
-                          {update.description && <p className="mt-1 text-sm leading-6 text-slate-500">{update.description}</p>}
+                          {update.message && <p className="mt-1 text-sm leading-6 text-slate-500">{update.message}</p>}
                         </div>
                       </li>
                     );

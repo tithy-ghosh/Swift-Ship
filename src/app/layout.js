@@ -1,4 +1,3 @@
-import {  Mozilla_Headline, Urbanist } from "next/font/google";
 import "./globals.css";
 import "aos/dist/aos.css";
 import AosInit from "@/app/components/AosInit";
@@ -6,14 +5,6 @@ import AuthProvider from "./contexts/AuthContext/AuthProvider";
 import SiteShell from "@/app/ui/SiteShell";
 import QueryProvider from "./providers/QueryProvider";
 
-const urbanist = Urbanist({
-  subsets: ["latin"]
-})
-
-
-export const mozilaHeadline = Mozilla_Headline({
-  subsets: ["latin"]
-})
 export const metadata = {
   title: "SwiftShip",
   description: "Speed you can trust",
@@ -24,7 +15,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       data-theme="light"
-      className={`${urbanist.className}  h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col bg-base-100 text-base-content">
        <QueryProvider>

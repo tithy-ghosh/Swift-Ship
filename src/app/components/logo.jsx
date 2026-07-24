@@ -1,13 +1,7 @@
 import Image from "next/image";
-import { Mozilla_Headline } from "next/font/google";
 
 import appIcon from "@/app/assets/icon.png";
 import Link from "next/link";
-
-
-const mozilaHeadline = Mozilla_Headline({
-  subsets: ["latin"],
-});
 
 const Logo = () => {
   return (
@@ -21,7 +15,7 @@ const Logo = () => {
         priority
         className="h-9 w-9 sm:h-10 sm:w-10"
       />
-      <h2 className={`${mozilaHeadline.className} text-xl font-semibold sm:text-2xl`}>
+      <h2 className="font-heading text-xl font-semibold sm:text-2xl">
         Swift
         <span className="text-[#83BD75]">Ship</span>
       </h2>

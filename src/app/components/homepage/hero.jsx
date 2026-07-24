@@ -1,6 +1,9 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { FaBoxOpen, FaLocationDot, FaRoute, FaTruckFast } from 'react-icons/fa6'
 import heroBanner  from '../../assets/heroBanner.png'
 
@@ -12,6 +15,23 @@ const deliveryIcons = [
 ]
 
 const Hero = () => {
+  const router = useRouter()
+  const [trackingId, setTrackingId] = useState('')
+  const [trackingError, setTrackingError] = useState('')
+
+  const handleTracking = (event) => {
+    event.preventDefault()
+    const value = trackingId.trim()
+
+    if (!value) {
+      setTrackingError('Enter a tracking ID to continue.')
+      return
+    }
+
+    setTrackingError('')
+    router.push(`/track/${encodeURIComponent(value)}`)
+  }
+
   return (
     <section className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
       <div className="space-y-6 text-center sm:text-left lg:space-y-7" data-aos="fade-right">
@@ -31,23 +51,43 @@ const Hero = () => {
           <Link href='/send-parcel' className="rounded-full bg-[#83BD75] px-6 py-3 font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-95">
             Book Delivery
           </Link>
-          <button className="rounded-full border border-[#83BD75] px-6 py-3 font-semibold text-[#31542b] transition hover:bg-white active:scale-95">
+          <Link href='/track' className="rounded-full border border-[#83BD75] px-6 py-3 font-semibold text-[#31542b] transition hover:bg-white active:scale-95">
             Track Package
-          </button>
+          </Link>
         </div>
 
-        <div className="mx-auto max-w-xl rounded-lg border border-white/70 bg-white/80 p-3 shadow-sm sm:mx-0">
+        <form
+          onSubmit={handleTracking}
+          className="mx-auto max-w-xl rounded-lg border border-white/70 bg-white/80 p-3 shadow-sm sm:mx-0"
+        >
           <div className="flex flex-col gap-3 sm:flex-row">
             <input
               type="text"
+              value={trackingId}
+              onChange={(event) => {
+                setTrackingId(event.target.value)
+                if (trackingError) setTrackingError('')
+              }}
               placeholder="Enter tracking ID"
+              aria-label="Tracking ID"
+              aria-describedby={trackingError ? 'hero-tracking-error' : undefined}
+              aria-invalid={Boolean(trackingError)}
+              autoComplete="off"
               className="input input-bordered min-h-12 flex-1 rounded-md bg-white"
             />
-            <button className="rounded-md bg-[#1f2a1d] px-5 py-3 font-semibold text-white transition hover:bg-[#31422d] active:scale-95">
+            <button
+              type="submit"
+              className="rounded-md bg-[#1f2a1d] px-5 py-3 font-semibold text-white transition hover:bg-[#31422d] active:scale-95"
+            >
               Track Now
             </button>
           </div>
-        </div>
+          {trackingError && (
+            <p id="hero-tracking-error" className="mt-2 text-left text-sm font-medium text-red-600">
+              {trackingError}
+            </p>
+          )}
+        </form>
       </div>
 
       <div className="flex items-center justify-center lg:justify-end" data-aos="fade-left">
