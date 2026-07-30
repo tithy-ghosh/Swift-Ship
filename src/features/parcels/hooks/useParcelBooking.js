@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query' 
 import useAuth from '@/app/hooks/useAuth'
 import warehouses from '@/app/data/warehouse.data.json'
 import {
@@ -13,22 +14,11 @@ import {
 import { createParcelFormDefaults, DEFAULT_PAYMENT_METHOD } from '../config/parcelForm'
 import { getRegions, getServiceCenters } from '../utils/warehouse'
 
-/**
- * Owns the quote, confirmation, and payment workflow for a parcel booking.
- *
- * Keeping this state machine outside the page leaves the route as a thin
- * composition layer and provides one place for future booking-rule changes.
- */
 export const useParcelBooking = () => {
   const { user } = useAuth()
   const [costInfo, setCostInfo] = useState(null)
-  const [quoteError, setQuoteError] = useState(null)
-  const [confirmError, setConfirmError] = useState(null)
-  const [isQuoting, setIsQuoting] = useState(false)
-  const [isConfirming, setIsConfirming] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState(DEFAULT_PAYMENT_METHOD)
 
-  // Retaining the created parcel avoids duplicates when payment initialization is retried.
   const createdParcelRef = useRef(null)
   const senderName = user?.displayName || user?.email?.split('@')[0] || ''
   const form = useForm({ defaultValues: createParcelFormDefaults() })
@@ -59,14 +49,8 @@ export const useParcelBooking = () => {
     setValue('receiverServiceCenter', '')
   }, [receiverRegion, setValue])
 
-  const getToken = async () => {
-    if (!user) throw new Error('You must be logged in to book a parcel.')
-    return user.getIdToken()
-  }
-
   const clearConfirmation = () => {
     setCostInfo(null)
-    setConfirmError(null)
     setPaymentMethod(DEFAULT_PAYMENT_METHOD)
     createdParcelRef.current = null
   }
@@ -76,23 +60,16 @@ export const useParcelBooking = () => {
     reset(createParcelFormDefaults(senderName))
   }
 
-  /** Fetches the price displayed in the confirmation modal. */
-  const submitForQuote = async (formData) => {
-    setIsQuoting(true)
-    setQuoteError(null)
-
-    try {
-      const token = await getToken()
-      const quote = await getParcelQuote(
-        {
-          type: formData.type,
-          weight: formData.weight,
-          senderServiceCenter: formData.senderServiceCenter,
-          receiverServiceCenter: formData.receiverServiceCenter,
-        },
-        token
-      )
-
+  //  1. QUOTE MUTATION
+  const quoteMutation = useMutation({
+    mutationFn: (formData) =>
+      getParcelQuote({
+        type: formData.type,
+        weight: formData.weight,
+        senderServiceCenter: formData.senderServiceCenter,
+        receiverServiceCenter: formData.receiverServiceCenter,
+      }),
+    onSuccess: (quote, formData) => {
       createdParcelRef.current = null
       setCostInfo({
         costBreakdown: quote.costBreakdown,
@@ -104,57 +81,75 @@ export const useParcelBooking = () => {
           trackingId: quote.trackingId,
         },
       })
-    } catch (error) {
-      console.error('Unable to quote parcel:', error)
-      setQuoteError(getRequestErrorMessage(error, 'Failed to calculate the delivery price.'))
-    } finally {
-      setIsQuoting(false)
-    }
+    },
+  })
+
+  // 2. CREATE PARCEL MUTATION
+  const createParcelMutation = useMutation({
+    mutationFn: (data) => createParcel(data),
+  })
+
+  // 3. INITIALIZE PAYMENT MUTATION
+  const paymentMutation = useMutation({
+    mutationFn: (parcelId) => initializeParcelPayment(parcelId),
+  })
+
+  // Clean wrapper functions for the UI to call
+  const submitForQuote = (formData) => {
+    quoteMutation.mutate(formData)
   }
 
-  /** Creates the parcel once, then completes COD or redirects to online payment. */
   const confirmBooking = async () => {
     if (!costInfo) return
 
-    setIsConfirming(true)
-    setConfirmError(null)
-
     try {
-      const token = await getToken()
       let parcel = createdParcelRef.current
 
+      // Step 1: Create the parcel if it doesn't exist yet
       if (!parcel) {
-        const result = await createParcel({ ...costInfo.parcelData, paymentMethod }, token)
+        const result = await createParcelMutation.mutateAsync({ 
+          ...costInfo.parcelData, 
+          paymentMethod 
+        })
         parcel = { id: result._id || result.id, trackingId: result.trackingId }
         createdParcelRef.current = parcel
       }
 
+      // Step 2: If online payment, redirect to gateway
       if (paymentMethod === 'online') {
         if (!parcel.id) throw new Error('The server did not return a parcel ID for payment.')
 
-        const payment = await initializeParcelPayment(parcel.id, token)
+        const payment = await paymentMutation.mutateAsync(parcel.id)
         if (!payment.gatewayUrl) throw new Error('The payment gateway URL was not returned.')
 
         window.location.assign(payment.gatewayUrl)
         return
       }
 
+      // Step 3: Success (COD)
       resetBooking()
     } catch (error) {
       console.error('Unable to confirm parcel:', error)
-      setConfirmError(getRequestErrorMessage(error, 'Failed to save the parcel. Please try again.'))
-    } finally {
-      setIsConfirming(false)
+      // Errors are automatically caught and stored in the mutation objects below
     }
   }
 
   return {
     form,
     costInfo,
-    quoteError,
-    confirmError,
-    isQuoting,
-    isConfirming,
+    
+    // ✅ Map React Query's automatic states to the names your UI expects
+    quoteError: quoteMutation.error 
+      ? getRequestErrorMessage(quoteMutation.error, 'Failed to calculate the delivery price.') 
+      : null,
+      
+    confirmError: (createParcelMutation.error || paymentMutation.error) 
+      ? getRequestErrorMessage(createParcelMutation.error || paymentMutation.error, 'Failed to save the parcel. Please try again.') 
+      : null,
+      
+    isQuoting: quoteMutation.isPending,
+    isConfirming: createParcelMutation.isPending || paymentMutation.isPending,
+    
     paymentMethod,
     setPaymentMethod,
     parcelType,

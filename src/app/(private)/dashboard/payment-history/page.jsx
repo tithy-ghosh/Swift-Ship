@@ -13,6 +13,7 @@ import {
   MdSchedule,
 } from 'react-icons/md'
 import useAuth from '@/app/hooks/useAuth'
+// ✅ Import the clean API function (no token parameter needed)
 import { getMyPaymentHistory } from '@/features/parcels/api/parcelApi'
 
 const STATUS_STYLES = {
@@ -47,12 +48,11 @@ const PaymentHistorySkeleton = () => (
 
 export default function PaymentHistoryPage() {
   const { user } = useAuth()
+  
+  // ✅ CLEANED UP: No more manual token fetching!
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['payments', 'history', user?.uid],
-    queryFn: async () => {
-      const token = await user.getIdToken()
-      return getMyPaymentHistory(token)
-    },
+    queryFn: () => getMyPaymentHistory(), // ✅ Just call the function directly
     enabled: Boolean(user),
   })
 
@@ -62,7 +62,7 @@ export default function PaymentHistoryPage() {
   const completedPayments = data?.summary?.completedPayments ?? 0
 
   return (
-    <main className="space-y-7 text-[#1f2a1d] pt-20">
+    <main className="space-y-7 text-[#1f2a1d]">
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.16em] text-[#4d8d41]">My account</p>

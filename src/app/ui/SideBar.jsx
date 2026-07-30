@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaMoneyBill } from 'react-icons/fa'
-import { FaPaypal } from 'react-icons/fa6'
 import { MdLocalShipping, MdSpaceDashboard } from 'react-icons/md'
 import { TbTruckDelivery } from 'react-icons/tb'
 
@@ -18,7 +17,7 @@ const NAVIGATION_ITEMS = [
 /**
  * Shared dashboard navigation used by both the desktop rail and mobile drawer.
  */
-const DashboardSideBar = ({ onNavigate }) => {
+const SideBar = ({ onNavigate }) => {
   const pathname = usePathname()
 
   return (
@@ -33,7 +32,9 @@ const DashboardSideBar = ({ onNavigate }) => {
       <nav aria-label="Dashboard">
         <ul className="space-y-1">
           {NAVIGATION_ITEMS.map(({ href, label, icon: Icon }) => {
-            const isActive = pathname === href
+            const isActive =
+              pathname === href ||
+              (href !== '/dashboard' && pathname.startsWith(`${href}/`))
 
             return (
               <li key={href}>
@@ -59,4 +60,4 @@ const DashboardSideBar = ({ onNavigate }) => {
   )
 }
 
-export default DashboardSideBar
+export default SideBar

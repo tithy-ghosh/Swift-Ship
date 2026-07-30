@@ -2,19 +2,24 @@
 
 import { Suspense } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
-import useAuth from "@/app/hooks/useAuth"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { MdDeleteOutline, MdCheckCircle, MdError, MdCancel } from "react-icons/md"
 
-const API_URI = process.env.NEXT_PUBLIC_API_URL
+// ✅ 1. Import Auth hook
+import useAuth from "@/app/hooks/useAuth"
 
+// ✅ 2. Import the clean API functions we just added to parcelApi.js
+// (Adjust the path if your dashboard page is in a different folder)
+import { getMyParcels, deleteMyParcel } from '@/features/parcels/api/parcelApi'
+
+// ... (Keep your statusColors, paymentStatusColors, and paymentBanners objects exactly as they are) ...
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-700',
   assigned: 'bg-blue-100 text-blue-700',
   'picked-up': 'bg-purple-100 text-purple-700',
   'in-transit': 'bg-orange-100 text-orange-700',
   delivered: 'bg-green-100 text-green-700',
-  cancelled: 'bg-red-100 text-red-700',
+  cancelled: 'bg-red-100 text-red-600',
 }
 
 const paymentStatusColors = {
@@ -32,31 +37,9 @@ const paymentBanners = {
   error: { icon: MdError, style: 'border-red-200 bg-red-50 text-red-600', text: 'Something went wrong confirming your payment. Please contact support if you were charged.' },
 }
 
-const fetchMyParcels = async (user) => {
-  const token = await user.getIdToken()
-  const res = await fetch(`${API_URI}/api/parcels/my`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  if (!res.ok) throw new Error('Failed to fetch parcels')
-  const data = await res.json()
-  return Array.isArray(data) ? data : []
-}
-
-const deleteParcel = async ({ user, parcelId }) => {
-  const token = await user.getIdToken()
-  const res = await fetch(`${API_URI}/api/parcels/${parcelId}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}))
-    throw new Error(body.error || 'Failed to delete parcel')
-  }
-  return res.json()
-}
+// ✅ 3. REMOVED the old fetchMyParcels and deleteParcel functions!
 
 const DashboardContent = () => {
-
   const { user } = useAuth()
   const queryClient = useQueryClient()
   const searchParams = useSearchParams()
@@ -69,18 +52,20 @@ const DashboardContent = () => {
 
   const dismissBanner = () => router.replace(pathname)
 
+  // ✅ 4. Cleaned up useQuery to use the imported API function
   const {
     data: parcels = [],
     isLoading: loading,
     isError,
   } = useQuery({
     queryKey: ['parcels', 'my', user?.uid],
-    queryFn: () => fetchMyParcels(user),
+    queryFn: getMyParcels, // ✅ Clean and simple!
     enabled: !!user,
   })
 
+  // ✅ 5. Cleaned up useMutation to use the imported API function
   const deleteMutation = useMutation({
-    mutationFn: (parcelId) => deleteParcel({ user, parcelId }),
+    mutationFn: deleteMyParcel, // ✅ Clean and simple!
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['parcels', 'my', user?.uid] })
     },
@@ -104,8 +89,8 @@ const DashboardContent = () => {
   ]
 
   return (
-    <main className="text-[#1f2a1d] pt-18">
-      <section className="mx-auto max-w-6nxl space-y-8">
+    <main className="text-[#1f2a1d]">
+      <section className="space-y-8">
         {/* Header */}
         <div className="space-y-2 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
@@ -116,16 +101,15 @@ const DashboardContent = () => {
             Track and manage all your shipments from here.
           </p>
         </div>
+        
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {
-            statsData.map((stat)=> (
-              <div key={stat.label} className={`${stat.color} rounded-xl border border-[#cbdac7] p-4 text-center shadow-sm`}>
-                 <p className="text-2xl font-bold text-[#1f2a1d]">{stat.value}</p>
-                 <p className="text-sm text-[#596257]">{stat.label}</p>
-              </div>
-            ))
-          }
+          {statsData.map((stat)=> (
+            <div key={stat.label} className={`${stat.color} rounded-xl border border-[#cbdac7] p-4 text-center shadow-sm`}>
+               <p className="text-2xl font-bold text-[#1f2a1d]">{stat.value}</p>
+               <p className="text-sm text-[#596257]">{stat.label}</p>
+            </div>
+          ))}
         </div>
 
         {banner && (

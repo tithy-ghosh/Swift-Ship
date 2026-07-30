@@ -26,7 +26,7 @@ const Navbar = () => {
   <li><Link href="/dashboard">Dashboard</Link></li>
   </>
   return (
-    <div className="navbar bg-[#edf7ea] border-b fixed px-4 sm:px-6 lg:px-14 max-w-7xl py-4 ">
+    <div className="navbar fixed inset-x-0 top-0 z-40 mx-auto max-w-7xl border-b bg-[#edf7ea] px-4 py-4 sm:px-6 lg:px-14">
      <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="px-2 lg:hidden">

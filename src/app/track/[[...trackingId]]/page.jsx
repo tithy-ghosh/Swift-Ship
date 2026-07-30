@@ -51,7 +51,7 @@ const formatDate = (value) => {
 };
 
 const TrackingSkeleton = () => (
-  <div className="mt-8 animate-pulse overflow-hidden rounded-3xl border border-slate-200 bg-white">
+  <div className="mt-20 top-20 animate-pulse overflow-hidden rounded-3xl border border-slate-200 bg-white">
     <div className="h-32 bg-slate-100" />
     <div className="space-y-5 p-6 sm:p-8">
       {[1, 2, 3].map((item) => (
@@ -141,7 +141,7 @@ export default function TrackParcelPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f4f7f3] text-slate-900">
+    <main className="text-slate-900">
       {!trackingId && (
         <section className="relative overflow-hidden bg-[#14231a] px-4 pb-24 pt-16 sm:px-6 sm:pb-28 sm:pt-20">
           <div className="absolute -left-24 top-0 size-72 rounded-full bg-[#83BD75]/15 blur-3xl" />
