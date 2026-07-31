@@ -57,7 +57,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
     
     // ✅ Don't set headers manually - axiosSecure handles it
     const response = await axiosSecure.post(
-      '/upload/profile-picture', 
+      '/api/upload/profile-picture', 
       formDataUpload
     );
     

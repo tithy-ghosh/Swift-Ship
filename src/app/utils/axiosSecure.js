@@ -2,7 +2,7 @@ import axios from 'axios';
 import { auth } from '@/app/firebase/firebase.init'; // ✅ Verify this path matches your firebase init file
 
 const axiosSecure = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
 });
 
 // REQUEST INTERCEPTOR

@@ -54,7 +54,7 @@ export const ensureUserProfile = async (firebaseUser, profile = {}) => {
  * Matches your backend route: GET /api/users/me
  */
 export const getUserProfile = async () => {
-  const { data } = await axiosSecure.get('/users/me');
+  const { data } = await axiosSecure.get('/api/users/me');
   return data;
 };
 
@@ -63,6 +63,6 @@ export const getUserProfile = async () => {
  * Matches your backend route: PUT /api/users/me
  */
 export const updateUserProfile = async (profileData) => {
-  const { data } = await axiosSecure.put('/users/me', profileData);
+  const { data } = await axiosSecure.put('/api/users/me', profileData);
   return data;
 };
