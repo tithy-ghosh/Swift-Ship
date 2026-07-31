@@ -42,7 +42,7 @@ const Hero = () => {
           <h1 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-[#1f2a1d] sm:mx-0 sm:text-5xl lg:text-6xl">
             Send packages faster with SwiftShip.
           </h1>
-          <p className="mx-auto max-w-2xl text-base leading-7 text-[#596257] sm:mx-0 sm:text-lg">
+          <p className="mx-auto max-w-xl w-3/4 text-base leading-7 text-[#596257] sm:mx-0 sm:text-lg">
             Book reliable pickup, track every shipment in real time, and get your parcels delivered safely across the city.
           </p>
         </div>

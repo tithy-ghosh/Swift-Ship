@@ -7,7 +7,7 @@ import Logo from '../logo'
 import { useForm } from 'react-hook-form'
 import SocialLogin from './SocialLogin'
 import useAuth from '@/app/hooks/useAuth'
-import { ensureUserProfile } from '@/features/users/api/userApi'
+import { ensureUserProfile } from '@/features/users/userApi'
 import { useState } from 'react'
 
 const getRedirectPath = () => {
@@ -34,7 +34,6 @@ const LoginUi = () => {
         await ensureUserProfile(result.user)
           router.push(getRedirectPath())
       } catch (signInError) {
-        console.error(signInError)
         setSubmitError(signInError.message || 'Login failed. Please try again.')
       } finally {
         setLoading(false)

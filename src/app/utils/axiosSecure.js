@@ -1,40 +1,51 @@
 import axios from 'axios';
+import { auth } from '@/app/firebase/firebase.init'; // ✅ Verify this path matches your firebase init file
 
-// 1. Create the base instance
 const axiosSecure = axios.create({
-  // Use the backend URL from .env
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
 });
 
-// 2. REQUEST INTERCEPTOR: Runs before every request
+// REQUEST INTERCEPTOR
 axiosSecure.interceptors.request.use(
-  (config) => {
-    // Get the Firebase ID token from localStorage
-    const token = localStorage.getItem('firebaseToken');
-    
-    if (token) {
-      // Attach it to the Authorization header for firebase-admin to verify
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    try {
+      // Wait for auth to be ready
+      const user = auth.currentUser;
+      
+      if (!user) {
+        console.warn('️ No user found in auth.currentUser');
+        return config;
+      }
+
+      // Get a fresh token (forceRefresh ensures we get a valid one)
+      const token = await user.getIdToken(true);
+      
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+        console.log('✅ Token attached to request:', config.url);
+      } else {
+        console.error('❌ getIdToken() returned null');
+      }
+      
+      return config;
+    } catch (error) {
+      console.error('❌ Error getting token:', error);
+      return config;
     }
-    
-    return config;
   },
   (error) => Promise.reject(error)
 );
 
-// 3. RESPONSE INTERCEPTOR: Runs after the backend responds
+// RESPONSE INTERCEPTOR
 axiosSecure.interceptors.response.use(
-  (response) => response, // If successful, return data normally
+  (response) => response,
   (error) => {
     const status = error.response?.status;
 
-    // 401 = Unauthorized (token expired/invalid), 403 = Forbidden
     if (status === 401 || status === 403) {
-      // Clear the invalid token
-      localStorage.removeItem('firebaseToken');
-      
-      // Force redirect to login page (works universally in Next.js App/Pages router)
-      window.location.href = '/login';
+      console.error('Unauthorized: Token expired or invalid.');
+      // Optional: redirect to login
+      // window.location.href = '/login';
     }
 
     return Promise.reject(error);

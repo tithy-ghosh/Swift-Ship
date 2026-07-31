@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import useAuth from "@/app/hooks/useAuth"
-import { ensureUserProfile } from "@/features/users/api/userApi"
+import { ensureUserProfile } from "@/features/users/userApi"
 import { useState } from "react"
 
 const getRedirectPath = () => {
@@ -24,7 +24,6 @@ const SocialLogin = () => {
         await ensureUserProfile(result.user)
             router.push(getRedirectPath())
       } catch (signInError) {
-        console.error(signInError)
         setError(signInError.message || "Google sign-in failed. Please try again.")
       } finally {
         setLoading(false)

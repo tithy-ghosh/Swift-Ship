@@ -22,7 +22,7 @@ const handleAxiosError = (error) => {
 /** Requests a delivery quote without creating a parcel. */
 export const getParcelQuote = async (quote) => {
   try {
-    const { data } = await axiosSecure.post('/api/parcels/quote', quote);
+    const { data } = await axiosSecure.post('/parcels/quote', quote);
     return data;
   } catch (error) {
     handleAxiosError(error);
@@ -32,7 +32,7 @@ export const getParcelQuote = async (quote) => {
 /** Persists a confirmed parcel. */
 export const createParcel = async (parcel) => {
   try {
-    const { data } = await axiosSecure.post('/api/parcels', parcel);
+    const { data } = await axiosSecure.post('/parcels', parcel);
     return data;
   } catch (error) {
     handleAxiosError(error);

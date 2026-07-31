@@ -11,7 +11,7 @@ const NAVIGATION_ITEMS = [
   { href: '/dashboard', label: 'Overview', icon: MdSpaceDashboard },
   { href: '/send-parcel', label: 'Send a Parcel', icon: MdLocalShipping },
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
-  { href: '/dashboard/payments', label: 'Payment History', icon: FaMoneyBill },
+  { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
 ]
 
 /**

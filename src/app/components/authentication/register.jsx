@@ -8,7 +8,7 @@ import Logo from '../logo'
 import useAuth from '@/app/hooks/useAuth'
 import SocialLogin from './SocialLogin'
 import { useState } from 'react'
-import { ensureUserProfile } from '@/features/users/api/userApi'
+import { ensureUserProfile } from '@/features/users/userApi'
 
 const Register = () => {
   const router = useRouter()
@@ -38,7 +38,6 @@ const Register = () => {
 
       router.push('/')
     } catch (err) {
-      console.error(err)
       if (err.code === 'auth/email-already-in-use') {
         setError('This email is already registered. Please login.')
       } else if (err instanceof TypeError) {
