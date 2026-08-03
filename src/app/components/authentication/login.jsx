@@ -7,7 +7,7 @@ import Logo from '../logo'
 import { useForm } from 'react-hook-form'
 import SocialLogin from './SocialLogin'
 import useAuth from '@/app/hooks/useAuth'
-import { ensureUserProfile } from '@/features/users/userApi'
+import { ensureUserProfile } from '@/features/users/api/userApi'
 import { useState } from 'react'
 
 const getRedirectPath = () => {

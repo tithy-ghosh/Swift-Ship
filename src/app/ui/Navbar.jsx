@@ -8,7 +8,7 @@ import { MdPerson, MdSettings, MdLogout } from 'react-icons/md'
 
 import Logo from '@/app/components/logo'
 import useAuth from '@/app/hooks/useAuth'
-import { getUserProfile } from '@/features/users/userApi'
+import { getUserProfile } from '@/features/users/api/userApi'
 import ProfileModal from '@/app/components/profile/ProfileModal'
 import { getProfileImageSource, getProfilePhoto } from '@/app/utils/profileImage'
 

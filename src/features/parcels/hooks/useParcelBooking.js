@@ -12,7 +12,7 @@ import {
   initializeParcelPayment,
 } from '../api/parcelApi'
 import { createParcelFormDefaults, DEFAULT_PAYMENT_METHOD } from '../config/parcelForm'
-import { getRegions, getServiceCenters } from '../utils/warehouse'
+import { getRegions, getServiceCenters } from '../../../utils/warehouse'
 
 export const useParcelBooking = () => {
   const { user } = useAuth()

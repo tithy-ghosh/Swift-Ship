@@ -1,4 +1,4 @@
-import axiosSecure from '@/features/parcels/utils/axiosSecure';
+import axiosSecure from '@/utils/axiosSecure';
 import { AxiosError } from 'axios';
 
 /** Represents an unsuccessful response from the SwiftShip backend. */

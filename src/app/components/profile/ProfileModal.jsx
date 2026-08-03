@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateUserProfile } from '@/features/users/userApi';
+import { updateUserProfile } from '@/features/users/api/userApi';
 import axiosSecure from '../../utils/axiosSecure'
 import { MdClose, MdPerson, MdPhone, MdLocationOn, MdImage, MdSave, MdCloudUpload } from 'react-icons/md';
 
