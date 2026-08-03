@@ -22,7 +22,7 @@ export default function BeARiderPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7fbf5] py-28 px-4">
+    <main className="min-h-screen bg-[#f7fbf5]  px-4">
       <div className="max-w-4xl mx-auto mb-8 text-center">
         <h1 className="text-4xl font-bold text-[#1f2a1d]">Join the SwiftShip Fleet</h1>
         <p className="mt-2 text-[#596257]">Fill out the form below to start your journey as a delivery partner.</p>

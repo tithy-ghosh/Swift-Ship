@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaMoneyBill } from 'react-icons/fa'
 import { MdLocalShipping, MdSpaceDashboard } from 'react-icons/md'
-import { TbTruckDelivery } from 'react-icons/tb'
+import { TbBikeFilled, TbTruckDelivery } from 'react-icons/tb'
 
 const NAVIGATION_ITEMS = [
 
@@ -12,6 +12,7 @@ const NAVIGATION_ITEMS = [
   { href: '/send-parcel', label: 'Send a Parcel', icon: MdLocalShipping },
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
   { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
+  { href: '/be-rider', label: 'Be a Rider', icon: TbBikeFilled },
 ]
 
 /**
