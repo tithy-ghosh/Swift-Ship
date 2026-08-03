@@ -51,6 +51,9 @@ const Navbar = () => {
       <li>
         <Link href="/dashboard">Dashboard</Link>
       </li>
+      <li>
+        <Link href='/be-rider'>Become a Rider</Link>
+      </li>
     </>
   )
 
@@ -86,7 +89,7 @@ const Navbar = () => {
         {user ? (
           <div className="dropdown dropdown-end">
             {/* Profile Avatar Button */}
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar cursor-pointer">
+            <div tabIndex={0} role="button" className="btn  btn-circle avatar cursor-pointer">
               <div className="w-10 rounded-full ring ring-[#83BD75] ring-offset-2 ring-offset-[#edf7ea]">
                 {avatarSource && avatarSource !== failedAvatarSource ? (
                   <img
@@ -115,7 +118,7 @@ const Navbar = () => {
                 </span>
               </li>
               <li>
-                <button onClick={() => setIsProfileOpen(true)} className="flex items-center gap-2 text-slate-700 hover:text-[#4d8d41]">
+                <button onClick={() => setIsProfileOpen(true)} className="flex items-center gap-2 text-slate-700 hover:text-[#4d8d41] active:bg-[#A5CF83]">
                   <MdSettings className="w-4 h-4" /> Edit Profile
                 </button>
               </li>

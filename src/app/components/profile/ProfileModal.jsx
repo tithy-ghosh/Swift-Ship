@@ -53,20 +53,17 @@ export default function ProfileModal({ user, isOpen, onClose }) {
   formDataUpload.append('image', file);
 
   try {
-    console.log('📤 Starting upload to Cloudinary...');
     
-    // ✅ Don't set headers manually - axiosSecure handles it
+    
     const response = await axiosSecure.post(
       '/api/upload/profile-picture', 
       formDataUpload
     );
     
-    console.log('✅ Upload successful:', response.data);
+    
     return response.data.url;
   } catch (error) {
-    console.error('❌ Upload failed:', error);
-    console.error('Response status:', error.response?.status);
-    console.error('Response data:', error.response?.data);
+    
     
     if (error.response?.status === 401) {
       throw new Error('Authentication failed. Please log in again.');
@@ -87,10 +84,10 @@ export default function ProfileModal({ user, isOpen, onClose }) {
       console.log('Uploading new image...');
       finalPhotoURL = await uploadToCloudinary(selectedFile);
     } catch (error) {
-      console.error('Upload failed, aborting save');
+      
       alert('Failed to upload profile picture. Please try again.');
       setIsUploading(false);
-      return; // STOP - don't save to database
+      return; 
     } finally {
       setIsUploading(false);
     }
