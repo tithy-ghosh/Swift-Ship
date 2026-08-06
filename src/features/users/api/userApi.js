@@ -5,14 +5,13 @@ import axiosSecure from "@/utils/axiosSecure";
  * Matches backend route: POST /api/users
  */
 export const ensureUserProfile = async (userData) => {
-  const { data } = await axiosSecure.post('/users', userData);
+  const { data } = await axiosSecure.post('/api/users', userData);
   return data;
 };
 
 /** 
  * Get current user's profile from the backend 
  * Matches the backend route: GET /api/users/me
- * (Note: We only use '/users/me' because axiosSecure already adds '/api')
  */
 export const getUserProfile = async () => {
   const { data } = await axiosSecure.get('/api/users/me');

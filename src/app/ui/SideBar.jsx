@@ -62,8 +62,8 @@ const SideBar = ({ onNavigate }) => {
           })}
           {/* Show admin section only to admins */}
           { isAdmin && (
-            <>
-                          <li className="mt-4 mb-2 px-3">
+            <div className='pb-4'>
+                          <li className="mt-4 px-3">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
                   Admin
                 </p>
@@ -85,7 +85,7 @@ const SideBar = ({ onNavigate }) => {
                   </li>
                 )
               })}
-            </>
+            </div>
           )}
         </ul>
       </nav>
