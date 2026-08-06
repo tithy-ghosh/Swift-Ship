@@ -3,23 +3,28 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaMoneyBill } from 'react-icons/fa'
-import { MdLocalShipping, MdSpaceDashboard } from 'react-icons/md'
+import { MdLocalShipping, MdSpaceDashboard, MdDirectionsBike, MdPeople } from 'react-icons/md'
 import { TbBikeFilled, TbTruckDelivery } from 'react-icons/tb'
-
+import useAdmin from '../hooks/useAdmin'
 const NAVIGATION_ITEMS = [
 
   { href: '/dashboard', label: 'Overview', icon: MdSpaceDashboard },
   { href: '/send-parcel', label: 'Send a Parcel', icon: MdLocalShipping },
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
   { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
-  { href: '/be-rider', label: 'Be a Rider', icon: TbBikeFilled },
+  { href: '/be-rider', label: 'Be a Rider', icon: MdDirectionsBike},
 ]
-
+//  Admin-only navigation items
+const ADMIN_ITEMS = [
+  { href: '/admin/pending-riders', label: 'Pending Riders', icon: MdPeople },
+  { href: '/admin/active-riders', label: 'Active Riders', icon: MdDirectionsBike },
+]
 /**
  * Shared dashboard navigation used by both the desktop rail and mobile drawer.
  */
 const SideBar = ({ onNavigate }) => {
   const pathname = usePathname()
+  const { isAdmin } = useAdmin()
 
   return (
     <aside className="flex h-full w-full flex-col rounded-xl border border-[#e8f0e5] bg-white px-4 pb-6 pt-16 shadow-sm lg:pt-6">
@@ -55,6 +60,33 @@ const SideBar = ({ onNavigate }) => {
               </li>
             )
           })}
+          {/* Show admin section only to admins */}
+          { isAdmin && (
+            <>
+                          <li className="mt-4 mb-2 px-3">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
+                  Admin
+                </p>
+              </li>
+              {ADMIN_ITEMS.map(({ href, label, icon: Icon }) => {
+                const isActive = pathname === href
+                return (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      onClick={onNavigate}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                        isActive ? 'bg-[#eef7eb] text-[#4d8d41]' : 'text-[#596257] hover:bg-[#c2fda5] hover:text-[#1f2a1d]'
+                      }`}
+                    >
+                      <Icon className="size-5 shrink-0" />
+                      <span>{label}</span>
+                    </Link>
+                  </li>
+                )
+              })}
+            </>
+          )}
         </ul>
       </nav>
     </aside>
