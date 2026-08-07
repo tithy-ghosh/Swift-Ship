@@ -6,6 +6,6 @@ import DashboardShell from '@/app/ui/DashboardShell'
  * Authentication is intentionally handled by the parent `(private)` layout,
  * preventing nested guards and duplicate full-screen loading states.
  */
-export default function PendingRiderPageLayout({ children }) {
+export default function AdminPageLayout({ children }) {
   return <DashboardShell>{children}</DashboardShell>
 }
