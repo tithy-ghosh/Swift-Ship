@@ -47,8 +47,9 @@ export default function PendingRidersPage() {
   // Loading State
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f7fbf5]">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#f7fbf5]">
         <span className="loading loading-spinner loading-lg text-[#4d8d41]"></span>
+        <p className="text-sm text-[#596257]">Loading pending applications…</p>
       </div>
     );
   }
@@ -60,33 +61,50 @@ export default function PendingRidersPage() {
       <div className="flex min-h-screen bg-[#f7fbf5]">
      
         
-        <main className="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <MdHourglassEmpty className="size-8 text-amber-600" />
-              <h1 className="text-3xl font-bold text-[#1f2a1d]">Pending Rider Applications</h1>
+            <div className="flex gap-4 mb-2 mx-auto justify-center items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                  <MdHourglassEmpty className="size-6 text-amber-600" />
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#1f2a1d] tracking-tight">Pending Rider Applications</h1>
+              </div>
               
             </div>
+            <p className="text-sm text-[#596257] mb-8 mx-auto flex justify-center items-center">
+             Review incoming rider applications. Approve qualified candidates to join the fleet or reject those who don't meet our standards
+            </p>
 
             {applications?.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center border border-[#dce8d8]">
-                <p className="text-[#596257]">No pending applications found.</p>
+                <MdHourglassEmpty className="mx-auto size-16 text-slate-300" />
+                <p className="mt-4 text-[#596257]">No pending applications found.</p>
+                <p className="text-sm text-slate-400 mt-1">New rider applications will show up here.</p>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-5">
                 {applications?.map((app) => (
-                  <div key={app._id} className="bg-white rounded-xl p-6 border border-[#dce8d8] shadow-sm hover:shadow-md transition-shadow">
+                  <div key={app._id} className="bg-white rounded-2xl p-6 border border-[#dce8d8] shadow-sm hover:shadow-md hover:border-[#c3ddba] transition-all duration-200">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-11 h-11 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                        <MdPerson className="size-5 text-amber-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg text-[#1f2a1d] leading-tight">{app.name}</h3>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-xs font-semibold text-amber-700">
+                          Pending Review
+                        </span>
+                      </div>
+                    </div>
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Left Column: Personal Info */}
                       <div className="space-y-3">
-                        <h3 className="font-bold text-lg text-[#1f2a1d] flex items-center gap-2">
-                          <MdPerson className="text-[#4d8d41]" /> {app.name}
-                        </h3>
                         <p className="text-sm text-[#596257] flex items-center gap-2">
-                          <MdEmail className="text-slate-400" /> {app.email}
+                          <MdEmail className="text-slate-400 shrink-0" /> {app.email}
                         </p>
                         <p className="text-sm text-[#596257] flex items-center gap-2">
-                          <MdPhone className="text-slate-400" /> {app.phone}
+                          <MdPhone className="text-slate-400 shrink-0" /> {app.phone}
                         </p>
                         <p className="text-sm text-[#596257]">
                           <span className="font-semibold text-[#1f2a1d]">Age:</span> {app.age} | 
@@ -95,12 +113,12 @@ export default function PendingRidersPage() {
                       </div>
 
                       {/* Right Column: Location & Bike Info */}
-                      <div className="space-y-3">
+                      <div className="space-y-3 md:border-l md:border-[#e8f0e5] md:pl-6">
                         <p className="text-sm text-[#596257] flex items-center gap-2">
-                          <MdLocationOn className="text-slate-400" /> {app.district}, {app.region}
+                          <MdLocationOn className="text-slate-400 shrink-0" /> {app.district}, {app.region}
                         </p>
                         <p className="text-sm text-[#596257] flex items-center gap-2">
-                          <MdOutlineDirectionsBike className="text-slate-400" /> {app.bikeBrand} ({app.bikeRegNumber})
+                          <MdOutlineDirectionsBike className="text-slate-400 shrink-0" /> {app.bikeBrand} ({app.bikeRegNumber})
                         </p>
                         <p className="text-sm text-[#596257]">
                           <span className="font-semibold text-[#1f2a1d]">NID:</span> {app.nid}
@@ -116,13 +134,13 @@ export default function PendingRidersPage() {
                       <button
                         onClick={() => approveMutation.mutate(app._id)}
                         disabled={approveMutation.isPending}
-                        className="btn btn-sm bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] disabled:opacity-50"
+                        className="btn btn-sm bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] disabled:opacity-50 shadow-sm"
                       >
                         <MdCheckCircle className="size-4" /> Approve
                       </button>
                       <button
                         onClick={() => setSelectedApp(app)}
-                        className="btn btn-sm bg-red-500 text-white hover:bg-red-600"
+                        className="btn btn-sm bg-red-50 text-red-600 border border-red-200 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors"
                       >
                         <MdClose className="size-4" /> Reject
                       </button>
@@ -138,14 +156,19 @@ export default function PendingRidersPage() {
       {/* Reject Reason Modal */}
       {selectedApp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            <h3 className="text-xl font-bold text-[#1f2a1d] mb-2">Reject Application</h3>
-            <p className="text-sm text-[#596257] mb-4">
-              Please provide a reason for rejecting <strong>{selectedApp.name}</strong>.
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-[#e8f0e5]">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                <MdClose className="size-5 text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1f2a1d]">Reject Application</h3>
+            </div>
+            <p className="text-sm text-[#596257] mb-4 leading-relaxed">
+              Please provide a reason for rejecting <strong className="text-[#1f2a1d]">{selectedApp.name}</strong>.
             </p>
             
             <textarea
-              className="textarea textarea-bordered w-full mb-4 focus:border-[#83BD75] focus:outline-none"
+              className="textarea textarea-bordered w-full mb-4 focus:border-red-400 focus:outline-none rounded-lg"
               rows="3"
               placeholder="e.g., Invalid license number, incomplete information..."
               value={rejectReason}
