@@ -1,17 +1,38 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { getAllRiderApplications } from '@/features/riders/api/adminRiderApi';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { 
+  getAllRiderApplications, 
+  deactivateRiderApplication 
+} from '@/features/riders/api/adminRiderApi';
 import AdminRoute from '@/app/components/admin/AdminRoute';
-import { MdCheckCircle, MdEmail, MdLocationOn, MdPerson, MdPhone, MdVerified } from 'react-icons/md';
-import { TbBike } from 'react-icons/tb';
+import { MdBlock, MdCheckCircle, MdClose, MdEmail, MdLocationOn, MdPerson, MdPhone, MdVerified } from 'react-icons/md';
+import { TbBikeFilled } from 'react-icons/tb';
+import DeactivateRiderModal from '@/app/components/riders/deactivateRiderModal';
 
 
 
 export default function ActiveRidersPage() {
+  const queryClient = useQueryClient();
+  const [selectedRider, setSelectedRider] = useState(null);
+  const [deactivateReason, setDeactivateReason] = useState('');
+
   const { data: riders, isLoading, error } = useQuery({
     queryKey: ['riderApplications', 'approved'],
     queryFn: () => getAllRiderApplications('approved'),
+  });
+
+  // Deactivate Mutation
+  const deactivateMutation = useMutation({
+    mutationFn: ({ id, reason }) => deactivateRiderApplication(id, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['riderApplications'] });
+      setSelectedRider(null);
+      setDeactivateReason('');
+      alert('Rider deactivated successfully.');
+    },
+    onError: (err) => alert('Failed to deactivate: ' + (err.response?.data?.error || err.message)),
   });
 
   if (isLoading) {
@@ -23,19 +44,24 @@ export default function ActiveRidersPage() {
   }
 
  
+
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-[#f7fbf5]">
         
-        <main className="flex-1 overflow-y-auto">
+        
+        <main className="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto">
           <div className="max-w-6xl mx-auto">
             {/* Header with Stats */}
-            <div className="flex items-center gap-2 mb-6 bg-[]">
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <MdVerified className="size-8 text-[#4d8d41]" />
                 <h1 className="text-3xl font-bold text-[#1f2a1d]">Active Riders</h1>
               </div>
-              
+              <div className="bg-[#edf7ea] px-4 py-2 rounded-lg">
+                <p className="text-sm text-[#596257]">Total Active</p>
+                <p className="text-2xl font-bold text-[#4d8d41]">{riders?.length || 0}</p>
+              </div>
             </div>
 
             {riders?.length === 0 ? (
@@ -81,11 +107,11 @@ export default function ActiveRidersPage() {
                     </div>
 
                     {/* Bike & License Info */}
-                    <div className="space-y-2">
+                    <div className="space-y-2 mb-4">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-500">Bike</span>
                         <span className="font-medium text-[#1f2a1d] flex items-center gap-1">
-                          <TbBike className="text-[#4d8d41]" /> {rider.bikeBrand}
+                          <TbBikeFilled className="text-[#4d8d41]" /> {rider.bikeBrand}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
@@ -102,14 +128,13 @@ export default function ActiveRidersPage() {
                       </div>
                     </div>
 
-                    {/* Approval Info */}
-                    {rider.adminNotes && (
-                      <div className="mt-4 pt-4 border-t border-[#e8f0e5]">
-                        <p className="text-xs text-slate-500">
-                          <span className="font-semibold">Admin Note:</span> {rider.adminNotes}
-                        </p>
-                      </div>
-                    )}
+                    {/* Deactivate Button */}
+                    <button
+                      onClick={() => setSelectedRider(rider)}
+                      className="btn btn-sm w-full bg-red-500 text-white hover:bg-red-600 mt-2"
+                    >
+                      <MdBlock className="size-4" /> Deactivate Rider
+                    </button>
                   </div>
                 ))}
               </div>
@@ -117,6 +142,11 @@ export default function ActiveRidersPage() {
           </div>
         </main>
       </div>
+
+      {/* Deactivation Modal */}
+      {selectedRider && (
+        <DeactivateRiderModal />
+      )}
     </AdminRoute>
   );
 }

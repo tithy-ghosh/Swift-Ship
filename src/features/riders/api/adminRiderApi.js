@@ -21,3 +21,9 @@ export const rejectRiderApplication = async (id, reason = '') => {
   const { data } = await axiosSecure.put(`/api/rider-applications/${id}/reject`, { reason });
   return data;
 };
+
+// Deactivate an Rider
+export const deactivateRiderApplication = async (id, reason = '') => {
+  const { data } = await axiosSecure.put(`/api/rider-applications/${id}/deactivate`, { reason });
+  return data;
+};

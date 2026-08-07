@@ -65,6 +65,7 @@ export default function PendingRidersPage() {
             <div className="flex items-center gap-3 mb-6">
               <MdHourglassEmpty className="size-8 text-amber-600" />
               <h1 className="text-3xl font-bold text-[#1f2a1d]">Pending Rider Applications</h1>
+              
             </div>
 
             {applications?.length === 0 ? (
