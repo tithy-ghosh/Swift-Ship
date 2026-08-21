@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Urbanist:wght@100..900&display=swap");
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
   --font-body: "Urbanist", "Segoe UI", Arial, sans-serif;
@@ -13,7 +14,6 @@ body {
 .font-heading {
   font-family: var(--font-heading);
 }
-@import "leaflet/dist/leaflet.css";
 
 @source "./**/*.{js,jsx,ts,tsx,mdx}";
 @source "../components/**/*.{js,jsx,ts,tsx,mdx}";
