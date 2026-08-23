@@ -23,9 +23,26 @@ export default function AdminDashboardPage() {
 
     // Main Overview Cards
   const mainStats = [
-    { title: 'Total Users', value: stats?.totalUsers || 0, icon: MdPeople, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { title: 'Total Parcels', value: stats?.totalParcels || 0, icon: MdLocalShipping, color: 'text-purple-500', bg: 'bg-purple-50' },
-    { title: 'Total Revenue', value: `৳${(stats?.totalRevenue || 0).toLocaleString()}`, icon: MdPayment, color: 'text-green-500', bg: 'bg-green-50' },
+    { 
+      title: 'Total Users', 
+      value: stats?.totalUsers || 0, 
+      icon: MdPeople, 
+      color: 'text-blue-500', 
+      bg: 'bg-blue-50' 
+    },
+    { 
+      title: 'Total Parcels', 
+      value: stats?.totalParcels || 0, icon: MdLocalShipping,
+      color: 'text-purple-500', 
+      bg: 'bg-purple-50' 
+    },
+    { 
+      title: 'Total Revenue',
+       value: `৳${(stats?.totalRevenue || 0).toLocaleString()}`, 
+       icon: MdPayment, 
+       color: 'text-green-500',
+        bg: 'bg-green-50' 
+      },
   ];
 
   // Quick Action Cards
@@ -48,8 +65,10 @@ export default function AdminDashboardPage() {
       title: 'Pending Parcels', 
       value: stats?.pendingParcels || 0, 
       icon: MdHourglassEmpty, 
-      link: '/admin/parcels', // You will create this page later
-      color: 'text-blue-600', bg: 'bg-blue-50', iconBg: 'bg-blue-100' 
+      link: '/admin/parcels', 
+      color: 'text-blue-600', 
+      bg: 'bg-blue-50', 
+      iconBg: 'bg-blue-100' 
     },
   ];
   return (
@@ -57,10 +76,17 @@ export default function AdminDashboardPage() {
       <div className="flex min-h-screen bg-[#f7fbf5]">
       
         
-        <main className="flex-1 p-4 sm:p-8 lg:p-12 overflow-y-auto">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold text-[#1f2a1d] mb-2">Admin Dashboard</h1>
-            <p className="text-[#596257] mb-8">Overview of your SwiftShip delivery system</p>
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-6xl mx-auto">
+            
+              <div className='flex flex-col gap-2'>
+                <div className=' flex justify-center items-center bg-[#d9efbd] mx-auto px-6 py-0.5 rounded-full'>
+                <p className="text-sm tracking-[0.2em]  font-bold text-[#1f2a1d] mb-2">Admin Dashboard</p>
+              </div>
+              <p className=" text-xl text-center tracking-wider font- text-[#596257] mb-8">Overview of your SwiftShip delivery system</p>
+              </div>
+            
+            
 
             {/* Main Stats Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">

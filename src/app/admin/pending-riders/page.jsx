@@ -58,22 +58,18 @@ export default function PendingRidersPage() {
 
   return (
     <AdminRoute>
-      <div className="flex min-h-screen bg-[#f7fbf5]">
-     
-        
+      <div className="flex min-h-screen bg-[#f7fbf5]">     
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto">
             <div className="flex gap-4 mb-2 mx-auto justify-center items-center">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                  <MdHourglassEmpty className="size-6 text-amber-600" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#1f2a1d] tracking-tight">Pending Rider Applications</h1>
+              <div className="flex items-center gap-3 bg-[#d9efbd] px-6 py-1 rounded-full">
+               
+                <p className="text-sm font-bold text-[#1D2128] tracking-[0.2em]">Pending Rider Applications</p>
               </div>
               
             </div>
-            <p className="text-sm text-[#596257] mb-8 mx-auto flex justify-center items-center">
-             Review incoming rider applications. Approve qualified candidates to join the fleet or reject those who don't meet our standards
+            <p className="text-2xl text-[#596257] mb-8 mx-auto flex justify-center items-center text-center tracking-wider font-sans">
+            Approve qualified candidates to join the fleet or reject those who don't meet our standards.
             </p>
 
             {applications?.length === 0 ? (

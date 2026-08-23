@@ -94,7 +94,7 @@ export default function AllUsersPage() {
               All Users
             </p>
                 </div>
-            <p className="text-[#596257] mb-4 text-2xl tracking-wider">
+            <p className="text-[#2c2e2a] mb-4 text-2xl tracking-wider font-sans">
               Manage all registered users in the system
             </p>
             </div>

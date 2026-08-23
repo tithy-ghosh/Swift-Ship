@@ -53,16 +53,14 @@ export default function ActiveRidersPage() {
           <div className="max-w-6xl mx-auto px-4">
             {/* Header with Stats */}
             <div className="flex flex-wrap gap-4 mb-2">
-              <div className="flex items-center gap-3 justify-center mx-auto">
-                <div className="w-11 h-11 rounded-xl bg-[#edf7ea] flex items-center justify-center shrink-0">
-                  <MdVerified className="size-6 text-[#4d8d41]" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#1f2a1d] tracking-tight">Active Riders</h1>
+              <div className="flex items-center gap-3 justify-center mx-auto bg-[#d9efbd] px-6 py-0.5 rounded-full">
+                
+                <p className="text-sm font-bold text-[#1D2128] tracking-[0.2em]">Active Riders</p>
               </div>
              
             </div>
-            <p className="text-sm  text-[#596257] mb-8  mx-auto flex items-center justify-center">
-              Manage your verified delivery partners. Monitor active profiles and deactivate riders who no longer meet our requirements.
+            <p className="text-xl  text-[#596257] mb-8  mx-auto flex items-center justify-center text-center tracking-wider font-sans">
+               Monitor active profiles and deactivate riders who no longer meet our requirements.
             </p>
 
             {riders?.length === 0 ? (

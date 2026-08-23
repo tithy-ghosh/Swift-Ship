@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&family=Urbanist:wght@100..900&display=swap");
+
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
@@ -15,8 +16,6 @@ body {
   font-family: var(--font-heading);
 }
 
-@source "./**/*.{js,jsx,ts,tsx,mdx}";
-@source "../components/**/*.{js,jsx,ts,tsx,mdx}";
 
 @plugin "daisyui" {
   themes: light --default;
