@@ -24,3 +24,19 @@ export const getPublicSettings = async () => {
   const { data } = await axiosSecure.get('/api/settings/public');
   return data;
 };
+
+// Service zones
+export const createZone = async (zoneData) => {
+  const { data } = await axiosSecure.post('/api/settings/zones', zoneData);
+  return data;
+};
+
+export const updateZone = async ({ zoneId, ...zoneData }) => {
+  const { data } = await axiosSecure.patch(`/api/settings/zones/${zoneId}`, zoneData);
+  return data;
+};
+
+export const deleteZone = async (zoneId) => {
+  const { data } = await axiosSecure.delete(`/api/settings/zones/${zoneId}`);
+  return data;
+};
