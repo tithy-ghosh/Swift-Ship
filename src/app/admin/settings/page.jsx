@@ -29,6 +29,7 @@ import {
   MdDeleteOutline,
   MdToggleOn,
   MdToggleOff,
+  MdClose,
 } from 'react-icons/md';
 
 const DISTRICT_OPTIONS = districtData.map((d) => d.name).sort();
@@ -92,6 +93,8 @@ export default function AdminSettingsPage() {
   const [toast, setToast] = useState(null);
   const [zoneModal, setZoneModal] = useState(null); // { mode: 'create'|'edit', zone? }
   const [zoneToDelete, setZoneToDelete] = useState(null);
+  const [editingPricing, setEditingPricing] = useState(false);
+  const [editingSystem, setEditingSystem] = useState(false);
 
   const showToast = (type, message) => setToast({ type, message });
 
@@ -116,6 +119,7 @@ export default function AdminSettingsPage() {
     mutationFn: updatePricingSettings,
     onSuccess: () => {
       invalidateSettings();
+      setEditingPricing(false);
       showToast('success', 'Pricing settings saved — new quotes will use these rates immediately.');
     },
     onError: (err) => showToast('error', err.response?.data?.error || 'Failed to save pricing settings.'),
@@ -125,6 +129,7 @@ export default function AdminSettingsPage() {
     mutationFn: updateSystemSettings,
     onSuccess: () => {
       invalidateSettings();
+      setEditingSystem(false);
       showToast('success', 'System settings saved.');
     },
     onError: (err) => showToast('error', err.response?.data?.error || 'Failed to save system settings.'),
@@ -177,6 +182,16 @@ export default function AdminSettingsPage() {
   const handleSavePricing = () => pricingMutation.mutate(formData.pricing || {});
   const handleSaveSystem = () => systemMutation.mutate(formData.system || {});
 
+  const handleCancelPricing = () => {
+    setFormData((prev) => ({ ...prev, pricing: settings?.pricing }));
+    setEditingPricing(false);
+  };
+
+  const handleCancelSystem = () => {
+    setFormData((prev) => ({ ...prev, system: settings?.system }));
+    setEditingSystem(false);
+  };
+
   const handleZoneSubmit = (payload) => {
     if (zoneModal.mode === 'edit') {
       updateZoneMutation.mutate({ zoneId: zoneModal.zone._id, ...payload });
@@ -222,64 +237,71 @@ export default function AdminSettingsPage() {
           Manage system configuration and business rules.
         </p>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Tabs */}
-          <div className="lg:w-64 shrink-0">
-            <div className="bg-white rounded-2xl border border-[#dce8d8] p-2 shadow-sm lg:sticky lg:top-24">
-              {TABS.map((tab) => (
+        {/* Horizontal Tabs */}
+        <div className="mb-6 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="no-scrollbar flex gap-1.5 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                    activeTab === tab.id
-                      ? 'bg-[#edf7ea] text-[#4d8d41]'
-                      : 'text-[#596257] hover:bg-[#f7fbf5]'
+                  className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all shrink-0 ${
+                    isActive
+                      ? 'bg-[#4d8d41] text-white shadow-sm'
+                      : 'bg-white text-[#596257] border border-[#dce8d8] hover:border-[#83BD75] hover:text-[#1f2a1d]'
                   }`}
                 >
-                  <tab.icon className="size-5" />
+                  <tab.icon className={`size-[18px] ${isActive ? 'text-white' : 'text-[#4d8d41]'}`} />
                   {tab.label}
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Content Area */}
-          <div className="flex-1 bg-white rounded-2xl border border-[#dce8d8] p-6 shadow-sm min-w-0">
-            {activeTab === 'pricing' && (
-              <PricingTab
-                formData={formData}
-                onChange={handlePricingChange}
-                onSave={handleSavePricing}
-                isPending={pricingMutation.isPending}
-              />
-            )}
+        {/* Content Area */}
+        <div className="bg-white rounded-2xl border border-[#dce8d8] p-6 shadow-sm">
+          {activeTab === 'pricing' && (
+            <PricingTab
+              formData={formData}
+              onChange={handlePricingChange}
+              onSave={handleSavePricing}
+              onCancel={handleCancelPricing}
+              isPending={pricingMutation.isPending}
+              isEditing={editingPricing}
+              onEdit={() => setEditingPricing(true)}
+            />
+          )}
 
-            {activeTab === 'zones' && (
-              <ZonesTab
-                zones={formData.serviceZones || []}
-                onAdd={() => setZoneModal({ mode: 'create' })}
-                onEdit={(zone) => setZoneModal({ mode: 'edit', zone })}
-                onDelete={(zone) => setZoneToDelete(zone)}
-                onToggleActive={(zone) =>
-                  updateZoneMutation.mutate({ zoneId: zone._id, isActive: !zone.isActive })
-                }
-                togglingZoneId={updateZoneMutation.isPending ? updateZoneMutation.variables?.zoneId : null}
-              />
-            )}
+          {activeTab === 'zones' && (
+            <ZonesTab
+              zones={formData.serviceZones || []}
+              onAdd={() => setZoneModal({ mode: 'create' })}
+              onEdit={(zone) => setZoneModal({ mode: 'edit', zone })}
+              onDelete={(zone) => setZoneToDelete(zone)}
+              onToggleActive={(zone) =>
+                updateZoneMutation.mutate({ zoneId: zone._id, isActive: !zone.isActive })
+              }
+              togglingZoneId={updateZoneMutation.isPending ? updateZoneMutation.variables?.zoneId : null}
+            />
+          )}
 
-            {activeTab === 'system' && (
-              <SystemTab
-                formData={formData}
-                onChange={handleSystemChange}
-                onSave={handleSaveSystem}
-                isPending={systemMutation.isPending}
-              />
-            )}
+          {activeTab === 'system' && (
+            <SystemTab
+              formData={formData}
+              onChange={handleSystemChange}
+              onSave={handleSaveSystem}
+              onCancel={handleCancelSystem}
+              isPending={systemMutation.isPending}
+              isEditing={editingSystem}
+              onEdit={() => setEditingSystem(true)}
+            />
+          )}
 
-            {activeTab === 'hours' && <HoursTab formData={formData} setFormData={setFormData} />}
+          {activeTab === 'hours' && <HoursTab formData={formData} setFormData={setFormData} />}
 
-            {activeTab === 'about' && <AboutTab formData={formData} />}
-          </div>
+          {activeTab === 'about' && <AboutTab formData={formData} />}
         </div>
       </div>
 
@@ -314,20 +336,37 @@ export default function AdminSettingsPage() {
   );
 }
 
-function SectionHeader({ icon: Icon, title, subtitle }) {
+function SectionHeader({ icon: Icon, title, subtitle, action }) {
   return (
-    <div className="mb-6">
-      <h2 className="text-xl font-bold text-[#1f2a1d] flex items-center gap-2">
-        <Icon className="text-[#4d8d41]" /> {title}
-      </h2>
-      {subtitle && <p className="text-sm text-[#596257] mt-1">{subtitle}</p>}
+    <div className="flex items-start justify-between gap-4 mb-6">
+      <div>
+        <h2 className="text-xl font-bold text-[#1f2a1d] flex items-center gap-2">
+          <Icon className="text-[#4d8d41]" /> {title}
+        </h2>
+        {subtitle && <p className="text-sm text-[#596257] mt-1">{subtitle}</p>}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 }
 
-function SaveBar({ onSave, isPending, label }) {
+function EditButton({ onClick }) {
   return (
-    <div className="mt-8 pt-6 border-t border-[#e8f0e5] flex justify-end">
+    <button
+      onClick={onClick}
+      className="btn btn-sm bg-white border border-[#dce8d8] text-[#1f2a1d] hover:border-[#83BD75] hover:bg-[#f7fbf5] shadow-sm"
+    >
+      <MdEdit className="size-4" /> Edit
+    </button>
+  );
+}
+
+function EditActions({ onSave, onCancel, isPending, saveLabel = 'Save Changes' }) {
+  return (
+    <div className="mt-8 pt-6 border-t border-[#e8f0e5] flex justify-end gap-3">
+      <button onClick={onCancel} disabled={isPending} className="btn btn-ghost">
+        <MdClose className="size-4" /> Cancel
+      </button>
       <button
         onClick={onSave}
         disabled={isPending}
@@ -335,7 +374,7 @@ function SaveBar({ onSave, isPending, label }) {
       >
         {isPending ? <span className="loading loading-spinner loading-sm" /> : (
           <>
-            <MdSave className="size-4" /> {label}
+            <MdSave className="size-4" /> {saveLabel}
           </>
         )}
       </button>
@@ -343,13 +382,36 @@ function SaveBar({ onSave, isPending, label }) {
   );
 }
 
-function PricingTab({ formData, onChange, onSave, isPending }) {
+function PricingTab({ formData, onChange, onSave, onCancel, isPending, isEditing, onEdit }) {
+  if (!isEditing) {
+    return (
+      <div>
+        <SectionHeader
+          icon={MdLocalShipping}
+          title="Delivery Pricing Rules"
+          subtitle="These are the live values the pricing engine uses to price every quote and parcel."
+          action={<EditButton onClick={onEdit} />}
+        />
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {PRICING_FIELDS.map(({ key, label, hint }) => (
+            <div key={key} className="rounded-xl border border-[#e8f0e5] bg-[#f7fbf5] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#8a978a]">{label}</p>
+              <p className="text-2xl font-bold text-[#1f2a1d] mt-1">{formData.pricing?.[key] ?? '—'}</p>
+              <p className="text-xs text-[#8a978a] mt-1">{hint}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <SectionHeader
         icon={MdLocalShipping}
         title="Delivery Pricing Rules"
-        subtitle="These are the live values the pricing engine uses to price every quote and parcel — changes apply immediately."
+        subtitle="Changes apply to new quotes and parcels immediately after saving."
       />
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -368,7 +430,7 @@ function PricingTab({ formData, onChange, onSave, isPending }) {
         ))}
       </div>
 
-      <SaveBar onSave={onSave} isPending={isPending} label="Save Pricing" />
+      <EditActions onSave={onSave} onCancel={onCancel} isPending={isPending} saveLabel="Save Pricing" />
     </div>
   );
 }
@@ -376,19 +438,19 @@ function PricingTab({ formData, onChange, onSave, isPending }) {
 function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZoneId }) {
   return (
     <div>
-      <div className="flex items-start justify-between gap-4 mb-6">
-        <SectionHeader
-          icon={MdMap}
-          title="Service Zones"
-          subtitle="Group districts into named zones for reporting and coverage management."
-        />
-        <button
-          onClick={onAdd}
-          className="btn btn-sm bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] shadow-sm shrink-0"
-        >
-          <MdAdd className="size-4" /> Add Zone
-        </button>
-      </div>
+      <SectionHeader
+        icon={MdMap}
+        title="Service Zones"
+        subtitle="Group districts into named zones for reporting and coverage management."
+        action={
+          <button
+            onClick={onAdd}
+            className="btn btn-sm bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] shadow-sm"
+          >
+            <MdAdd className="size-4" /> Add Zone
+          </button>
+        }
+      />
 
       {zones.length === 0 ? (
         <div className="p-8 text-center border-2 border-dashed border-[#dce8d8] rounded-xl">
@@ -473,33 +535,85 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
   );
 }
 
-function SystemTab({ formData, onChange, onSave, isPending }) {
+const SYSTEM_TOGGLES = [
+  {
+    key: 'maintenanceMode',
+    title: 'Maintenance Mode',
+    description: 'Disable all user access during maintenance.',
+    toggleClass: 'toggle-error',
+    getChecked: (system) => system?.maintenanceMode || false,
+  },
+  {
+    key: 'allowNewRegistrations',
+    title: 'Allow New Registrations',
+    description: 'Enable or disable new user signups.',
+    toggleClass: 'toggle-success',
+    getChecked: (system) => system?.allowNewRegistrations !== false,
+  },
+  {
+    key: 'allowNewParcelBookings',
+    title: 'Allow New Parcel Bookings',
+    description: 'Enable or disable new parcel creation.',
+    toggleClass: 'toggle-success',
+    getChecked: (system) => system?.allowNewParcelBookings !== false,
+  },
+];
+
+function SystemTab({ formData, onChange, onSave, onCancel, isPending, isEditing, onEdit }) {
+  if (!isEditing) {
+    return (
+      <div>
+        <SectionHeader icon={MdBuild} title="System & Maintenance" action={<EditButton onClick={onEdit} />} />
+
+        <div className="space-y-3">
+          {SYSTEM_TOGGLES.map(({ key, title, description, getChecked }) => {
+            const checked = getChecked(formData.system);
+            return (
+              <div
+                key={key}
+                className="flex items-center justify-between p-4 bg-[#f7fbf5] border border-[#e8f0e5] rounded-xl"
+              >
+                <div>
+                  <p className="font-bold text-[#1f2a1d]">{title}</p>
+                  <p className="text-sm text-[#596257]">{description}</p>
+                </div>
+                <span
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-semibold ${
+                    checked ? 'bg-[#edf7ea] text-[#4d8d41]' : 'bg-slate-100 text-slate-500'
+                  }`}
+                >
+                  {checked ? 'Enabled' : 'Disabled'}
+                </span>
+              </div>
+            );
+          })}
+
+          <div className="p-4 bg-[#f7fbf5] border border-[#e8f0e5] rounded-xl">
+            <p className="font-bold text-[#1f2a1d] mb-1">Maintenance Message</p>
+            <p className="text-sm text-[#596257] italic">
+              {formData.system?.maintenanceMessage || 'System is under maintenance. Please try again later.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <SectionHeader icon={MdBuild} title="System & Maintenance" />
 
       <div className="space-y-4">
-        <ToggleRow
-          title="Maintenance Mode"
-          description="Disable all user access during maintenance."
-          checked={formData.system?.maintenanceMode || false}
-          onChange={(checked) => onChange('maintenanceMode', checked)}
-          toggleClass="toggle-error"
-        />
-        <ToggleRow
-          title="Allow New Registrations"
-          description="Enable or disable new user signups."
-          checked={formData.system?.allowNewRegistrations !== false}
-          onChange={(checked) => onChange('allowNewRegistrations', checked)}
-          toggleClass="toggle-success"
-        />
-        <ToggleRow
-          title="Allow New Parcel Bookings"
-          description="Enable or disable new parcel creation."
-          checked={formData.system?.allowNewParcelBookings !== false}
-          onChange={(checked) => onChange('allowNewParcelBookings', checked)}
-          toggleClass="toggle-success"
-        />
+        {SYSTEM_TOGGLES.map(({ key, title, description, toggleClass, getChecked }) => (
+          <ToggleRow
+            key={key}
+            title={title}
+            description={description}
+            checked={getChecked(formData.system)}
+            onChange={(checked) => onChange(key, checked)}
+            toggleClass={toggleClass}
+          />
+        ))}
 
         <div>
           <label className="block text-sm font-medium text-[#1f2a1d] mb-1">Maintenance Message</label>
@@ -513,7 +627,7 @@ function SystemTab({ formData, onChange, onSave, isPending }) {
         </div>
       </div>
 
-      <SaveBar onSave={onSave} isPending={isPending} label="Save System Settings" />
+      <EditActions onSave={onSave} onCancel={onCancel} isPending={isPending} saveLabel="Save System Settings" />
     </div>
   );
 }
