@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
             
               <div className='flex flex-col gap-2'>
                 <div className=' flex justify-center items-center bg-[#d9efbd] mx-auto px-6 py-0.5 rounded-full'>
-                <p className="text-sm tracking-[0.2em]  font-bold text-[#1f2a1d] mb-2">Admin Dashboard</p>
+                <p className="text-sm tracking-[0.2em]  font-bold text-[#1f2a1d]">Admin Dashboard</p>
               </div>
               <p className=" text-xl text-center tracking-wider font- text-[#596257] mb-8">Overview of your SwiftShip delivery system</p>
               </div>

@@ -22,7 +22,7 @@ export default function Toast({ type = 'success', message, onDismiss, duration =
   const isSuccess = type === 'success'
 
   return (
-    <div className="fixed top-20 right-4 z-[60] max-w-sm animate-[fadeIn_0.2s_ease-out]">
+    <div className="fixed top-24 right-4 z-[60] max-w-sm animate-[fadeIn_0.2s_ease-out] sm:top-28">
       <div
         className={`flex items-start gap-3 rounded-xl border p-4 shadow-lg backdrop-blur-sm ${
           isSuccess ? 'bg-[#edf7ea] border-[#c3e6b8]' : 'bg-red-50 border-red-200'

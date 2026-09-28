@@ -39,7 +39,7 @@ const PRICING_FIELDS = [
     key: 'documentWithinCityRate',
     label: 'Document — Within City (৳)',
     hint: 'Flat rate for a document parcel sent inside the same service center.',
-  },
+  },  
   {
     key: 'documentOutsideCityRate',
     label: 'Document — Outside City (৳)',
@@ -694,10 +694,6 @@ function HoursTab({ formData, setFormData }) {
           </div>
         )}
       </div>
-
-      <p className="text-xs text-[#8a978a] mt-4">
-        Business hours are informational only for now — hook this into booking validation when you're ready to enforce it.
-      </p>
     </div>
   );
 }

@@ -14,14 +14,18 @@ import {
 import { createParcelFormDefaults, DEFAULT_PAYMENT_METHOD } from '../config/parcelForm'
 import { getRegions, getServiceCenters } from '../../../utils/warehouse'
 
-export const useParcelBooking = () => {
+export const useParcelBooking = (initialValues = {}) => {
   const { user } = useAuth()
   const [costInfo, setCostInfo] = useState(null)
   const [paymentMethod, setPaymentMethod] = useState(DEFAULT_PAYMENT_METHOD)
 
   const createdParcelRef = useRef(null)
+  // Each dependent-field reset skips its first run so values prefilled from the
+  // query string survive mount. Separate refs are required per field.
+  const isFirstSenderReset = useRef(true)
+  const isFirstReceiverReset = useRef(true)
   const senderName = user?.displayName || user?.email?.split('@')[0] || ''
-  const form = useForm({ defaultValues: createParcelFormDefaults() })
+  const form = useForm({ defaultValues: createParcelFormDefaults(senderName, initialValues) })
   const { control, reset, setValue } = form
 
   const parcelType = useWatch({ control, name: 'type' })
@@ -42,10 +46,20 @@ export const useParcelBooking = () => {
   }, [senderName, setValue])
 
   useEffect(() => {
+    if (isFirstSenderReset.current) {
+      isFirstSenderReset.current = false
+      return
+    }
+
     setValue('senderServiceCenter', '')
   }, [senderRegion, setValue])
 
   useEffect(() => {
+    if (isFirstReceiverReset.current) {
+      isFirstReceiverReset.current = false
+      return
+    }
+
     setValue('receiverServiceCenter', '')
   }, [receiverRegion, setValue])
 

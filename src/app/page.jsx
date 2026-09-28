@@ -4,7 +4,7 @@ const Home = () => {
  
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#FFFAF3]">
-      <main className="pb-14 pt-5 sm:pb-20">
+      <main className="pb-14 sm:pb-20">
         <Homepage />
       </main>
     </div>

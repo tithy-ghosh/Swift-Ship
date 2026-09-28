@@ -8,7 +8,7 @@ import Logo from '../logo'
 import useAuth from '@/app/hooks/useAuth'
 import SocialLogin from './SocialLogin'
 import { useState } from 'react'
-import { ensureUserProfile } from '@/features/users/userApi'
+import { ensureUserProfile } from '@/features/users/api/userApi'
 
 const Register = () => {
   const router = useRouter()

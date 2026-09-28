@@ -22,9 +22,9 @@ export default function DashboardShell({ children }) {
   }, [isMobileMenuOpen])
 
   return (
-    <div className="min-h-screen bg-[#f7fbf5] pt-20">
+    <div className="min-h-screen bg-[#f7fbf5] pt-24 sm:pt-28">
       <div className="mx-auto flex w-full max-w-7xl items-start">
-        <div className="sticky top-20 hidden h-[calc(100dvh-5rem)] w-64 shrink-0 py-10 pl-4 lg:block">
+        <div className="sticky top-24 hidden h-[calc(100dvh-6rem)] w-64 shrink-0 py-10 pl-4 sm:top-28 sm:h-[calc(100dvh-7rem)] lg:block">
           <SideBar />
         </div>
 
