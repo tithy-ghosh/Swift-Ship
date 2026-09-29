@@ -27,14 +27,7 @@ const TRUST_POINTS = [
   { value: '24/7', label: 'parcel support' },
 ]
 
-/**
- * The slot is sized by an invisible copy of the longest word rather than a
- * hardcoded width. The original `w-[4.6em]` was narrower than the longest word
- * at the mobile `text-[2.1rem]` size, so it was being clipped by
- * `overflow-hidden` on small screens. Rendering a real copy reserves the true
- * width at every breakpoint and font size, and it keeps working if the words
- * are ever reworded - including to a longer one.
- */
+
 const SLOT_WORD = ROTATING_WORDS.reduce((longest, word) =>
   word.length > longest.length ? word : longest
 )

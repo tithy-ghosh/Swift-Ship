@@ -7,6 +7,7 @@ import Brand from '@/app/components/homepage/brand'
 import Speciality from '@/app/components/homepage/speciality'
 import BeMarchent from '@/app/components/homepage/beMarchent'
 import Reviews from '@/app/components/homepage/reviews'
+import NetworkMapSection from '../components/homepage/NetworkMap'
 
 const Homepage = () => {
   return (
@@ -17,8 +18,10 @@ const Homepage = () => {
       <PricingTiers />
       <Brand />
       <Speciality />
+      <NetworkMapSection />
       <BeMarchent />
       <Reviews />
+
     </div>
   )
 }

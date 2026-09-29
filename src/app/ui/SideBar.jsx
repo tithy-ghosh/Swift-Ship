@@ -13,7 +13,7 @@ const USER_NAVIGATION_ITEMS = [
   { href: '/send-parcel', label: 'Send a Parcel', icon: MdLocalShipping },
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
   { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
-  { href: '/be-a-rider', label: 'Be a Rider', icon: MdDirectionsBike },
+  { href: '/be-rider', label: 'Be a Rider', icon: MdDirectionsBike },
 ]
 
 // Admin navigation (completely different)

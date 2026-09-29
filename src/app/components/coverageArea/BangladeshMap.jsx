@@ -14,6 +14,18 @@ const getIconUrl = (icon) => {
   return typeof icon === 'string' ? icon : icon.src
 }
 
+const escapeHtml = (value) => {
+  return String(value ?? '').replace(/[&<>"']/g, (character) => {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[character]
+  })
+}
+
 const BangladeshMap = ({ selectedWarehouse }) => {
   const mapRef = useRef(null)
   const containerRef = useRef(null)
@@ -49,15 +61,19 @@ const BangladeshMap = ({ selectedWarehouse }) => {
       .filter((warehouse) => warehouse.latitude && warehouse.longitude)
       .map((warehouse) => {
         const markerPosition = [warehouse.latitude, warehouse.longitude]
-        const coveredAreas = warehouse.covered_area?.join(', ') || 'Coverage area coming soon'
+        // Popups take an HTML string, so any field containing `<`, `&` or a
+        // quote would otherwise be injected as markup. District and city names
+        // are safe today, but this data is hand-maintained and edited often.
+        const coveredAreas =
+          (warehouse.covered_area || []).join(', ') || 'Coverage area coming soon'
 
         const marker = L.marker(markerPosition, { icon: customIcon })
           .addTo(map)
           .bindPopup(`
-            <strong>${warehouse.district}</strong><br />
-            Region: ${warehouse.region}<br />
-            Branch: ${warehouse.city}<br />
-            Covered: ${coveredAreas}
+            <strong>${escapeHtml(warehouse.district)}</strong><br />
+            Region: ${escapeHtml(warehouse.region)}<br />
+            Branch: ${escapeHtml(warehouse.city)}<br />
+            Covered: ${escapeHtml(coveredAreas)}
           `)
 
         markersRef.current[warehouse.district.toLowerCase()] = marker
@@ -71,9 +87,22 @@ const BangladeshMap = ({ selectedWarehouse }) => {
       })
     }
 
-    mapRef.current = map
-
     let isActive = true
+
+    // Wheel zoom stays off until the visitor interacts with the map, so
+    // scrolling the page over it does not get swallowed. This is the standard
+    // pattern for maps embedded in long pages.
+    const container = containerRef.current
+    const enableWheelZoom = () => {
+      if (isActive && !map.scrollWheelZoom.enabled()) {
+        map.scrollWheelZoom.enable()
+      }
+    }
+
+    container.addEventListener('click', enableWheelZoom)
+    container.addEventListener('focusin', enableWheelZoom)
+
+    mapRef.current = map
     const animationFrames = new Set()
     const resize = () => {
       if (!isActive || !containerRef.current) {
@@ -104,6 +133,8 @@ const BangladeshMap = ({ selectedWarehouse }) => {
 
     return () => {
       isActive = false
+      container.removeEventListener('click', enableWheelZoom)
+      container.removeEventListener('focusin', enableWheelZoom)
       timers.forEach((timer) => window.clearTimeout(timer))
       animationFrames.forEach((frameId) => window.cancelAnimationFrame(frameId))
       observer.disconnect()
@@ -130,7 +161,12 @@ const BangladeshMap = ({ selectedWarehouse }) => {
 
   return (
     <div className="mt-8 h-[420px] w-full overflow-hidden rounded-lg border border-brand-border-subtle bg-white shadow-lg">
-      <div ref={containerRef} className="z-0 h-full w-full" />
+      <div
+        ref={containerRef}
+        className="z-0 h-full w-full"
+        role="region"
+        aria-label="Map of SwiftShip delivery branches"
+      />
     </div>
   )
 }
