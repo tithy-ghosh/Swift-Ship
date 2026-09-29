@@ -32,18 +32,18 @@ const SocialLogin = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <span className="h-px flex-1 bg-[#dbe7d8]" />
-        <span className="text-xs font-semibold uppercase tracking-wide text-[#6b7567]">
+        <span className="h-px flex-1 bg-brand-border-subtle" />
+        <span className="text-xs font-semibold uppercase tracking-wide text-brand-content-muted">
           or 
         </span>
-        <span className="h-px flex-1 bg-[#dbe7d8]" />
+        <span className="h-px flex-1 bg-brand-border-subtle" />
       </div>
 
       <button
       onClick={handleGoogleSignIn}
         disabled={loading}
         type="button"
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-[#dbe7d8] bg-white px-4 font-semibold text-[#1f2a1d] shadow-sm transition hover:border-[#83BD75] hover:bg-[#f7fbf5] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-brand-border-subtle bg-white px-4 font-semibold text-brand-content shadow-sm transition hover:border-brand-accent-bright hover:bg-brand-surface-muted active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
       >
         <svg
           aria-hidden="true"

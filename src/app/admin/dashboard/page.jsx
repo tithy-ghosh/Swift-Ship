@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
       value: stats?.activeRiders || 0, 
       icon: MdCheckCircle, 
       link: '/admin/active-riders',
-      color: 'text-[#4d8d41]', bg: 'bg-[#edf7ea]', iconBg: 'bg-[#dce8d8]' 
+      color: 'text-brand-accent', bg: 'bg-brand-surface-sunken', iconBg: 'bg-brand-border-subtle' 
     },
     { 
       title: 'Pending Parcels', 
@@ -73,17 +73,17 @@ export default function AdminDashboardPage() {
   ];
   return (
     <AdminRoute>
-      <div className="flex min-h-screen bg-[#f7fbf5]">
+      <div className="flex min-h-screen bg-brand-surface-muted">
       
         
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto">
             
               <div className='flex flex-col gap-2'>
-                <div className=' flex justify-center items-center bg-[#d9efbd] mx-auto px-6 py-0.5 rounded-full'>
-                <p className="text-sm tracking-[0.2em]  font-bold text-[#1f2a1d]">Admin Dashboard</p>
+                <div className=' flex justify-center items-center bg-brand-accent-pale mx-auto px-6 py-0.5 rounded-full'>
+                <p className="text-sm tracking-[0.2em]  font-bold text-brand-content">Admin Dashboard</p>
               </div>
-              <p className=" text-xl text-center tracking-wider font- text-[#596257] mb-8">Overview of your SwiftShip delivery system</p>
+              <p className=" text-xl text-center tracking-wider font- text-brand-content-muted mb-8">Overview of your SwiftShip delivery system</p>
               </div>
             
             
@@ -91,11 +91,11 @@ export default function AdminDashboardPage() {
             {/* Main Stats Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {mainStats.map((stat) => (
-                <div key={stat.title} className="bg-white rounded-xl p-6 border border-[#dce8d8] shadow-sm">
+                <div key={stat.title} className="bg-white rounded-xl p-6 border border-brand-border-subtle shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[#596257] mb-1">{stat.title}</p>
-                      <p className="text-2xl font-bold text-[#1f2a1d]">{stat.value}</p>
+                      <p className="text-sm text-brand-content-muted mb-1">{stat.title}</p>
+                      <p className="text-2xl font-bold text-brand-content">{stat.value}</p>
                     </div>
                     <div className={`w-12 h-12 rounded-lg ${stat.color} bg-opacity-10 flex items-center justify-center`}>
                       <stat.icon className={`size-6 ${stat.textColor}`} />
@@ -106,20 +106,20 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Quick Access Cards */}
-            <h2 className="text-xl font-bold text-[#1f2a1d] mb-4">Quick Access</h2>
+            <h2 className="text-xl font-bold text-brand-content mb-4">Quick Access</h2>
             <div className="grid gap-4 sm:grid-cols-3">
               {quickActions.map((item) => (
                 <Link
                   key={item.title} 
                   href={item.link}
-                  className={`${item.bgColor} rounded-xl p-6 border border-[#dce8d8] hover:shadow-md transition-shadow cursor-pointer`}
+                  className={`${item.bgColor} rounded-xl p-6 border border-brand-border-subtle hover:shadow-md transition-shadow cursor-pointer`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`${item.iconBg} w-12 h-12 rounded-lg flex items-center justify-center`}>
                       <item.icon className={`size-6 ${item.textColor}`} />
                     </div>
                     <div>
-                      <p className="text-sm text-[#596257]">{item.title}</p>
+                      <p className="text-sm text-brand-content-muted">{item.title}</p>
                       <p className={`text-2xl font-bold ${item.textColor}`}>{item.value}</p>
                     </div>
                   </div>

@@ -129,7 +129,7 @@ const BangladeshMap = ({ selectedWarehouse }) => {
   }, [selectedWarehouse])
 
   return (
-    <div className="mt-8 h-[420px] w-full overflow-hidden rounded-lg border border-[#dbe7d8] bg-white shadow-lg">
+    <div className="mt-8 h-[420px] w-full overflow-hidden rounded-lg border border-brand-border-subtle bg-white shadow-lg">
       <div ref={containerRef} className="z-0 h-full w-full" />
     </div>
   )

@@ -34,12 +34,12 @@ const SideBar = ({ onNavigate }) => {
   const navItems = isAdmin ? ADMIN_NAVIGATION_ITEMS : USER_NAVIGATION_ITEMS
 
   return (
-    <aside className="flex h-full w-full flex-col rounded-xl border border-[#e8f0e5] bg-white px-4 pb-6 pt-16 shadow-sm lg:pt-6">
+    <aside className="flex h-full w-full flex-col rounded-xl border border-brand-border-subtle bg-white px-4 pb-6 pt-16 shadow-sm lg:pt-6">
       <div className="mb-6 px-3">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#4d8d41]">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-accent">
           {isAdmin ? 'Admin Panel' : 'Workspace'}
         </p>
-        <p className="mt-1 text-lg font-bold text-[#1f2a1d]">
+        <p className="mt-1 text-lg font-bold text-brand-content">
           {isAdmin ? 'SwiftShip Admin' : 'Parcel Dashboard'}
         </p>
       </div>
@@ -55,7 +55,7 @@ const SideBar = ({ onNavigate }) => {
                   href={href}
                   onClick={onNavigate}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive ? 'bg-[#eef7eb] text-[#4d8d41]' : 'text-[#596257] hover:bg-[#c2fda5] hover:text-[#1f2a1d]'
+                    isActive ? 'bg-brand-surface-sunken text-brand-accent' : 'text-brand-content-muted hover:bg-brand-accent-lime hover:text-brand-content'
                   }`}
                 >
                   <Icon className="size-5 shrink-0" />

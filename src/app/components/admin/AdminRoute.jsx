@@ -17,7 +17,7 @@ export default function AdminRoute({ children }){
     if(isLoading){
         return (
             <div className="min-h-screen flex items-center justify-center">
-           <div className="loading loading-spinner loading-lg text-[#4d8d41]"></div>
+           <div className="loading loading-spinner loading-lg text-brand-accent"></div>
       </div>
     );
     }

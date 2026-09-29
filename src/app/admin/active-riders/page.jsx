@@ -37,9 +37,9 @@ export default function ActiveRidersPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#f7fbf5]">
-        <span className="loading loading-spinner loading-lg text-[#4d8d41]"></span>
-        <p className="text-sm text-[#596257]">Loading active riders…</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-brand-surface-muted">
+        <span className="loading loading-spinner loading-lg text-brand-accent"></span>
+        <p className="text-sm text-brand-content-muted">Loading active riders…</p>
       </div>
     );
   }
@@ -53,20 +53,20 @@ export default function ActiveRidersPage() {
           <div className="max-w-6xl mx-auto px-4">
             {/* Header with Stats */}
             <div className="flex flex-wrap gap-4 mb-2">
-              <div className="flex items-center gap-3 justify-center mx-auto bg-[#d9efbd] px-6 py-0.5 rounded-full">
+              <div className="flex items-center gap-3 justify-center mx-auto bg-brand-accent-pale px-6 py-0.5 rounded-full">
                 
-                <p className="text-sm font-bold text-[#1D2128] tracking-[0.2em]">Active Riders</p>
+                <p className="text-sm font-bold text-brand-surface-admin tracking-[0.2em]">Active Riders</p>
               </div>
              
             </div>
-            <p className="text-xl  text-[#596257] mb-8  mx-auto flex items-center justify-center text-center tracking-wider font-sans">
+            <p className="text-xl  text-brand-content-muted mb-8  mx-auto flex items-center justify-center text-center tracking-wider font-sans">
                Monitor active profiles and deactivate riders who no longer meet our requirements.
             </p>
 
             {riders?.length === 0 ? (
-              <div className="bg-white rounded-2xl p-12 text-center border border-[#dce8d8] ">
+              <div className="bg-white rounded-2xl p-12 text-center border border-brand-border-subtle ">
                 <MdCheckCircle className="mx-auto size-16 text-slate-300" />
-                <p className="mt-4 text-[#596257]">No active riders yet.</p>
+                <p className="mt-4 text-brand-content-muted">No active riders yet.</p>
                 <p className="text-sm text-slate-400 mt-1">Approved riders will appear here.</p>
               </div>
             ) : (
@@ -74,17 +74,17 @@ export default function ActiveRidersPage() {
                 {riders?.map((rider) => (
                   <div 
                     key={rider._id} 
-                    className="bg-white rounded-2xl p-6 border border-[#dce8d8] shadow-sm hover:shadow-md hover:border-[#c3ddba] hover:-translate-y-0.5 transition-all duration-200"
+                    className="bg-white rounded-2xl p-6 border border-brand-border-subtle shadow-sm hover:shadow-md hover:border-brand-border-moss hover:-translate-y-0.5 transition-all duration-200"
                   >
                     {/* Rider Header */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-12 h-12 rounded-full bg-[#edf7ea] flex items-center justify-center shrink-0">
-                          <MdPerson className="size-6 text-[#4d8d41]" />
+                        <div className="w-12 h-12 rounded-full bg-brand-surface-sunken flex items-center justify-center shrink-0">
+                          <MdPerson className="size-6 text-brand-accent" />
                         </div>
                         <div className="min-w-0">
-                          <h3 className="font-bold text-[#1f2a1d] truncate">{rider.name}</h3>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#edf7ea] text-xs font-semibold text-[#4d8d41]">
+                          <h3 className="font-bold text-brand-content truncate">{rider.name}</h3>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-surface-sunken text-xs font-semibold text-brand-accent">
                             <MdVerified className="size-3" /> Verified Rider
                           </span>
                         </div>
@@ -92,38 +92,38 @@ export default function ActiveRidersPage() {
                     </div>
 
                     {/* Contact Info */}
-                    <div className="space-y-2 mb-4 pb-4 border-b border-[#e8f0e5]">
-                      <p className="text-sm text-[#596257] flex items-center gap-2">
+                    <div className="space-y-2 mb-4 pb-4 border-b border-brand-border-subtle">
+                      <p className="text-sm text-brand-content-muted flex items-center gap-2">
                         <MdEmail className="text-slate-400 shrink-0" /> 
                         <span className="truncate">{rider.email}</span>
                       </p>
-                      <p className="text-sm text-[#596257] flex items-center gap-2">
+                      <p className="text-sm text-brand-content-muted flex items-center gap-2">
                         <MdPhone className="text-slate-400 shrink-0" /> {rider.phone}
                       </p>
-                      <p className="text-sm text-[#596257] flex items-center gap-2">
+                      <p className="text-sm text-brand-content-muted flex items-center gap-2">
                         <MdLocationOn className="text-slate-400 shrink-0" /> {rider.district}, {rider.region}
                       </p>
                     </div>
 
                     {/* Bike & License Info */}
-                    <div className="space-y-2 mb-5 bg-[#f7fbf5] rounded-lg p-3">
+                    <div className="space-y-2 mb-5 bg-brand-surface-muted rounded-lg p-3">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-500">Bike</span>
-                        <span className="font-medium text-[#1f2a1d] flex items-center gap-1">
-                          <TbBikeFilled className="text-[#4d8d41]" /> {rider.bikeBrand}
+                        <span className="font-medium text-brand-content flex items-center gap-1">
+                          <TbBikeFilled className="text-brand-accent" /> {rider.bikeBrand}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-500">Reg No.</span>
-                        <span className="font-medium text-[#1f2a1d]">{rider.bikeRegNumber}</span>
+                        <span className="font-medium text-brand-content">{rider.bikeRegNumber}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-500">License</span>
-                        <span className="font-medium text-[#1f2a1d]">{rider.licenseNumber}</span>
+                        <span className="font-medium text-brand-content">{rider.licenseNumber}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-500">Experience</span>
-                        <span className="font-medium text-[#1f2a1d]">{rider.experience} yrs</span>
+                        <span className="font-medium text-brand-content">{rider.experience} yrs</span>
                       </div>
                     </div>
 

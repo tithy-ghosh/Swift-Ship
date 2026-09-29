@@ -62,12 +62,12 @@ export default function PaymentHistoryPage() {
   const completedPayments = data?.summary?.completedPayments ?? 0
 
   return (
-    <main className="space-y-7 text-[#1f2a1d]">
+    <main className="space-y-7 text-brand-content">
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[#4d8d41]">My account</p>
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-brand-accent">My account</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Payment history</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#596257]">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-brand-content-muted">
             Review payments connected to parcels booked from your SwiftShip account.
           </p>
         </div>
@@ -88,21 +88,21 @@ export default function PaymentHistoryPage() {
       ) : (
         <>
           <section className="grid gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl border border-[#dce8d8] bg-white p-5 shadow-sm">
-              <span className="flex size-10 items-center justify-center rounded-xl bg-[#edf7ea] text-[#4d8d41]">
+            <div className="rounded-2xl border border-brand-border-subtle bg-white p-5 shadow-sm">
+              <span className="flex size-10 items-center justify-center rounded-xl bg-brand-surface-sunken text-brand-accent">
                 <MdOutlinePayments className="size-5" />
               </span>
               <p className="mt-4 text-2xl font-black">{formatMoney(totalPaid)}</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Total paid</p>
             </div>
-            <div className="rounded-2xl border border-[#dce8d8] bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-brand-border-subtle bg-white p-5 shadow-sm">
               <span className="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                 <MdReceiptLong className="size-5" />
               </span>
               <p className="mt-4 text-2xl font-black">{totalTransactions}</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Transactions</p>
             </div>
-            <div className="rounded-2xl border border-[#dce8d8] bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-brand-border-subtle bg-white p-5 shadow-sm">
               <span className="flex size-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
                 <MdSchedule className="size-5" />
               </span>
@@ -112,38 +112,38 @@ export default function PaymentHistoryPage() {
           </section>
 
           {payments.length === 0 ? (
-            <section className="rounded-2xl border border-dashed border-[#cbdac7] bg-white px-6 py-14 text-center">
-              <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#edf7ea] text-[#4d8d41]">
+            <section className="rounded-2xl border border-dashed border-brand-accent-sage bg-white px-6 py-14 text-center">
+              <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-brand-surface-sunken text-brand-accent">
                 <MdReceiptLong className="size-7" />
               </span>
               <h2 className="mt-4 text-xl font-black">No payments yet</h2>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#596257]">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-brand-content-muted">
                 Payments will appear here after you book a parcel with SwiftShip.
               </p>
-              <Link href="/send-parcel" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#83BD75] px-4 py-2.5 text-sm font-black text-[#172015]">
+              <Link href="/send-parcel" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand-accent-bright px-4 py-2.5 text-sm font-black text-brand-surface-inverse-deep">
                 Send a parcel <MdArrowForward className="size-4" />
               </Link>
             </section>
           ) : (
-            <section className="overflow-hidden rounded-2xl border border-[#dce8d8] bg-white shadow-sm">
-              <div className="border-b border-[#e8f0e5] px-5 py-4 sm:px-6">
+            <section className="overflow-hidden rounded-2xl border border-brand-border-subtle bg-white shadow-sm">
+              <div className="border-b border-brand-border-subtle px-5 py-4 sm:px-6">
                 <h2 className="font-black">Transactions</h2>
-                <p className="mt-0.5 text-xs text-[#596257]">Newest activity appears first</p>
+                <p className="mt-0.5 text-xs text-brand-content-muted">Newest activity appears first</p>
               </div>
 
-              <div className="divide-y divide-[#edf2eb]">
+              <div className="divide-y divide-brand-border-subtle">
                 {payments.map((payment) => {
                   const MethodIcon = payment.method === 'cod' ? MdLocalAtm : MdCreditCard
                   const transactionDate = payment.paidAt || payment.createdAt
                   return (
-                    <article key={payment.id} className="grid gap-4 px-5 py-5 transition hover:bg-[#fafcf9] sm:grid-cols-[1fr_auto] sm:items-center sm:px-6">
+                    <article key={payment.id} className="grid gap-4 px-5 py-5 transition hover:bg-brand-surface sm:grid-cols-[1fr_auto] sm:items-center sm:px-6">
                       <div className="flex min-w-0 items-start gap-4">
-                        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#edf7ea] text-[#4d8d41]">
+                        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-surface-sunken text-brand-accent">
                           <MethodIcon className="size-5" />
                         </span>
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
-                            <Link href={`/track/${encodeURIComponent(payment.trackingId)}`} className="truncate font-mono text-sm font-black text-[#31542b] hover:underline">
+                            <Link href={`/track/${encodeURIComponent(payment.trackingId)}`} className="truncate font-mono text-sm font-black text-brand-content-strong hover:underline">
                               {payment.trackingId}
                             </Link>
                             <span className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase ring-1 ${STATUS_STYLES[payment.status] || STATUS_STYLES.pending}`}>

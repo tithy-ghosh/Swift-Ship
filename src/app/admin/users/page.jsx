@@ -85,16 +85,16 @@ export default function AllUsersPage() {
 
   return (
     <AdminRoute>
-      <div className="flex min-h-screen bg-[#f7fbf5]">
+      <div className="flex min-h-screen bg-brand-surface-muted">
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             <div className="gap-2 flex flex-col mx-auto justify-center items-center">
-                <div className="px-6 py-1 bg-[#D9EFBD] rounded-full">
-                    <p className="text-sm tracking-[0.2em] font-bold text-[#1D2128]">
+                <div className="px-6 py-1 bg-brand-accent-pale rounded-full">
+                    <p className="text-sm tracking-[0.2em] font-bold text-brand-surface-admin">
               All Users
             </p>
                 </div>
-            <p className="text-[#2c2e2a] mb-4 text-2xl tracking-wider font-sans">
+            <p className="text-brand-surface-inverse mb-4 text-2xl tracking-wider font-sans">
               Manage all registered users in the system
             </p>
             </div>
@@ -121,7 +121,7 @@ export default function AllUsersPage() {
                 )}
               <button
                 type="submit"
-                className="btn bg-[#83BD75] text-[#172015] hover:bg-[#74ad68]"
+                className="btn bg-brand-accent-bright text-brand-surface-inverse-deep hover:bg-brand-accent-hover"
               >
                 <MdSearch className="size-5" /> Search
               </button>
@@ -129,10 +129,10 @@ export default function AllUsersPage() {
             </form>
 
             {/* Users Table */}
-            <div className="bg-white rounded-xl border border-[#dce8d8] overflow-hidden">
+            <div className="bg-white rounded-xl border border-brand-border-subtle overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
-                  <thead className="bg-[#edf7ea]">
+                  <thead className="bg-brand-surface-sunken">
                     <tr>
                       <th>User</th>
                       <th>Email</th>
@@ -148,7 +148,7 @@ export default function AllUsersPage() {
                           <td>
                             <div className="flex items-center gap-3">
                               <div className="avatar placeholder">
-                                <div className="bg-[#4d8d41] text-white rounded-full w-10 flex items-center justify-center">
+                                <div className="bg-brand-accent text-white rounded-full w-10 flex items-center justify-center">
                                   <MdPerson className="size-5" />
                                 </div>
                               </div>
@@ -206,7 +206,7 @@ export default function AllUsersPage() {
                       <tr>
                         <td
                           colSpan="5"
-                          className="text-center py-8 text-[#596257]"
+                          className="text-center py-8 text-brand-content-muted"
                         >
                           {activeSearchTerm
                             ? `No users found matching "${activeSearchTerm}"`

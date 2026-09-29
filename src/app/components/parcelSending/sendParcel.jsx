@@ -12,7 +12,7 @@ const FieldError = ({ children }) => {
 const SectionTitle = ({ icon: Icon, title }) => {
   return (
     <div className="mb-5 flex items-center gap-3 border-b border-base-300 pb-3">
-      <span className="flex size-10 items-center justify-center rounded-lg bg-[#eef7eb] text-[#4d8d41]">
+      <span className="flex size-10 items-center justify-center rounded-lg bg-brand-surface-sunken text-brand-accent">
         <Icon className="size-5" />
       </span>
       <h2 className="text-xl font-bold text-base-content">{title}</h2>
@@ -45,7 +45,7 @@ const SendParcel = ({
     <main className="text-base-content">
       <section>
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">Send a Percel</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-accent">Send a Percel</p>
           <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
             Book a door to door delivery
           </h1>
@@ -278,7 +278,7 @@ const SendParcel = ({
             <button
               type="submit"
               disabled={loading}
-              className="btn border-0 bg-[#83BD75] px-8 font-semibold text-[#172015] hover:bg-[#74ad68] disabled:opacity-70"
+              className="btn border-0 bg-brand-accent-bright px-8 font-semibold text-brand-surface-inverse-deep hover:bg-brand-accent-hover disabled:opacity-70"
             >
               {loading ? 'Please wait…' : 'Submit'}
             </button>

@@ -12,7 +12,7 @@ import {
 
 const InfoPill = ({ label, value }) => {
   return (
-    <div className="rounded-lg border border-[#d9ebd4] bg-white px-3 py-2">
+    <div className="rounded-lg border border-brand-border-subtle bg-white px-3 py-2">
       <p className="text-[0.65rem] font-bold uppercase tracking-wide text-base-content/50">{label}</p>
       <p className="mt-0.5 truncate text-xs font-bold text-base-content sm:text-sm">{value || 'Not added'}</p>
     </div>
@@ -30,17 +30,17 @@ const RoutePoint = ({ label, value }) => {
 
 const CostBreakdown = ({ items, parcelData, total }) => {
   return (
-    <section className="overflow-hidden rounded-lg border border-[#83BD75]/50 bg-[#f7fcf4] shadow-[0_18px_45px_rgba(77,141,65,0.16)]">
-      <div className="border-b border-[#d9ebd4] bg-white px-4 py-3">
+    <section className="overflow-hidden rounded-lg border border-brand-accent-bright/50 bg-brand-surface shadow-[0_18px_45px_rgba(77,141,65,0.16)]">
+      <div className="border-b border-brand-border-subtle bg-white px-4 py-3">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#eef7eb] text-[#4d8d41]">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-surface-sunken text-brand-accent">
             <MdLocalShipping className="size-6" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[0.65rem] font-bold uppercase tracking-wide text-[#4d8d41]">Delivery Route</p>
+            <p className="text-[0.65rem] font-bold uppercase tracking-wide text-brand-accent">Delivery Route</p>
             <div className="mt-1 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
               <RoutePoint label="Pickup" value={parcelData.senderServiceCenter} />
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f7fcf4] text-[#4d8d41]">
+              <span className="flex size-7 items-center justify-center rounded-full bg-brand-surface text-brand-accent">
                 <MdArrowForward className="size-4" />
               </span>
               <RoutePoint label="Drop-off" value={parcelData.receiverServiceCenter} />
@@ -56,13 +56,13 @@ const CostBreakdown = ({ items, parcelData, total }) => {
         <InfoPill label="Quote" value={`BDT ${total}`} />
       </div>
 
-      <div className="mx-4 rounded-lg border border-[#d9ebd4] bg-white">
-        <div className="flex items-center gap-2 border-b border-[#edf5ea] px-3 py-2">
-          <MdOutlineReceiptLong className="size-5 text-[#4d8d41]" />
+      <div className="mx-4 rounded-lg border border-brand-border-subtle bg-white">
+        <div className="flex items-center gap-2 border-b border-brand-border-subtle px-3 py-2">
+          <MdOutlineReceiptLong className="size-5 text-brand-accent" />
           <p className="text-sm font-black text-base-content">Charge Details</p>
         </div>
 
-        <div className="divide-y divide-[#edf5ea]">
+        <div className="divide-y divide-brand-border-subtle">
           {items.map((item) => (
             <div key={item.label} className="flex items-start justify-between gap-3 px-3 py-2 text-xs sm:text-sm">
               <span className="leading-5 text-base-content/70">{item.label}</span>
@@ -72,10 +72,10 @@ const CostBreakdown = ({ items, parcelData, total }) => {
         </div>
       </div>
 
-      <div className="mt-3 bg-[#A5CF83] px-4 py-3 text-white">
+      <div className="mt-3 bg-brand-accent-strong px-4 py-3 text-white">
         <div className="flex flex-row items-center justify-between gap-3">
-          <span className="text-xs font-bold uppercase tracking-wide text-[#091413] sm:text-sm">Amount to Pay</span>
-          <span className="text-2xl font-black sm:text-3xl  text-[#091413]">BDT {total}</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-brand-surface-inverse-ink sm:text-sm">Amount to Pay</span>
+          <span className="text-2xl font-black sm:text-3xl  text-brand-surface-inverse-ink">BDT {total}</span>
         </div>
       </div>
     </section>
@@ -105,10 +105,10 @@ const ONLINE_CHANNELS = [
 ]
 
 const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
-  <section className="mt-3 overflow-hidden rounded-2xl border border-[#dce8d8] bg-white shadow-sm">
-    <div className="flex items-center justify-between gap-3 border-b border-[#e8f0e5] px-4 py-3">
+  <section className="mt-3 overflow-hidden rounded-2xl border border-brand-border-subtle bg-white shadow-sm">
+    <div className="flex items-center justify-between gap-3 border-b border-brand-border-subtle px-4 py-3">
       <div className="flex items-center gap-2">
-        <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef7eb] text-[#4d8d41]">
+        <span className="flex size-9 items-center justify-center rounded-xl bg-brand-surface-sunken text-brand-accent">
           <MdPayments className="size-5" />
         </span>
         <div>
@@ -116,7 +116,7 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
           <p className="text-[11px] text-base-content/55">Choose one option to continue</p>
         </div>
       </div>
-      <span className="hidden items-center gap-1 rounded-full bg-[#f1f8ef] px-2.5 py-1 text-[11px] font-bold text-[#3e7735] sm:flex">
+      <span className="hidden items-center gap-1 rounded-full bg-brand-surface px-2.5 py-1 text-[11px] font-bold text-brand-accent-pine sm:flex">
         <MdLockOutline className="size-3.5" /> Secure
       </span>
     </div>
@@ -128,8 +128,8 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
             key={value}
             className={`relative flex cursor-pointer items-start gap-3 rounded-xl border-2 p-3.5 transition-all ${
               isSelected
-                ? 'border-[#83BD75] bg-[#f5fbf2] shadow-[0_8px_24px_rgba(77,141,65,0.1)]'
-                : 'border-slate-200 bg-white hover:border-[#83BD75]/60'
+                ? 'border-brand-accent-bright bg-brand-surface shadow-[0_8px_24px_rgba(77,141,65,0.1)]'
+                : 'border-slate-200 bg-white hover:border-brand-accent-bright/60'
             }`}
           >
             <input
@@ -141,7 +141,7 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
               className="sr-only"
             />
             <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${
-              isSelected ? 'bg-[#83BD75] text-[#172015]' : 'bg-slate-100 text-slate-500'
+              isSelected ? 'bg-brand-accent-bright text-brand-surface-inverse-deep' : 'bg-slate-100 text-slate-500'
             }`}>
               <Icon className="size-5" />
             </span>
@@ -149,20 +149,20 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
               <span className="block text-sm font-bold text-base-content">{title}</span>
               <span className="mt-0.5 block text-xs leading-5 text-base-content/60">{description}</span>
             </span>
-            {isSelected && <MdCheckCircle className="absolute right-2.5 top-2.5 size-5 text-[#4d8d41]" />}
+            {isSelected && <MdCheckCircle className="absolute right-2.5 top-2.5 size-5 text-brand-accent" />}
           </label>
         )
       })}
     </div>
 
     {paymentMethod === 'online' && (
-      <div className="border-t border-[#e8f0e5] bg-[#fafcf9] px-4 py-4">
+      <div className="border-t border-brand-border-subtle bg-brand-surface px-4 py-4">
         <div className="mb-3 flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-black uppercase tracking-wide text-base-content/70">Available at secure checkout</p>
             <p className="mt-0.5 text-[11px] text-base-content/50">Select your provider on the next screen</p>
           </div>
-          <span className="rounded-full border border-[#d9ead4] bg-white px-2.5 py-1 text-[10px] font-bold text-[#4d8d41]">
+          <span className="rounded-full border border-brand-border-subtle bg-white px-2.5 py-1 text-[10px] font-bold text-brand-accent">
             SSLCommerz
           </span>
         </div>
@@ -177,7 +177,7 @@ const PaymentMethodPicker = ({ paymentMethod, onPaymentMethodChange }) => (
             </div>
           ))}
         </div>
-        <div className="mt-3 flex items-start gap-2 rounded-xl bg-[#edf7ea] px-3 py-2.5 text-[11px] leading-4 text-[#365f30]">
+        <div className="mt-3 flex items-start gap-2 rounded-xl bg-brand-surface-sunken px-3 py-2.5 text-[11px] leading-4 text-brand-accent-forest">
           <MdLockOutline className="mt-0.5 size-4 shrink-0" />
           <p>
             Your mobile number, OTP, PIN, or card information is entered only on SSLCommerz&apos;s secure page.
@@ -213,7 +213,7 @@ const ParcelCostModal = ({
     <div className="modal modal-open p-3 sm:p-5">
       <div className="modal-box flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden bg-base-200 p-0 shadow-2xl sm:max-h-[calc(100dvh-2.5rem)]">
         <div className="shrink-0 bg-base-100 px-4 pb-3 pt-4 text-center sm:px-6">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#4d8d41]">Parcel Quote</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-accent">Parcel Quote</p>
           <h2 className="mt-1 text-xl font-black text-base-content sm:text-2xl">Review Parcel Charge</h2>
           <p className="mx-auto mt-1 max-w-xl text-xs leading-5 text-base-content/70 sm:text-sm">
             Confirm the route, parcel facts, and delivery charge, then choose how you&apos;d like to pay.
@@ -245,7 +245,7 @@ const ParcelCostModal = ({
             type="button"
             onClick={handleConfirm}
             disabled={loading}
-            className="btn btn-sm border-0 bg-[#83BD75] font-semibold text-[#172015] hover:bg-[#74ad68] disabled:opacity-70"
+            className="btn btn-sm border-0 bg-brand-accent-bright font-semibold text-brand-surface-inverse-deep hover:bg-brand-accent-hover disabled:opacity-70"
           >
             {loading ? 'Please wait…' : confirmLabel}
           </button>

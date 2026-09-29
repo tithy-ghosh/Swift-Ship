@@ -48,13 +48,13 @@ export default function ZoneFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-[#e8f0e5] max-h-[90vh] flex flex-col">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-brand-border-subtle max-h-[90vh] flex flex-col">
         <div className="flex items-start justify-between mb-4 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#edf7ea] flex items-center justify-center shrink-0">
-              <MdMap className="size-5 text-[#4d8d41]" />
+            <div className="w-10 h-10 rounded-full bg-brand-surface-sunken flex items-center justify-center shrink-0">
+              <MdMap className="size-5 text-brand-accent" />
             </div>
-            <h3 className="text-xl font-bold text-[#1f2a1d]">
+            <h3 className="text-xl font-bold text-brand-content">
               {mode === 'edit' ? 'Edit Zone' : 'Add Service Zone'}
             </h3>
           </div>
@@ -65,20 +65,20 @@ export default function ZoneFormModal({
 
         <div className="overflow-y-auto space-y-5 pr-1">
           <div>
-            <label className="block text-sm font-medium text-[#1f2a1d] mb-1">Zone Name</label>
+            <label className="block text-sm font-medium text-brand-content mb-1">Zone Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Greater Dhaka"
-              className="input input-bordered w-full focus:border-[#83BD75] focus:outline-none"
+              className="input input-bordered w-full focus:border-brand-accent-bright focus:outline-none"
             />
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-[#f7fbf5] border border-[#e8f0e5] rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-brand-surface-muted border border-brand-border-subtle rounded-lg">
             <div>
-              <p className="text-sm font-bold text-[#1f2a1d]">Active</p>
-              <p className="text-xs text-[#596257]">Inactive zones are hidden from operational views.</p>
+              <p className="text-sm font-bold text-brand-content">Active</p>
+              <p className="text-xs text-brand-content-muted">Inactive zones are hidden from operational views.</p>
             </div>
             <input
               type="checkbox"
@@ -89,8 +89,8 @@ export default function ZoneFormModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1f2a1d] mb-1">
-              Districts <span className="text-[#596257] font-normal">({selectedDistricts.length} selected)</span>
+            <label className="block text-sm font-medium text-brand-content mb-1">
+              Districts <span className="text-brand-content-muted font-normal">({selectedDistricts.length} selected)</span>
             </label>
 
             {selectedDistricts.length > 0 && (
@@ -100,7 +100,7 @@ export default function ZoneFormModal({
                     key={district}
                     type="button"
                     onClick={() => toggleDistrict(district)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#edf7ea] text-xs font-semibold text-[#4d8d41] hover:bg-[#dcefd6]"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-surface-sunken text-xs font-semibold text-brand-accent hover:bg-brand-border-subtle"
                   >
                     {district}
                     <MdClose className="size-3" />
@@ -116,11 +116,11 @@ export default function ZoneFormModal({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search districts…"
-                className="input input-bordered input-sm w-full pl-9 focus:border-[#83BD75] focus:outline-none"
+                className="input input-bordered input-sm w-full pl-9 focus:border-brand-accent-bright focus:outline-none"
               />
             </div>
 
-            <div className="border border-[#dce8d8] rounded-lg max-h-40 overflow-y-auto p-2 flex flex-wrap gap-1.5 content-start">
+            <div className="border border-brand-border-subtle rounded-lg max-h-40 overflow-y-auto p-2 flex flex-wrap gap-1.5 content-start">
               {filteredOptions.length === 0 && (
                 <p className="text-xs text-slate-400 px-1 py-2">No districts match “{search}”.</p>
               )}
@@ -133,8 +133,8 @@ export default function ZoneFormModal({
                     onClick={() => toggleDistrict(district)}
                     className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
                       isSelected
-                        ? 'bg-[#4d8d41] text-white border-[#4d8d41]'
-                        : 'bg-white text-[#596257] border-[#dce8d8] hover:border-[#83BD75]'
+                        ? 'bg-brand-accent text-white border-brand-accent'
+                        : 'bg-white text-brand-content-muted border-brand-border-subtle hover:border-brand-accent-bright'
                     }`}
                   >
                     {district}
@@ -145,14 +145,14 @@ export default function ZoneFormModal({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-[#e8f0e5] shrink-0">
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-brand-border-subtle shrink-0">
           <button onClick={onClose} className="btn btn-ghost" disabled={isPending}>
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={isPending || !name.trim()}
-            className="btn bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] disabled:opacity-50 shadow-sm"
+            className="btn bg-brand-accent-bright text-brand-surface-inverse-deep hover:bg-brand-accent-hover disabled:opacity-50 shadow-sm"
           >
             {isPending ? (
               <span className="loading loading-spinner loading-sm" />

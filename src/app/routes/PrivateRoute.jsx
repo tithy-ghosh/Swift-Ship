@@ -18,7 +18,7 @@ const PrivateRoute = ({ children }) => {
   if (loading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <span className="loading loading-spinner loading-xl text-[#83BD75]" />
+        <span className="loading loading-spinner loading-xl text-brand-accent-bright" />
       </div>
     )
   }

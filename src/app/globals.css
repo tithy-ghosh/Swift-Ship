@@ -21,6 +21,70 @@ body {
   themes: light --default;
 }
 
+/**
+ * Brand palette.
+ *
+ * The `brand-` prefix is deliberate. daisyUI already owns `primary`,
+ * `secondary`, `accent`, `neutral` and `base-*`, and its component classes
+ * (`btn`, `input`, `badge`, `modal`) resolve colors from those variables.
+ * Unprefixed names here would shadow daisyUI and break that layer, so the two
+ * systems stay namespaced and coexist.
+ *
+ * Every value here was already in use across the app, so this is a rename and
+ * not a restyle: `bg-[#f7faf4]` becomes `bg-brand-surface-muted` and renders
+ * identically. `--color-brand-content` and `--color-brand-surface-inverse`
+ * share `#1f2a1d` today but are separate roles, so they get separate tokens
+ * and can be retuned independently later.
+ */
+@theme {
+  /* Surfaces */
+  --color-brand-canvas: #fffaf3;
+  --color-brand-surface: #ffffff;
+  --color-brand-surface-muted: #f7faf4;
+  --color-brand-surface-sunken: #eef7ea;
+  --color-brand-surface-raised: #dff2d9;
+  --color-brand-surface-inverse: #1f2a1d;
+  --color-brand-surface-inverse-deep: #172015;
+  --color-brand-surface-inverse-ink: #091413;
+  --color-brand-surface-inverse-hover: #31422d;
+  --color-brand-surface-admin: #1d2128;
+  --color-brand-surface-admin-deep: #14231a;
+
+  /* Text */
+  --color-brand-content: #1f2a1d;
+  --color-brand-content-strong: #31542b;
+  --color-brand-content-muted: #596257;
+  --color-brand-content-muted-strong: #8a978a;
+  --color-brand-content-subtle: #8c9385;
+  --color-brand-content-on-dark: #ffffff;
+  --color-brand-content-on-dark-muted: #b5e6a8;
+
+  /* Accent */
+  --color-brand-accent: #4d8d41;
+  --color-brand-accent-bright: #83bd75;
+  --color-brand-accent-mid: #b9ddaf;
+  --color-brand-accent-soft: #7cba6e;
+  --color-brand-accent-hover: #74ad68;
+  --color-brand-accent-pale: #d9efbd;
+  --color-brand-accent-strong: #a5cf83;
+  --color-brand-accent-lime: #c2fda5;
+  --color-brand-accent-sage: #cbdac7;
+  --color-brand-accent-leaf: #a9db9d;
+  --color-brand-accent-moss: #70aa62;
+  --color-brand-accent-fresh: #96ce89;
+  --color-brand-accent-pine: #3e7735;
+  --color-brand-accent-forest: #365f30;
+
+  /* Border */
+  --color-brand-border-subtle: #dbead5;
+  --color-brand-border-strong: #e3efde;
+  --color-brand-border-moss: #c3ddba;
+  --color-brand-border-lime: #c3e6b8;
+
+  /* Destructive */
+  --color-brand-danger-surface: #ebe3e3;
+}
+
 html,
 body {
   min-height: 100%;
@@ -154,23 +218,49 @@ body {
   transform-origin: top center;
 }
 
+/**
+ * Rotating word in the H1.
+ *
+ * The column holds all three words stacked, so word N is on screen when the
+ * column sits at `-N * (100 / 3)` percent of its own height. The old keyframes
+ * only travelled between 0 and -60% and always returned to 0, so the headline
+ * showed "on time" forever and merely blinked - "tracked" and "COD ready" were
+ * never actually visible.
+ *
+ * Each word dwells, then rolls to the next in the gap between dwell windows.
+ * The reset from word 3 back to word 1 happens between 90% and 94% of the cycle
+ * while opacity is 0. 0% and 100% are deliberately identical (translateY(0),
+ * opacity 0) so the loop restarts invisibly instead of snapping.
+ */
 @keyframes heroWordCycle {
-  0%,
-    22% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
 
-  32%,
-    92% {
-      opacity: 0;
-      transform: translateY(-60%);
-    }
+  4%,
+  26% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
+  30%,
+  58% {
+    opacity: 1;
+    transform: translateY(-33.3333%);
+  }
+
+  62%,
+  90% {
+    opacity: 1;
+    transform: translateY(-66.6667%);
+  }
+
+  94%,
   100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    opacity: 0;
+    transform: translateY(-66.6667%);
+  }
 }
 
 @keyframes heroFloat {
@@ -238,7 +328,10 @@ body {
   .hero-shimmer,
   .nav-item-rise,
   .nav-panel-in,
-  .nav-bell-ring {
+  .nav-bell-ring,
+  /* Both marquees were scrolling unconditionally, ignoring this setting. */
+  .brand-marquee-track,
+  .reviews-marquee-track {
     animation: none;
   }
 

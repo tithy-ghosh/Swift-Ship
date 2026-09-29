@@ -59,13 +59,13 @@ const Register = () => {
       <div className="flex min-h-0 flex-1 items-center">
         <div className="mx-auto w-full max-w-md space-y-5">
           <div className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
+            <p className="text-sm font-semibold uppercase tracking-wide text-brand-accent">
               Create account
             </p>
             <h1 className="text-3xl font-bold leading-tight sm:text-4xl">
               Join SwiftShip today.
             </h1>
-            <p className="text-base leading-7 text-[#596257]">
+            <p className="text-base leading-7 text-brand-content-muted">
               Set up your delivery dashboard to book pickups, track parcels, and manage shipments faster.
             </p>
           </div>
@@ -80,14 +80,14 @@ const Register = () => {
 
             {/* Name */}
             <label className="form-control">
-              <span className="label-text pb-2 font-semibold text-[#31542b]">Full name</span>
+              <span className="label-text pb-2 font-semibold text-brand-content-strong">Full name</span>
               <div className="relative">
-                <MdPersonOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                <MdPersonOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                 <input
                   type="text"
                   {...register('name', { required: 'Name is required' })}
                   placeholder="Your full name"
-                  className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                  className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                 />
               </div>
               {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>}
@@ -95,9 +95,9 @@ const Register = () => {
 
             {/* Phone */}
             <label className="form-control">
-              <span className="label-text pb-2 font-semibold text-[#31542b]">Phone number</span>
+              <span className="label-text pb-2 font-semibold text-brand-content-strong">Phone number</span>
               <div className="relative">
-                <MdPhone className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                <MdPhone className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                 <input
                   type="tel"
                   {...register('phone', {
@@ -108,7 +108,7 @@ const Register = () => {
                     },
                   })}
                   placeholder="01XXXXXXXXX"
-                  className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                  className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                 />
               </div>
               {errors.phone && <p className="mt-2 text-sm text-red-600">{errors.phone.message}</p>}
@@ -116,14 +116,14 @@ const Register = () => {
 
             {/* Email */}
             <label className="form-control">
-              <span className="label-text pb-2 font-semibold text-[#31542b]">Email address</span>
+              <span className="label-text pb-2 font-semibold text-brand-content-strong">Email address</span>
               <div className="relative">
-                <MdOutlineMail className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                <MdOutlineMail className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                 <input
                   type="email"
                   {...register('email', { required: 'Email is required' })}
                   placeholder="you@example.com"
-                  className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                  className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                 />
               </div>
               {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
@@ -131,9 +131,9 @@ const Register = () => {
 
             {/* Password */}
             <label className="form-control">
-              <span className="label-text pb-2 font-semibold text-[#31542b]">Password</span>
+              <span className="label-text pb-2 font-semibold text-brand-content-strong">Password</span>
               <div className="relative">
-                <MdLockOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                <MdLockOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                 <input
                   type="password"
                   {...register('password', {
@@ -141,20 +141,20 @@ const Register = () => {
                     minLength: { value: 6, message: 'Minimum 6 characters required' },
                   })}
                   placeholder="Create a password"
-                  className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                  className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                 />
               </div>
               {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>}
             </label>
 
-            <label className="flex cursor-pointer items-start gap-2 text-sm leading-6 text-[#596257]">
-              <input type="checkbox" className="checkbox checkbox-sm mt-1 border-[#83BD75]" />
+            <label className="flex cursor-pointer items-start gap-2 text-sm leading-6 text-brand-content-muted">
+              <input type="checkbox" className="checkbox checkbox-sm mt-1 border-brand-accent-bright" />
               I agree to receive shipment updates and SwiftShip service notifications.
             </label>
 
             <button
               disabled={loading}
-              className="h-12 w-full rounded-md bg-[#83BD75] font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-[0.99] disabled:opacity-60"
+              className="h-12 w-full rounded-md bg-brand-accent-bright font-semibold text-brand-surface-inverse-deep shadow-md transition hover:bg-brand-accent-hover active:scale-[0.99] disabled:opacity-60"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -162,9 +162,9 @@ const Register = () => {
 
           <SocialLogin />
 
-          <p className="text-sm text-[#596257]">
+          <p className="text-sm text-brand-content-muted">
             Already have an account?{' '}
-            <Link href="/login" className="font-semibold text-[#4d8d41] hover:text-[#31542b]">
+            <Link href="/login" className="font-semibold text-brand-accent hover:text-brand-content-strong">
               Login
             </Link>
           </p>

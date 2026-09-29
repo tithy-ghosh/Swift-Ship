@@ -45,21 +45,21 @@ export default function AllParcelsPage() {
 
   return (
     <AdminRoute>
-      <div className="flex min-h-screen bg-[#f7fbf5]">
+      <div className="flex min-h-screen bg-brand-surface-muted">
        
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             <div className='flex flex-col'>
-                <div className='flex items-center justify-center mx-auto px-6 py-0.5 bg-[#D9EFBD] rounded-full'>
-                    <p className="text-sm font-bold text-[#1f2a1d] mb-2">All Parcels</p>
+                <div className='flex items-center justify-center mx-auto px-6 py-0.5 bg-brand-accent-pale rounded-full'>
+                    <p className="text-sm font-bold text-brand-content mb-2">All Parcels</p>
                 </div>
-            <p className="text-[#596257] mb-6 text-xl font-sans tracking-wider text-center">Track and manage all deliveries in the system</p>
+            <p className="text-brand-content-muted mb-6 text-xl font-sans tracking-wider text-center">Track and manage all deliveries in the system</p>
             </div>
 
-            <div className="bg-white rounded-xl border border-[#dce8d8] overflow-hidden shadow-sm">
+            <div className="bg-white rounded-xl border border-brand-border-subtle overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
-                  <thead className="bg-[#edf7ea] text-[#1f2a1d]">
+                  <thead className="bg-brand-surface-sunken text-brand-content">
                     <tr>
                       <th>Tracking ID</th>
                       <th>Sender</th>
@@ -73,7 +73,7 @@ export default function AllParcelsPage() {
                     {parcels?.length > 0 ? (
                       parcels.map((parcel) => (
                         <tr key={parcel._id}>
-                          <td className="font-mono font-bold text-[#4d8d41] text-sm">{parcel.trackingId}</td>
+                          <td className="font-mono font-bold text-brand-accent text-sm">{parcel.trackingId}</td>
                           <td>
                             <div className="font-bold text-sm">{parcel.senderName || 'N/A'}</div>
                             <div className="text-xs text-slate-500">{parcel.senderContact}</div>
@@ -82,14 +82,14 @@ export default function AllParcelsPage() {
                             <div className="font-bold text-sm">{parcel.receiverName || 'N/A'}</div>
                             <div className="text-xs text-slate-500">{parcel.receiverContact}</div>
                           </td>
-                          <td className="font-bold text-[#1f2a1d]">৳{parcel.deliveryCost || 0}</td>
+                          <td className="font-bold text-brand-content">৳{parcel.deliveryCost || 0}</td>
                           <td>{getStatusBadge(parcel.currentStatus || parcel.status)}</td>
                           <td className="text-sm">{new Date(parcel.createdAt).toLocaleDateString()}</td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="6" className="text-center py-8 text-[#596257]">
+                        <td colSpan="6" className="text-center py-8 text-brand-content-muted">
                           No parcels found in the system.
                         </td>
                       </tr>

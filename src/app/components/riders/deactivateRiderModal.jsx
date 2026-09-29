@@ -11,13 +11,13 @@ function DeactivateRiderModal({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-[#e8f0e5]">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-brand-border-subtle">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
                   <MdBlock className="size-5 text-red-500" />
                 </div>
-                <h3 className="text-xl font-bold text-[#1f2a1d]">Deactivate Rider</h3>
+                <h3 className="text-xl font-bold text-brand-content">Deactivate Rider</h3>
               </div>
               <button
                 onClick={onClose}
@@ -27,8 +27,8 @@ function DeactivateRiderModal({
               </button>
             </div>
 
-            <p className="text-sm text-[#596257] mb-4 leading-relaxed">
-              Are you sure you want to deactivate <strong className="text-[#1f2a1d]">{rider.name}</strong>?
+            <p className="text-sm text-brand-content-muted mb-4 leading-relaxed">
+              Are you sure you want to deactivate <strong className="text-brand-content">{rider.name}</strong>?
               They will no longer be able to accept deliveries.
             </p>
 

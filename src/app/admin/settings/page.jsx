@@ -204,7 +204,7 @@ export default function AdminSettingsPage() {
     return (
       <AdminRoute>
         <div className="flex min-h-[60vh] items-center justify-center">
-          <span className="loading loading-spinner loading-lg text-[#4d8d41]" />
+          <span className="loading loading-spinner loading-lg text-brand-accent" />
         </div>
       </AdminRoute>
     );
@@ -216,7 +216,7 @@ export default function AdminSettingsPage() {
         <div className="flex min-h-[60vh] items-center justify-center p-8">
           <div className="text-center">
             <MdWarning className="mx-auto size-16 text-red-500" />
-            <h2 className="mt-4 text-2xl font-bold text-[#1f2a1d]">Error Loading Settings</h2>
+            <h2 className="mt-4 text-2xl font-bold text-brand-content">Error Loading Settings</h2>
             <p className="mt-2 text-red-600">{error.message}</p>
           </div>
         </div>
@@ -230,10 +230,10 @@ export default function AdminSettingsPage() {
 
       <div className="max-w-6xl mx-auto">
         {/* Header, matching the pill style used on the rider admin pages */}
-        <div className="flex items-center gap-3 justify-center mx-auto bg-[#d9efbd] px-6 py-0.5 rounded-full w-fit mb-2">
-          <p className="text-sm font-bold text-[#1D2128] tracking-[0.2em]">Settings</p>
+        <div className="flex items-center gap-3 justify-center mx-auto bg-brand-accent-pale px-6 py-0.5 rounded-full w-fit mb-2">
+          <p className="text-sm font-bold text-brand-surface-admin tracking-[0.2em]">Settings</p>
         </div>
-        <p className="text-xl text-[#596257] mb-8 mx-auto flex items-center justify-center text-center tracking-wider font-sans">
+        <p className="text-xl text-brand-content-muted mb-8 mx-auto flex items-center justify-center text-center tracking-wider font-sans">
           Manage system configuration and business rules.
         </p>
 
@@ -248,11 +248,11 @@ export default function AdminSettingsPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all shrink-0 ${
                     isActive
-                      ? 'bg-[#4d8d41] text-white shadow-sm'
-                      : 'bg-white text-[#596257] border border-[#dce8d8] hover:border-[#83BD75] hover:text-[#1f2a1d]'
+                      ? 'bg-brand-accent text-white shadow-sm'
+                      : 'bg-white text-brand-content-muted border border-brand-border-subtle hover:border-brand-accent-bright hover:text-brand-content'
                   }`}
                 >
-                  <tab.icon className={`size-[18px] ${isActive ? 'text-white' : 'text-[#4d8d41]'}`} />
+                  <tab.icon className={`size-[18px] ${isActive ? 'text-white' : 'text-brand-accent'}`} />
                   {tab.label}
                 </button>
               );
@@ -261,7 +261,7 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Content Area */}
-        <div className="bg-white rounded-2xl border border-[#dce8d8] p-6 shadow-sm">
+        <div className="bg-white rounded-2xl border border-brand-border-subtle p-6 shadow-sm">
           {activeTab === 'pricing' && (
             <PricingTab
               formData={formData}
@@ -321,7 +321,7 @@ export default function AdminSettingsPage() {
           title="Delete Zone"
           message={
             <>
-              Are you sure you want to delete <strong className="text-[#1f2a1d]">{zoneToDelete.name}</strong>? This
+              Are you sure you want to delete <strong className="text-brand-content">{zoneToDelete.name}</strong>? This
               cannot be undone.
             </>
           }
@@ -340,10 +340,10 @@ function SectionHeader({ icon: Icon, title, subtitle, action }) {
   return (
     <div className="flex items-start justify-between gap-4 mb-6">
       <div>
-        <h2 className="text-xl font-bold text-[#1f2a1d] flex items-center gap-2">
-          <Icon className="text-[#4d8d41]" /> {title}
+        <h2 className="text-xl font-bold text-brand-content flex items-center gap-2">
+          <Icon className="text-brand-accent" /> {title}
         </h2>
-        {subtitle && <p className="text-sm text-[#596257] mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-brand-content-muted mt-1">{subtitle}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </div>
@@ -354,7 +354,7 @@ function EditButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="btn btn-sm bg-white border border-[#dce8d8] text-[#1f2a1d] hover:border-[#83BD75] hover:bg-[#f7fbf5] shadow-sm"
+      className="btn btn-sm bg-white border border-brand-border-subtle text-brand-content hover:border-brand-accent-bright hover:bg-brand-surface-muted shadow-sm"
     >
       <MdEdit className="size-4" /> Edit
     </button>
@@ -363,14 +363,14 @@ function EditButton({ onClick }) {
 
 function EditActions({ onSave, onCancel, isPending, saveLabel = 'Save Changes' }) {
   return (
-    <div className="mt-8 pt-6 border-t border-[#e8f0e5] flex justify-end gap-3">
+    <div className="mt-8 pt-6 border-t border-brand-border-subtle flex justify-end gap-3">
       <button onClick={onCancel} disabled={isPending} className="btn btn-ghost">
         <MdClose className="size-4" /> Cancel
       </button>
       <button
         onClick={onSave}
         disabled={isPending}
-        className="btn bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] disabled:opacity-50 shadow-sm"
+        className="btn bg-brand-accent-bright text-brand-surface-inverse-deep hover:bg-brand-accent-hover disabled:opacity-50 shadow-sm"
       >
         {isPending ? <span className="loading loading-spinner loading-sm" /> : (
           <>
@@ -395,10 +395,10 @@ function PricingTab({ formData, onChange, onSave, onCancel, isPending, isEditing
 
         <div className="grid gap-4 sm:grid-cols-2">
           {PRICING_FIELDS.map(({ key, label, hint }) => (
-            <div key={key} className="rounded-xl border border-[#e8f0e5] bg-[#f7fbf5] p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#8a978a]">{label}</p>
-              <p className="text-2xl font-bold text-[#1f2a1d] mt-1">{formData.pricing?.[key] ?? '—'}</p>
-              <p className="text-xs text-[#8a978a] mt-1">{hint}</p>
+            <div key={key} className="rounded-xl border border-brand-border-subtle bg-brand-surface-muted p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-content-muted-strong">{label}</p>
+              <p className="text-2xl font-bold text-brand-content mt-1">{formData.pricing?.[key] ?? '—'}</p>
+              <p className="text-xs text-brand-content-muted-strong mt-1">{hint}</p>
             </div>
           ))}
         </div>
@@ -417,15 +417,15 @@ function PricingTab({ formData, onChange, onSave, onCancel, isPending, isEditing
       <div className="grid gap-6 sm:grid-cols-2">
         {PRICING_FIELDS.map(({ key, label, hint, step }) => (
           <div key={key}>
-            <label className="block text-sm font-medium text-[#1f2a1d] mb-1">{label}</label>
+            <label className="block text-sm font-medium text-brand-content mb-1">{label}</label>
             <input
               type="number"
               step={step || '1'}
               value={formData.pricing?.[key] ?? ''}
               onChange={(e) => onChange(key, e.target.value)}
-              className="input input-bordered w-full focus:border-[#83BD75] focus:outline-none"
+              className="input input-bordered w-full focus:border-brand-accent-bright focus:outline-none"
             />
-            <p className="text-xs text-[#8a978a] mt-1">{hint}</p>
+            <p className="text-xs text-brand-content-muted-strong mt-1">{hint}</p>
           </div>
         ))}
       </div>
@@ -445,7 +445,7 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
         action={
           <button
             onClick={onAdd}
-            className="btn btn-sm bg-[#83BD75] text-[#172015] hover:bg-[#74ad68] shadow-sm"
+            className="btn btn-sm bg-brand-accent-bright text-brand-surface-inverse-deep hover:bg-brand-accent-hover shadow-sm"
           >
             <MdAdd className="size-4" /> Add Zone
           </button>
@@ -453,9 +453,9 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
       />
 
       {zones.length === 0 ? (
-        <div className="p-8 text-center border-2 border-dashed border-[#dce8d8] rounded-xl">
+        <div className="p-8 text-center border-2 border-dashed border-brand-border-subtle rounded-xl">
           <MdMap className="mx-auto size-12 text-slate-300 mb-2" />
-          <p className="text-[#596257]">No service zones yet.</p>
+          <p className="text-brand-content-muted">No service zones yet.</p>
           <p className="text-xs text-slate-400 mt-1">Create your first zone to start grouping districts.</p>
         </div>
       ) : (
@@ -463,14 +463,14 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
           {zones.map((zone) => (
             <div
               key={zone._id}
-              className="rounded-2xl border border-[#dce8d8] p-4 hover:border-[#c3ddba] hover:shadow-sm transition-all"
+              className="rounded-2xl border border-brand-border-subtle p-4 hover:border-brand-border-moss hover:shadow-sm transition-all"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="min-w-0">
-                  <h3 className="font-bold text-[#1f2a1d] truncate">{zone.name}</h3>
+                  <h3 className="font-bold text-brand-content truncate">{zone.name}</h3>
                   <span
                     className={`inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-xs font-semibold ${
-                      zone.isActive ? 'bg-[#edf7ea] text-[#4d8d41]' : 'bg-slate-100 text-slate-500'
+                      zone.isActive ? 'bg-brand-surface-sunken text-brand-accent' : 'bg-slate-100 text-slate-500'
                     }`}
                   >
                     {zone.isActive ? 'Active' : 'Inactive'}
@@ -484,7 +484,7 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
                     title={zone.isActive ? 'Deactivate zone' : 'Activate zone'}
                   >
                     {zone.isActive ? (
-                      <MdToggleOn className="size-5 text-[#4d8d41]" />
+                      <MdToggleOn className="size-5 text-brand-accent" />
                     ) : (
                       <MdToggleOff className="size-5 text-slate-300" />
                     )}
@@ -494,7 +494,7 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
                     className="btn btn-ghost btn-xs btn-circle"
                     title="Edit zone"
                   >
-                    <MdEdit className="size-4 text-[#596257]" />
+                    <MdEdit className="size-4 text-brand-content-muted" />
                   </button>
                   <button
                     onClick={() => onDelete(zone)}
@@ -512,13 +512,13 @@ function ZonesTab({ zones, onAdd, onEdit, onDelete, onToggleActive, togglingZone
                     {zone.districts.slice(0, 5).map((district) => (
                       <span
                         key={district}
-                        className="px-2 py-0.5 rounded-full bg-[#f7fbf5] border border-[#e8f0e5] text-xs text-[#596257]"
+                        className="px-2 py-0.5 rounded-full bg-brand-surface-muted border border-brand-border-subtle text-xs text-brand-content-muted"
                       >
                         {district}
                       </span>
                     ))}
                     {zone.districts.length > 5 && (
-                      <span className="px-2 py-0.5 rounded-full bg-[#f7fbf5] border border-[#e8f0e5] text-xs text-[#596257]">
+                      <span className="px-2 py-0.5 rounded-full bg-brand-surface-muted border border-brand-border-subtle text-xs text-brand-content-muted">
                         +{zone.districts.length - 5} more
                       </span>
                     )}
@@ -571,15 +571,15 @@ function SystemTab({ formData, onChange, onSave, onCancel, isPending, isEditing,
             return (
               <div
                 key={key}
-                className="flex items-center justify-between p-4 bg-[#f7fbf5] border border-[#e8f0e5] rounded-xl"
+                className="flex items-center justify-between p-4 bg-brand-surface-muted border border-brand-border-subtle rounded-xl"
               >
                 <div>
-                  <p className="font-bold text-[#1f2a1d]">{title}</p>
-                  <p className="text-sm text-[#596257]">{description}</p>
+                  <p className="font-bold text-brand-content">{title}</p>
+                  <p className="text-sm text-brand-content-muted">{description}</p>
                 </div>
                 <span
                   className={`shrink-0 px-3 py-1 rounded-full text-xs font-semibold ${
-                    checked ? 'bg-[#edf7ea] text-[#4d8d41]' : 'bg-slate-100 text-slate-500'
+                    checked ? 'bg-brand-surface-sunken text-brand-accent' : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {checked ? 'Enabled' : 'Disabled'}
@@ -588,9 +588,9 @@ function SystemTab({ formData, onChange, onSave, onCancel, isPending, isEditing,
             );
           })}
 
-          <div className="p-4 bg-[#f7fbf5] border border-[#e8f0e5] rounded-xl">
-            <p className="font-bold text-[#1f2a1d] mb-1">Maintenance Message</p>
-            <p className="text-sm text-[#596257] italic">
+          <div className="p-4 bg-brand-surface-muted border border-brand-border-subtle rounded-xl">
+            <p className="font-bold text-brand-content mb-1">Maintenance Message</p>
+            <p className="text-sm text-brand-content-muted italic">
               {formData.system?.maintenanceMessage || 'System is under maintenance. Please try again later.'}
             </p>
           </div>
@@ -616,12 +616,12 @@ function SystemTab({ formData, onChange, onSave, onCancel, isPending, isEditing,
         ))}
 
         <div>
-          <label className="block text-sm font-medium text-[#1f2a1d] mb-1">Maintenance Message</label>
+          <label className="block text-sm font-medium text-brand-content mb-1">Maintenance Message</label>
           <textarea
             rows="3"
             value={formData.system?.maintenanceMessage || ''}
             onChange={(e) => onChange('maintenanceMessage', e.target.value)}
-            className="textarea textarea-bordered w-full focus:border-[#83BD75] focus:outline-none"
+            className="textarea textarea-bordered w-full focus:border-brand-accent-bright focus:outline-none"
             placeholder="System is under maintenance. Please try again later."
           />
         </div>
@@ -634,10 +634,10 @@ function SystemTab({ formData, onChange, onSave, onCancel, isPending, isEditing,
 
 function ToggleRow({ title, description, checked, onChange, toggleClass }) {
   return (
-    <div className="flex items-center justify-between p-4 bg-[#f7fbf5] border border-[#e8f0e5] rounded-xl">
+    <div className="flex items-center justify-between p-4 bg-brand-surface-muted border border-brand-border-subtle rounded-xl">
       <div>
-        <p className="font-bold text-[#1f2a1d]">{title}</p>
-        <p className="text-sm text-[#596257]">{description}</p>
+        <p className="font-bold text-brand-content">{title}</p>
+        <p className="text-sm text-brand-content-muted">{description}</p>
       </div>
       <input
         type="checkbox"
@@ -674,21 +674,21 @@ function HoursTab({ formData, setFormData }) {
         {!isOpen247 && (
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-[#1f2a1d] mb-1">Opening Time</label>
+              <label className="block text-sm font-medium text-brand-content mb-1">Opening Time</label>
               <input
                 type="time"
                 value={formData.businessHours?.openingTime || '08:00'}
                 onChange={(e) => updateHours('openingTime', e.target.value)}
-                className="input input-bordered w-full focus:border-[#83BD75] focus:outline-none"
+                className="input input-bordered w-full focus:border-brand-accent-bright focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1f2a1d] mb-1">Closing Time</label>
+              <label className="block text-sm font-medium text-brand-content mb-1">Closing Time</label>
               <input
                 type="time"
                 value={formData.businessHours?.closingTime || '22:00'}
                 onChange={(e) => updateHours('closingTime', e.target.value)}
-                className="input input-bordered w-full focus:border-[#83BD75] focus:outline-none"
+                className="input input-bordered w-full focus:border-brand-accent-bright focus:outline-none"
               />
             </div>
           </div>
@@ -710,8 +710,8 @@ function AboutTab({ formData }) {
           { label: 'Version', value: formData.appInfo?.version || '1.0.0' },
         ].map((field) => (
           <div key={field.label}>
-            <label className="block text-sm font-medium text-[#1f2a1d] mb-1">{field.label}</label>
-            <input type="text" value={field.value} readOnly className="input input-bordered w-full bg-[#f7fbf5]" />
+            <label className="block text-sm font-medium text-brand-content mb-1">{field.label}</label>
+            <input type="text" value={field.value} readOnly className="input input-bordered w-full bg-brand-surface-muted" />
           </div>
         ))}
       </div>

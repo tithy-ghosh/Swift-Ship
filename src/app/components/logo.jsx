@@ -17,7 +17,7 @@ const Logo = () => {
       />
       <h2 className="font-heading text-xl font-semibold sm:text-2xl">
         Swift
-        <span className="text-[#83BD75]">Ship</span>
+        <span className="text-brand-accent-bright">Ship</span>
       </h2>
     </div>
 

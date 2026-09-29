@@ -12,8 +12,8 @@ const Homepage = () => {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 sm:gap-16 sm:px-6 lg:gap-20 lg:px-8 pt-24 sm:pt-28">
       <Hero />
-      <Works />
       <OurServices />
+      <Works />
       <PricingTiers />
       <Brand />
       <Speciality />

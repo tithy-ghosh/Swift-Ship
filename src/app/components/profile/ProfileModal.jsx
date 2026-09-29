@@ -111,7 +111,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
       <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-          <h2 className="text-xl font-bold text-[#1f2a1d]">Edit Profile</h2>
+          <h2 className="text-xl font-bold text-brand-content">Edit Profile</h2>
           <button onClick={onClose} className="rounded-full p-1 transition hover:bg-slate-100" aria-label="Close modal">
             <MdClose className="size-6 text-slate-500" />
           </button>
@@ -119,7 +119,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
 
         <form onSubmit={handleSubmit} className="space-y-5 p-6">
           <div className="flex flex-col items-center gap-4">
-            <div className="relative size-24 overflow-hidden rounded-full border-2 border-[#83BD75] bg-slate-100">
+            <div className="relative size-24 overflow-hidden rounded-full border-2 border-brand-accent-bright bg-slate-100">
               {previewImage && !previewImage.startsWith('data:') ? (
                 <img src={previewImage} alt="Profile Preview" className="size-full object-cover" />
               ) : previewImage && previewImage.startsWith('data:') ? (
@@ -130,13 +130,13 @@ export default function ProfileModal({ user, isOpen, onClose }) {
                 <MdPerson className="size-full p-4 text-slate-400" />
               )}
             </div>
-            <label className="cursor-pointer rounded-lg bg-[#edf7ea] px-4 py-2 text-sm font-semibold text-[#4d8d41] transition hover:bg-[#d9ebd4] flex items-center gap-2">
+            <label className="cursor-pointer rounded-lg bg-brand-surface-sunken px-4 py-2 text-sm font-semibold text-brand-accent transition hover:bg-brand-border-subtle flex items-center gap-2">
               <MdCloudUpload className="size-4" />
               {previewImage ? 'Change Photo' : 'Upload Photo'}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
             </label>
             {isUploading && (
-              <div className="flex items-center gap-2 text-sm text-[#4d8d41]">
+              <div className="flex items-center gap-2 text-sm text-brand-accent">
                 <span className="loading loading-spinner loading-sm"></span>
                 Uploading to Cloudinary...
               </div>
@@ -151,7 +151,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-lg border border-slate-200 px-4 py-2.5 focus:border-[#83BD75] focus:outline-none focus:ring-1 focus:ring-[#83BD75]"
+              className="w-full rounded-lg border border-slate-200 px-4 py-2.5 focus:border-brand-accent-bright focus:outline-none focus:ring-1 focus:ring-brand-accent-bright"
               required
             />
           </div>
@@ -166,7 +166,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="01XXXXXXXXX"
-                className="w-full rounded-lg border border-slate-200 px-10 py-2.5 focus:border-[#83BD75] focus:outline-none focus:ring-1 focus:ring-[#83BD75]"
+                className="w-full rounded-lg border border-slate-200 px-10 py-2.5 focus:border-brand-accent-bright focus:outline-none focus:ring-1 focus:ring-brand-accent-bright"
               />
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
                 onChange={handleChange}
                 placeholder="Your full delivery address"
                 rows="3"
-                className="w-full rounded-lg border border-slate-200 px-10 py-2.5 focus:border-[#83BD75] focus:outline-none focus:ring-1 focus:ring-[#83BD75]"
+                className="w-full rounded-lg border border-slate-200 px-10 py-2.5 focus:border-brand-accent-bright focus:outline-none focus:ring-1 focus:ring-brand-accent-bright"
               />
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function ProfileModal({ user, isOpen, onClose }) {
             <button
               type="submit"
               disabled={mutation.isPending || isUploading}
-              className="flex items-center gap-2 rounded-lg bg-[#83BD75] px-5 py-2.5 text-sm font-bold text-[#172015] transition hover:bg-[#74ad68] disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex items-center gap-2 rounded-lg bg-brand-accent-bright px-5 py-2.5 text-sm font-bold text-brand-surface-inverse-deep transition hover:bg-brand-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               {mutation.isPending || isUploading ? (
                 <>

@@ -61,27 +61,27 @@ export default function BeARiderForm() {
 
   if (successMsg) {
     return (
-      <div className="max-w-2xl mx-auto p-8 text-center bg-white rounded-2xl shadow-sm border border-[#dce8d8]">
-        <MdCheckCircle className="mx-auto size-16 text-[#4d8d41]" />
-        <h2 className="mt-4 text-2xl font-bold text-[#1f2a1d]">Application Received!</h2>
-        <p className="mt-2 text-[#596257]">{successMsg}</p>
+      <div className="max-w-2xl mx-auto p-8 text-center bg-white rounded-2xl shadow-sm border border-brand-border-subtle">
+        <MdCheckCircle className="mx-auto size-16 text-brand-accent" />
+        <h2 className="mt-4 text-2xl font-bold text-brand-content">Application Received!</h2>
+        <p className="mt-2 text-brand-content-muted">{successMsg}</p>
         <p className="mt-4 text-sm font-semibold text-amber-600">Current Status: Pending Review</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto space-y-6 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-[#dce8d8]">
-      <div className="border-b border-[#e8f0e5] pb-4 mb-6">
-        <h2 className="text-2xl font-bold text-[#1f2a1d]">Rider Application Form</h2>
-        <p className="text-sm text-[#596257] mt-1">Please fill out all details accurately. Your application status will be set to <span className="font-semibold text-amber-600">Pending</span>.</p>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto space-y-6 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-brand-border-subtle">
+      <div className="border-b border-brand-border-subtle pb-4 mb-6">
+        <h2 className="text-2xl font-bold text-brand-content">Rider Application Form</h2>
+        <p className="text-sm text-brand-content-muted mt-1">Please fill out all details accurately. Your application status will be set to <span className="font-semibold text-amber-600">Pending</span>.</p>
       </div>
 
       {/* Personal Info */}
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdPerson className="size-4 text-[#4d8d41]" /> Full Name
+            <MdPerson className="size-4 text-brand-accent" /> Full Name
           </label>
           <input 
             type="text" 
@@ -92,7 +92,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdPerson className="size-4 text-[#4d8d41]" /> Email
+            <MdPerson className="size-4 text-brand-accent" /> Email
           </label>
           <input 
             type="email" 
@@ -103,7 +103,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text flex items-center pb-2 gap-2 font-semibold">
-            <MdTimelapse className="size-4 text-[#4d8d41]" />
+            <MdTimelapse className="size-4 text-brand-accent" />
             Age</label>
           <input 
             type="number" 
@@ -115,7 +115,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdPhone className="size-4 text-[#4d8d41]" /> Phone Number
+            <MdPhone className="size-4 text-brand-accent" /> Phone Number
           </label>
           <input 
             type="tel" 
@@ -127,7 +127,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control sm:col-span-2">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdBadge className="size-4 text-[#4d8d41]" /> NID Card Number
+            <MdBadge className="size-4 text-brand-accent" /> NID Card Number
           </label>
           <input 
             type="text" 
@@ -140,10 +140,10 @@ export default function BeARiderForm() {
       </div>
 
       {/* Location Info (Using your warehouse.data.json) */}
-      <div className="grid gap-5 sm:grid-cols-2 border-t border-[#e8f0e5] pt-6">
+      <div className="grid gap-5 sm:grid-cols-2 border-t border-brand-border-subtle pt-6">
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdLocationOn className="size-4 text-[#4d8d41]" /> Region
+            <MdLocationOn className="size-4 text-brand-accent" /> Region
           </label>
           <select 
             {...register('region', { required: 'Region is required' })} 
@@ -158,7 +158,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdLocationOn className="size-4 text-[#4d8d41]" /> District
+            <MdLocationOn className="size-4 text-brand-accent" /> District
           </label>
           <select 
             {...register('district', { required: 'District is required' })} 
@@ -175,10 +175,10 @@ export default function BeARiderForm() {
       </div>
 
       {/* Bike & License Info */}
-      <div className="grid gap-5 sm:grid-cols-2 border-t border-[#e8f0e5] pt-6">
+      <div className="grid gap-5 sm:grid-cols-2 border-t border-brand-border-subtle pt-6">
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <TbMotorbike className="size-4 text-[#4d8d41]" /> Bike Brand
+            <TbMotorbike className="size-4 text-brand-accent" /> Bike Brand
           </label>
           <input 
             type="text" 
@@ -190,7 +190,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <TbMotorbike className="size-4 text-[#4d8d41]" /> Bike Registration No.
+            <TbMotorbike className="size-4 text-brand-accent" /> Bike Registration No.
           </label>
           <input 
             type="text" 
@@ -202,7 +202,7 @@ export default function BeARiderForm() {
         </div>
         <div className="form-control">
           <label className="label-text pb-2 font-semibold flex items-center gap-2">
-            <MdBadge className="size-4 text-[#4d8d41]" /> Driving License No.
+            <MdBadge className="size-4 text-brand-accent" /> Driving License No.
           </label>
           <input 
             type="text" 
@@ -226,7 +226,7 @@ export default function BeARiderForm() {
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className="btn w-full bg-[#83BD75] text-[#172015] font-bold hover:bg-[#74ad68] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+        className="btn w-full bg-brand-accent-bright text-brand-surface-inverse-deep font-bold hover:bg-brand-accent-hover disabled:opacity-50 disabled:cursor-not-allowed mt-4"
       >
         {isSubmitting ? (
           <>

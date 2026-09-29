@@ -143,11 +143,11 @@ export default function TrackParcelPage() {
   return (
     <main className="text-slate-900">
       {!trackingId && (
-        <section className="relative overflow-hidden bg-[#14231a] px-4 pb-24 pt-28 sm:px-6 sm:pb-28 sm:pt-32">
-          <div className="absolute -left-24 top-0 size-72 rounded-full bg-[#83BD75]/15 blur-3xl" />
+        <section className="relative overflow-hidden bg-brand-surface-admin-deep px-4 pb-24 pt-28 sm:px-6 sm:pb-28 sm:pt-32">
+          <div className="absolute -left-24 top-0 size-72 rounded-full bg-brand-accent-bright/15 blur-3xl" />
           <div className="absolute -right-20 bottom-0 size-72 rounded-full bg-emerald-300/10 blur-3xl" />
           <div className="relative mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#a9db9d]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-brand-accent-leaf">
               <MdLocationOn className="size-4" /> Live parcel tracking
             </span>
             <h1 className="mt-5 text-3xl font-black tracking-tight text-white sm:text-5xl">
@@ -175,7 +175,7 @@ export default function TrackParcelPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#83BD75] px-6 text-sm font-black text-[#14231a] transition hover:bg-[#96ce89] disabled:opacity-60"
+                className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-accent-bright px-6 text-sm font-black text-brand-surface-admin-deep transition hover:bg-brand-accent-fresh disabled:opacity-60"
               >
                 Track parcel <MdArrowForward className="size-5" />
               </button>
@@ -189,7 +189,7 @@ export default function TrackParcelPage() {
       }`}>
         {!trackingId && !error && (
           <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-xl shadow-slate-200/50 sm:p-12">
-            <span className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#edf7ea] text-[#4d8d41]">
+            <span className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-brand-surface-sunken text-brand-accent">
               <MdLocalShipping className="size-8" />
             </span>
             <h2 className="mt-5 text-xl font-black">Ready when you are</h2>
@@ -222,7 +222,7 @@ export default function TrackParcelPage() {
 
         {!loading && !error && result && (
           <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50">
-            <header className="bg-gradient-to-r from-[#4d8d41] to-[#70aa62] p-6 text-white sm:p-8">
+            <header className="bg-gradient-to-r from-brand-accent to-brand-accent-moss p-6 text-white sm:p-8">
               <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-4">
                   <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20">
@@ -258,7 +258,7 @@ export default function TrackParcelPage() {
             <section className="p-6 sm:p-8">
               <div className="mb-6 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-wider text-[#4d8d41]">Shipment journey</p>
+                  <p className="text-xs font-black uppercase tracking-wider text-brand-accent">Shipment journey</p>
                   <h3 className="mt-1 text-xl font-black">Tracking history</h3>
                 </div>
                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">
@@ -279,7 +279,7 @@ export default function TrackParcelPage() {
                           <span className="absolute left-[21px] top-11 h-[calc(100%-2.25rem)] w-px bg-slate-200" />
                         )}
                         <span className={`relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full ${
-                          isLatest ? "bg-[#83BD75] text-[#14231a] ring-4 ring-[#edf7ea]" : "bg-slate-100 text-slate-500"
+                          isLatest ? "bg-brand-accent-bright text-brand-surface-admin-deep ring-4 ring-brand-surface-sunken" : "bg-slate-100 text-slate-500"
                         }`}>
                           <UpdateIcon className="size-5" />
                         </span>
@@ -292,7 +292,7 @@ export default function TrackParcelPage() {
                             </p>
                           </div>
                           {update.location && (
-                            <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-[#4d8d41]">
+                            <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-brand-accent">
                               <MdLocationOn className="size-4 shrink-0" /> {update.location}
                             </p>
                           )}

@@ -48,13 +48,13 @@ const LoginUi = () => {
           <div className="flex min-h-0 flex-1 items-center">
             <div className="mx-auto w-full max-w-md space-y-6">
               <div className="space-y-3">
-                <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
+                <p className="text-sm font-semibold uppercase tracking-wide text-brand-accent">
                   Welcome back
                 </p>
                 <h1 className="text-3xl font-bold leading-tight sm:text-4xl">
                   Login to manage your deliveries.
                 </h1>
-                <p className="text-base leading-7 text-[#596257]">
+                <p className="text-base leading-7 text-brand-content-muted">
                   Track parcels, schedule pickups, and keep every shipment moving from one secure dashboard.
                 </p>
               </div>
@@ -63,13 +63,13 @@ const LoginUi = () => {
                   <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-600">{submitError}</p>
                 )}
                 <label className="form-control">
-                  <span className="label-text pb-2 font-semibold text-[#31542b]">Email address</span>
+                  <span className="label-text pb-2 font-semibold text-brand-content-strong">Email address</span>
                   <div className="relative">
-                    <MdOutlineMail className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                    <MdOutlineMail className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                     <input
                       type="email" {...register('email', {required: true})}
                       placeholder="you@example.com"
-                      className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                      className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                     />
                     {
                         errors.email?.type === 'required' && <p className='text-sm text-red-600 my-2'>Email is required</p>
@@ -78,16 +78,16 @@ const LoginUi = () => {
                 </label>
 
                 <label className="form-control">
-                  <span className="label-text pb-2 font-semibold text-[#31542b]">Password</span>
+                  <span className="label-text pb-2 font-semibold text-brand-content-strong">Password</span>
                   <div className="relative">
-                    <MdLockOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#6b7567]" />
+                    <MdLockOutline className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-content-muted" />
                     <input
                       type="password" {...register('password', {
                         required: true,
                         minLength: 6
                     })}
                       placeholder="Enter your password"
-                      className="input input-bordered h-12 w-full rounded-md border-[#cbdac7] bg-white pl-12 text-[#1f2a1d] outline-none focus:border-[#83BD75]"
+                      className="input input-bordered h-12 w-full rounded-md border-brand-accent-sage bg-white pl-12 text-brand-content outline-none focus:border-brand-accent-bright"
                     />
                     {
                         errors.password?.type === 'required' && <p className='text-sm text-red-600 my-2'>Password is required</p>
@@ -100,25 +100,25 @@ const LoginUi = () => {
                 </label>
 
                 <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                  <label className="mt-1 flex cursor-pointer items-center gap-2 text-[#596257]">
-                    <input type="checkbox" className="checkbox checkbox-sm border-[#83BD75]" />
+                  <label className="mt-1 flex cursor-pointer items-center gap-2 text-brand-content-muted">
+                    <input type="checkbox" className="checkbox checkbox-sm border-brand-accent-bright" />
                     Remember me
                   </label>
-                  <Link href="#" className="mt-1 font-semibold text-[#4d8d41] hover:text-[#31542b]">
+                  <Link href="#" className="mt-1 font-semibold text-brand-accent hover:text-brand-content-strong">
                     Forgot password?
                   </Link>
                 </div>
 
-                <button disabled={loading} className="h-12 w-full rounded-md bg-[#83BD75] font-semibold text-[#172015] shadow-md transition hover:bg-[#74ad68] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60">
+                <button disabled={loading} className="h-12 w-full rounded-md bg-brand-accent-bright font-semibold text-brand-surface-inverse-deep shadow-md transition hover:bg-brand-accent-hover active:scale-[0.99] disabled:cursor-wait disabled:opacity-60">
                   {loading ? 'Logging in...' : 'Login'}
                 </button>
               </form>
 
               <SocialLogin />
 
-              <p className="text-sm text-[#596257]">
+              <p className="text-sm text-brand-content-muted">
                 New to SwiftShip?{' '}
-                <Link href="/register" className="font-semibold text-[#4d8d41] hover:text-[#31542b]">
+                <Link href="/register" className="font-semibold text-brand-accent hover:text-brand-content-strong">
                   Create an account
                 </Link>
               </p>

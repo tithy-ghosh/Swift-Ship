@@ -89,15 +89,15 @@ const DashboardContent = () => {
   ]
 
   return (
-    <main className="text-[#1f2a1d]">
+    <main className="text-brand-content">
       <section className="space-y-8">
         {/* Header */}
         <div className="space-y-2 text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#4d8d41]">
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-accent">
             My Parcels
           </p>
           <h1 className="text-3xl font-bold sm:text-4xl">Welcome, {user?.displayName || 'there'}</h1>
-           <p className="text-[#596257]">
+           <p className="text-brand-content-muted">
             Track and manage all your shipments from here.
           </p>
         </div>
@@ -105,9 +105,9 @@ const DashboardContent = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {statsData.map((stat)=> (
-            <div key={stat.label} className={`${stat.color} rounded-xl border border-[#cbdac7] p-4 text-center shadow-sm`}>
-               <p className="text-2xl font-bold text-[#1f2a1d]">{stat.value}</p>
-               <p className="text-sm text-[#596257]">{stat.label}</p>
+            <div key={stat.label} className={`${stat.color} rounded-xl border border-brand-accent-sage p-4 text-center shadow-sm`}>
+               <p className="text-2xl font-bold text-brand-content">{stat.value}</p>
+               <p className="text-sm text-brand-content-muted">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -136,24 +136,24 @@ const DashboardContent = () => {
         )}
 
         {/* Parcels Table */}
-        <div className="rounded-xl border border-[#cbdac7] bg-white shadow-sm">
-          <div className="border-b border-[#cbdac7] px-6 py-4">
-            <h2 className="font-semibold text-[#1f2a1d]">All Shipments</h2>
+        <div className="rounded-xl border border-brand-accent-sage bg-white shadow-sm">
+          <div className="border-b border-brand-accent-sage px-6 py-4">
+            <h2 className="font-semibold text-brand-content">All Shipments</h2>
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16 text-[#596257]">Loading your parcels.....</div>
+            <div className="flex items-center justify-center py-16 text-brand-content-muted">Loading your parcels.....</div>
           ): error ? (
             <div className="py-16 text-center text-red-500">{error}</div>
           ): parcels.length === 0 ? (
-             <div className="py-16 text-center text-[#596257]">
+             <div className="py-16 text-center text-brand-content-muted">
               <p className="text-lg font-medium">No parcels yet</p>
               <p className="mt-1 text-sm">Send your first parcel to see it here.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-[#f7fbf5] text-left text-xs font-semibold uppercase tracking-wide text-[#596257]">
+                <thead className="bg-brand-surface-muted text-left text-xs font-semibold uppercase tracking-wide text-brand-content-muted">
                   <tr>
                     <th className="px-6 py-3">Tracking ID</th>
                     <th className="px-6 py-3">Receiver</th>
@@ -166,25 +166,25 @@ const DashboardContent = () => {
                     <th className="px-6 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#e8f0e5]">
+                <tbody className="divide-y divide-brand-border-subtle">
                   {parcels.map((parcel) => {
                     const isDeleting = deleteMutation.isPending && deleteMutation.variables === parcel._id
                     return (
-                      <tr key={parcel._id} className="hover:bg-[#f7fbf5]">
-                        <td className="px-6 py-4 font-mono text-xs font-semibold text-[#4d8d41]">
+                      <tr key={parcel._id} className="hover:bg-brand-surface-muted">
+                        <td className="px-6 py-4 font-mono text-xs font-semibold text-brand-accent">
                           {parcel.trackingId}
                         </td>
                         <td className="px-6 py-4">
                           <p className="font-medium">{parcel.receiverName}</p>
-                          <p className="text-xs text-[#596257]">{parcel.receiverContact}</p>
+                          <p className="text-xs text-brand-content-muted">{parcel.receiverContact}</p>
                         </td>
-                        <td className="px-6 py-4 text-xs text-[#596257]">
+                        <td className="px-6 py-4 text-xs text-brand-content-muted">
                           {parcel.senderServiceCenter} → {parcel.receiverServiceCenter}
                         </td>
                         <td className="px-6 py-4 capitalize">{parcel.type}</td>
                         <td className="px-6 py-4 font-semibold">BDT {parcel.deliveryCost}</td>
                         <td className="px-6 py-4">
-                          <p className="text-xs font-medium uppercase text-[#596257]">{parcel.paymentMethod || '—'}</p>
+                          <p className="text-xs font-medium uppercase text-brand-content-muted">{parcel.paymentMethod || '—'}</p>
                           <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${paymentStatusColors[parcel.paymentStatus] || 'bg-gray-100 text-gray-600'}`}>
                             {parcel.paymentStatus || 'pending'}
                           </span>
@@ -194,7 +194,7 @@ const DashboardContent = () => {
                             {parcel.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-xs text-[#596257]">
+                        <td className="px-6 py-4 text-xs text-brand-content-muted">
                           {new Date(parcel.createdAt).toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric',
                           })}
@@ -226,7 +226,7 @@ const DashboardContent = () => {
 const DashboardPage = () => (
   <Suspense
     fallback={
-      <main className="flex min-h-screen items-center justify-center bg-[#f7fbf5] text-[#596257]">
+      <main className="flex min-h-screen items-center justify-center bg-brand-surface-muted text-brand-content-muted">
         Loading your dashboard…
       </main>
     }

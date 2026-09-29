@@ -22,7 +22,7 @@ export default function DashboardShell({ children }) {
   }, [isMobileMenuOpen])
 
   return (
-    <div className="min-h-screen bg-[#f7fbf5] pt-24 sm:pt-28">
+    <div className="min-h-screen bg-brand-surface-muted pt-24 sm:pt-28">
       <div className="mx-auto flex w-full max-w-7xl items-start">
         <div className="sticky top-24 hidden h-[calc(100dvh-6rem)] w-64 shrink-0 py-10 pl-4 sm:top-28 sm:h-[calc(100dvh-7rem)] lg:block">
           <SideBar />
@@ -33,7 +33,7 @@ export default function DashboardShell({ children }) {
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-lg border border-[#dce8d8] bg-white px-3 text-sm font-semibold text-[#31542b] shadow-sm"
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-brand-border-subtle bg-white px-3 text-sm font-semibold text-brand-content-strong shadow-sm"
               aria-controls="dashboard-mobile-navigation"
               aria-expanded={isMobileMenuOpen}
             >
@@ -66,7 +66,7 @@ export default function DashboardShell({ children }) {
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute right-3 top-3 z-10 flex size-9 items-center justify-center rounded-full bg-[#eef7eb] text-[#31542b]"
+                className="absolute right-3 top-3 z-10 flex size-9 items-center justify-center rounded-full bg-brand-surface-sunken text-brand-content-strong"
                 aria-label="Close dashboard menu"
               >
                 <MdClose className="size-5" />
