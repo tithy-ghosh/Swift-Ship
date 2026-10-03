@@ -1,30 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { MdDescription, MdInventory2, MdAddCircleOutline, MdArrowForward } from 'react-icons/md'
-
-const tiers = [
-  {
-    icon: MdDescription,
-    title: 'Documents',
-    price: '৳50 – ৳80',
-    note: '৳50 within city · ৳80 outside city',
-    blurb: 'Letters, papers, and other lightweight document envelopes.',
-  },
-  {
-    icon: MdInventory2,
-    title: 'Parcels up to 3kg',
-    price: '৳80 – ৳130',
-    note: '৳80 within city · ৳130 outside city',
-    blurb: 'Standard non-document parcels, boxes, and packages.',
-  },
-  {
-    icon: MdAddCircleOutline,
-    title: 'Extra weight',
-    price: '+৳20 / kg',
-    note: 'Plus ৳20 outside-city surcharge',
-    blurb: 'For anything heavier than 3kg, charged per additional kilogram.',
-  },
-]
+import { MdArrowForward } from 'react-icons/md'
+import tiers from '@/app/data/pricing.data'
 
 const PricingTiers = () => {
   return (

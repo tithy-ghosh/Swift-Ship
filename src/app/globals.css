@@ -27,6 +27,23 @@ body {
   --color-background: #fffaf3;
   --color-primary: #ffffff;
   --color-foreground: #f7faf4;
+  /*
+    `brand-canvas`, `brand-surface` and `brand-surface-muted` were used by
+    `page.jsx`, `ourServices.jsx`, `speciality.jsx`, `brand.jsx` and
+    `reviews.jsx`, but never defined here. Tailwind v4 silently emits nothing
+    for an unknown token, so those backgrounds were rendering transparent and
+    the sections were inheriting whatever was behind them. Defined now:
+
+      canvas -> the cream page background the hero already sits on
+      surface -> white, for chips sitting on canvas
+      surface-muted -> #f7faf4, the pale green tint behind card sections
+
+    This is a visible change on desktop: any section that was relying on the
+    broken classes now gets the background it was always asking for.
+  */
+  --color-brand-canvas: #fffaf3;
+  --color-brand-surface: #ffffff;
+  --color-brand-surface-muted: #f7faf4;
   --color-brand-surface-sunken: #eef7ea;
   --color-brand-surface-raised: #dff2d9;
   --color-brand-surface-inverse: #1f2a1d;
@@ -94,22 +111,137 @@ body {
   max-height: none;
 }
 
+/*
+  Hidden scrollbar on a still-scrollable track.
+
+  Tailwind v4 ships no scrollbar-hide utility, and `overflow: hidden` is not an
+  acceptable substitute: it would take keyboard, trackpad and switch control with
+  the bar, which is an accessibility regression traded for a cosmetic gain. This
+  hides the bar and leaves the scrolling intact.
+
+  `admin/settings/page.jsx` has been referencing a `no-scrollbar` class that was
+  never defined, so its chip row was showing a 3px bar all along.
+*/
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/*
+  Brand + reviews: below `sm` a brand grid or a reviews snap row, `sm` up an
+  auto-advancing marquee.
+
+  One element does the last two, which is why there is no `matchMedia` here and no
+  second set of markup. At `sm` the width and animation come back and the element
+  is a marquee again. A viewport hook would have been the obvious alternative, but
+  it resolves after hydration, so the phone would paint a marquee and then reflow
+  into the phone layout, and on a slow device that flash lands on the content.
+
+  `display` is deliberately absent from this block and lives in the `min-width:
+  640px` block below, because it is the one property the phone layout has to
+  choose for itself. Below `sm` the track's `display` comes from a utility class
+  in the JSX - `grid` on the brand track, `flex` on the reviews track - and the
+  marquee rules then have to override it at `sm`.
+
+  That override only works because these rules are unlayered. Tailwind v4 emits
+  utilities inside `@layer utilities`, and an unlayered declaration wins over any
+  layered one regardless of specificity, so a `display: flex` left at the base
+  here would silently beat a `grid` class on the brand track and no amount of
+  utility shuffling in the component would move it. The same trap is called out
+  on the `md:grid` in `ServicesCarousel.jsx`, where the same reasoning runs the
+  other way.
+
+  Everything else is grouped by *what they are for* rather than by breakpoint.
+  They stay unconditioned, which is what keeps the two tracks comparable: these
+  are the properties that make the element a scroller, and a scroller that is
+  not currently overflowing is not harmed by them. Hence `overflow-x: auto` at
+  every width even though a marquee never needs it and a grid never scrolls - an
+  `auto` that never overflows costs nothing, and moving it behind the
+  breakpoint would force the reviews row to re-declare it as a utility.
+
+  `scrollbar-width: none` and the `::-webkit-scrollbar` reset hide the scrollbar
+  while keeping the element scrollable. `overflow: hidden` would achieve the
+  hiding by also removing scrolling, which takes keyboard, trackpad and switch
+  control with it - an accessibility regression traded for a cosmetic gain.
+
+  The scrollbar is hidden rather than merely styled down because a 3px bar
+  under a `min-h-[300px]` card row reads as a scrollbar that matters, on a row
+  that mostly does not.
+*/
+.reviews-marquee-track,
 .brand-marquee-track {
-  width: max-content;
-  animation: brand-marquee 28s linear infinite;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.brand-marquee-track:hover {
-  animation-play-state: paused;
-}
-
+/* `scroll-padding` so a snapped card rests with the page gutter intact rather
+   than flush against the screen edge. Matches `px-4` on the reviews section. */
 .reviews-marquee-track {
-  width: max-content;
-  animation: reviews-marquee 34s linear infinite;
+  scroll-padding-inline: 1rem;
 }
 
-.reviews-marquee-track:hover {
-  animation-play-state: paused;
+.reviews-marquee-track::-webkit-scrollbar,
+.brand-marquee-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Every card is a snap target, not just the first. `stop: always` is what makes
+   a fast flick land on one card instead of skipping three. Inert below `sm` for
+   the brand track, which is a grid there. */
+.reviews-marquee-track > * {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.brand-marquee-track > * {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/*
+  The marquee half, from `sm` up.
+
+  `display: flex` is the load-bearing line and it is here rather than in the base
+  block for the reason given there: unlayered CSS has to outrank the layered
+  utility that carries the phone layout, and only a rule inside this block is
+  narrow enough to do it without also reaching the reviews row at its own base
+  width.
+
+  `width: max-content` has to be re-declared here: without it the track would be
+  a full-width flex container, the cards would shrink to fit, and the
+  `translate3d(-50%, 0, 0)` in the keyframes would be a translation of a
+  viewport-width element rather than of one copy of the content. The loop only
+  closes because the track is exactly two copies wide.
+*/
+@media (min-width: 640px) {
+  .brand-marquee-track,
+  .reviews-marquee-track {
+    display: flex;
+  }
+
+  .brand-marquee-track {
+    width: max-content;
+    animation: brand-marquee 28s linear infinite;
+  }
+
+  .reviews-marquee-track {
+    width: max-content;
+    animation: reviews-marquee 34s linear infinite;
+  }
+
+  /* Pause on hover. On touch there is no hover, which is the whole reason the
+     marquee only starts at `sm` and the tracks are something the reader drives
+     below it. */
+  .brand-marquee-track:hover,
+  .reviews-marquee-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes brand-marquee {
@@ -390,6 +522,51 @@ body {
   animation: networkLive 2s ease-in-out infinite;
 }
 
+/* ---------------------------------------------------------------- */
+/*  Sticky action bar                                                */
+/* ---------------------------------------------------------------- */
+
+/*
+  The only survivor of the removed `components/homepage/mobile/*` tree.
+
+  The bar is now `ui/MobileActionBar.jsx`, rendered by `SiteShell` behind a route
+  check, because it is `fixed` page chrome rather than page content. It is the
+  one phone affordance that never had a desktop equivalent: the hero has both
+  CTAs, but they are only reachable from the top of a page that runs eight
+  sections.
+
+  The entrance is a `translateY(100%)` rise, which is why the transform reset
+  below is not optional. Without it a reduced-motion visitor lands on the
+  animation's starting offset, the bar sits 100% down, and being `fixed` at
+  `bottom-0` means it is simply never seen - taking the page's primary mobile
+  CTA with it. `both` fill mode is what holds the element at the end offset
+  during the animation in the first place.
+*/
+
+@keyframes actionBarRise {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.action-bar-rise {
+  animation: actionBarRise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-bar-rise {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-word-cycle,
   .hero-float,
@@ -398,7 +575,10 @@ body {
   .nav-item-rise,
   .nav-panel-in,
   .nav-bell-ring,
-  /* Both marquees were scrolling unconditionally, ignoring this setting. */
+  /* The two marquees scroll at `sm` and up only (see the `@media (min-width:
+     640px)` block that adds the `display: flex` and the animation), so killing
+     the animation leaves a working track rather than dead markup - a scrollable
+     row for reviews, a grid of logos for brand. */
   .brand-marquee-track,
   .reviews-marquee-track,
   .network-pulse-ring,

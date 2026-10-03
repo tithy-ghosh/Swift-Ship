@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FaMoneyBill, FaUsers } from 'react-icons/fa'
-import { MdLocalShipping, MdSpaceDashboard, MdDirectionsBike, MdPeople, MdSettings, MdTrackChanges } from 'react-icons/md'
+import { MdLocalShipping, MdSpaceDashboard, MdDirectionsBike, MdPeople, MdSettings, MdStorefront, MdTrackChanges } from 'react-icons/md'
 import { TbTruckDelivery } from 'react-icons/tb'
 import useAdmin from '@/app/hooks/useAdmin'
 
@@ -14,6 +14,17 @@ const USER_NAVIGATION_ITEMS = [
   { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
   { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
   { href: '/be-rider', label: 'Be a Rider', icon: MdDirectionsBike },
+  { href: '/be-merchant', label: 'Become a Merchant', icon: MdStorefront },
+]
+
+// Approved merchants run their shipping from the same workspace, minus the
+// rider-recruitment link. A dedicated merchant dashboard is a later scope;
+// every item here already resolves to a real route.
+const MERCHANT_NAVIGATION_ITEMS = [
+  { href: '/dashboard', label: 'Overview', icon: MdSpaceDashboard },
+  { href: '/send-parcel', label: 'Create Shipment', icon: MdLocalShipping },
+  { href: '/track', label: 'Track a Parcel', icon: TbTruckDelivery },
+  { href: '/dashboard/payment-history', label: 'Payment History', icon: FaMoneyBill },
 ]
 
 // Admin navigation (completely different)
@@ -23,15 +34,20 @@ const ADMIN_NAVIGATION_ITEMS = [
   { href: '/admin/parcels', label: 'All Parcels', icon: MdLocalShipping },
   { href: '/admin/payments', label: 'All Payments', icon: FaMoneyBill },
   { href: '/admin/pending-riders', label: 'Pending Riders', icon: MdPeople },
+  { href: '/admin/pending-merchants', label: 'Pending Merchants', icon: MdStorefront },
   { href: '/admin/active-riders', label: 'Active Riders', icon: MdDirectionsBike },
   { href: '/admin/settings', label: 'Settings', icon: MdSettings },
 ]
 
 const SideBar = ({ onNavigate }) => {
   const pathname = usePathname()
-  const { isAdmin } = useAdmin()
+  const { isAdmin, isMerchant } = useAdmin()
 
-  const navItems = isAdmin ? ADMIN_NAVIGATION_ITEMS : USER_NAVIGATION_ITEMS
+  const navItems = isAdmin
+    ? ADMIN_NAVIGATION_ITEMS
+    : isMerchant
+      ? MERCHANT_NAVIGATION_ITEMS
+      : USER_NAVIGATION_ITEMS
 
   return (
     <aside className="flex h-full w-full flex-col rounded-xl border border-brand-border-subtle bg-white px-4 pb-6 pt-16 shadow-sm lg:pt-6">

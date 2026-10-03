@@ -173,10 +173,11 @@ export default function AllUsersPage() {
                                   });
                                 }
                               }}
-                              className={`select select-sm ${user.role === "admin" ? "select-error" : user.role === "rider" ? "select-info" : "select-success"}`}
+                              className={`select select-sm ${user.role === "admin" ? "select-error" : user.role === "rider" ? "select-info" : user.role === "merchant" ? "select-warning" : "select-success"}`}
                             >
                               <option value="customer">Customer</option>
                               <option value="rider">Rider</option>
+                              <option value="merchant">Merchant</option>
                               <option value="admin">Admin</option>
                             </select>
                           </td>

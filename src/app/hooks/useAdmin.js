@@ -11,10 +11,12 @@ export const useAdmin = () => {
     queryFn: getUserProfile,
     enabled: !!user,
   });
-  const isAdmin = profile?.role === 'admin';
+  const role = profile?.role;
+  const isAdmin = role === 'admin';
+  const isMerchant = role === 'merchant';
   const isLoading = loading || profileLoading
 
-  return{ user, profile, isAdmin, isLoading }
+  return{ user, profile, role, isAdmin, isMerchant, isLoading }
 };
 
 export default useAdmin;

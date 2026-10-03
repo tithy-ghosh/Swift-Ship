@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaCircleCheck } from 'react-icons/fa6'
 import services from '@/app/data/services.data'
+import ServicesCarousel from '@/app/components/homepage/ServicesCarousel'
 
 /**
  * Our services.
@@ -24,6 +25,22 @@ import services from '@/app/data/services.data'
  * description alone left ~200px of dead air above the meta chip. Highlights
  * cover *what else comes with it* rather than restating the speed claims the
  * description already makes.
+ *
+ * Below `md` the cards are a horizontal scroll-snap row instead of a stack, with
+ * prev/next arrows underneath. Six stacked cards pushed the pricing panel three
+ * screens down, so on a phone you had to scroll past the entire section to
+ * discover what was in it. This is one tree rearranged, not a second mobile
+ * markup - see the policy in `page.jsx`. The bento and the arrows are both
+ * `md`-gated in opposite directions, so exactly one of the two layouts is ever
+ * live.
+ *
+ * That row forced one content decision. In a grid a tall featured tile is the
+ * point; in a row it sets the height of every other card, and at its full
+ * desktop length the eyebrow + highlights + unclamped description came to
+ * ~450px, which is most of a phone screen. So the featured card drops to the
+ * same compact treatment as its neighbours below `lg` and gets the full
+ * version back at `lg`, where the 2x2 span exists precisely to hold it. Nothing
+ * is removed from the page, only deferred past the width that has room for it.
  */
 const OurServices = () => {
   return (
@@ -47,7 +64,7 @@ const OurServices = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:auto-rows-[16rem] lg:grid-cols-3">
+      <ServicesCarousel>
         {services.map((service, index) => {
           const {
             id,
@@ -64,7 +81,14 @@ const OurServices = () => {
             <article
               key={id}
               className={[
-                'group relative flex flex-col overflow-hidden rounded-lg border p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6',
+                // `w-[85%]` is the phone row: it leaves the next card peeking, and
+                // that peek is the only scroll affordance a touch user gets.
+                // `max-w-[21rem]` stops it ballooning on wide phones. Both resets
+                // matter at `md` - a percentage width on a grid item resolves
+                // against the grid area and would leave a dead gap in each cell.
+                // `snap-always` makes a fast flick land on one card rather than
+                // skipping three, and is inert once the track is a grid.
+                'group relative flex w-[85%] max-w-[21rem] shrink-0 snap-always flex-col overflow-hidden rounded-lg border p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-md md:w-auto md:max-w-none sm:p-6',
                 featured
                   ? 'border-brand-content bg-brand-surface-inverse text-white lg:col-span-2 lg:row-span-2'
                   : 'border-brand-border-subtle bg-white text-brand-content hover:border-brand-accent-bright',
@@ -102,7 +126,7 @@ const OurServices = () => {
                 </div>
 
                 {featured && (
-                  <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-brand-accent-bright">
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-brand-accent-bright lg:mt-6">
                     {eyebrow}
                   </p>
                 )}
@@ -110,7 +134,7 @@ const OurServices = () => {
                 <h3
                   className={[
                     'font-bold leading-snug',
-                    featured ? 'mt-2 max-w-md text-2xl sm:text-3xl' : 'mt-4 text-lg',
+                    featured ? 'mt-2 text-lg lg:mt-2 lg:max-w-md lg:text-2xl lg:sm:text-3xl' : 'mt-4 text-lg',
                   ].join(' ')}
                 >
                   {title}
@@ -118,8 +142,12 @@ const OurServices = () => {
 
                 <p
                   className={[
+                    // `line-clamp-3` because at ~212px of text width the featured description runs
+                    // to about six lines and would set the height of all six cards
+                    // in the phone row. Matches the `line-clamp-2` its neighbours
+                    // use, so the row stays a browse strip rather than a wall.
                     featured
-                      ? 'mt-3 max-w-xl text-base leading-7 text-white/70'
+                      ? 'mt-3 max-w-xl line-clamp-3 text-sm leading-6 text-white/70 lg:line-clamp-none lg:text-base lg:leading-7'
                       : 'mt-2 line-clamp-2 text-sm leading-6 text-brand-content-muted',
                   ].join(' ')}
                 >
@@ -127,7 +155,7 @@ const OurServices = () => {
                 </p>
 
                 {featured && highlights && (
-                  <ul className="mt-5 flex flex-col gap-2">
+                  <ul className="mt-5 hidden flex-col gap-2 lg:flex">
                     {highlights.map((item) => (
                       <li
                         key={item}
@@ -156,7 +184,7 @@ const OurServices = () => {
             </article>
           )
         })}
-      </div>
+      </ServicesCarousel>
     </section>
   )
 }

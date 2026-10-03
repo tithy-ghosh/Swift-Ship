@@ -13,7 +13,7 @@ export default function NetworkMapSection() {
   return (
     <section
       ref={ref}
-      className="bg-brand-surface-inverse-deep py-20 text-white md:py-28"
+      className="bg-brand-surface-inverse-deep py-12 text-white sm:py-20 md:py-28"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* header */}
@@ -21,7 +21,9 @@ export default function NetworkMapSection() {
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-brand-accent-bright">
             Our network
           </span>
-          <h2 className="mt-4 max-w-xl text-4xl font-bold leading-[1.05] tracking-tight">
+          {/* `text-4xl` at the base was 36px on a 375px screen, which is the same
+              size this section uses on a 27" monitor. */}
+          <h2 className="mt-4 max-w-xl text-2xl font-bold leading-[1.15] tracking-tight sm:text-4xl sm:leading-[1.05]">
             A branch in every district we serve.
           </h2>
         </div>
@@ -42,7 +44,11 @@ export default function NetworkMapSection() {
               <div
                 key={stat.label}
                 className={[
-                  "py-4",
+                  // `min-w-0` so a long label can shrink and wrap. As a grid
+                  // item it defaults to `min-width: auto`, which makes it refuse
+                  // to shrink below its min-content width and can push the
+                  // second column past the container.
+                  "min-w-0 py-4",
                   i % 2 === 1 ? "border-l border-white/10 pl-6" : "",
                   i >= 2 ? "border-t border-white/10" : "",
                 ]
@@ -64,10 +70,10 @@ function Stat({ value, label, start }) {
 
   return (
     <>
-      <div className="text-4xl font-bold leading-none tracking-tight tabular-nums md:text-5xl">
+      <div className="text-3xl font-bold leading-none tracking-tight tabular-nums sm:text-4xl md:text-5xl">
         {n.toLocaleString("en-US")}
       </div>
-      <div className="mt-2 text-sm text-white/60">{label}</div>
+      <div className="mt-2 text-sm leading-5 text-white/60">{label}</div>
     </>
   );
 }

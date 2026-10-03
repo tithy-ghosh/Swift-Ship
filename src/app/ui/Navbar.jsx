@@ -14,6 +14,7 @@ import {
   MdPerson,
   MdSearch,
   MdSettings,
+  MdStorefront,
   MdSupportAgent,
 } from 'react-icons/md'
 import { TbRoute } from 'react-icons/tb'
@@ -27,12 +28,14 @@ import { getProfileImageSource, getProfilePhoto } from '@/app/utils/profileImage
 const ROLE_LABELS = {
   admin: 'Admin',
   rider: 'Rider',
+  merchant: 'Merchant',
   customer: 'Customer',
 }
 
 const ROLE_BADGE_CLASSES = {
   admin: 'bg-brand-surface-sunken text-brand-accent',
   rider: 'bg-amber-50 text-amber-600',
+  merchant: 'bg-emerald-50 text-emerald-600',
   customer: 'bg-slate-100 text-slate-500',
 }
 
@@ -41,6 +44,7 @@ const NAV_ICONS = {
   '/about': MdSupportAgent,
   '/coverage': MdMap,
   '/be-rider': MdLocalShipping,
+  '/be-merchant': MdStorefront,
   '/dashboard': MdDashboard,
   '/admin/dashboard': MdDashboard,
 }
@@ -56,9 +60,13 @@ const getNavLinks = (role) => {
     { href: '/coverage', label: 'Coverage' },
   ]
 
-  // Logged out: keep the rider CTA visible to attract sign-ups.
+  // Logged out: keep the recruitment CTAs visible to attract sign-ups.
   if (!role) {
-    return [...base, { href: '/be-rider', label: 'Become a Rider' }]
+    return [
+      ...base,
+      { href: '/be-rider', label: 'Become a Rider' },
+      { href: '/be-merchant', label: 'Become a Merchant' },
+    ]
   }
 
   if (role === 'admin') {
@@ -69,8 +77,17 @@ const getNavLinks = (role) => {
     return [...base, { href: '/dashboard', label: 'Dashboard' }]
   }
 
+  if (role === 'merchant') {
+    return [...base, { href: '/dashboard', label: 'Dashboard' }]
+  }
+
   // Customer
-  return [...base, { href: '/dashboard', label: 'Dashboard' }, { href: '/be-rider', label: 'Become a Rider' }]
+  return [
+    ...base,
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/be-rider', label: 'Become a Rider' },
+    { href: '/be-merchant', label: 'Become a Merchant' },
+  ]
 }
 
 const isLinkActive = (pathname, href) => (
@@ -210,21 +227,28 @@ const Navbar = () => {
     </div>
   )
 
+  // The "Signed in as" identity block, kept separate from the action list
+  // because only the desktop dropdown shows it. The mobile panel is already a
+  // full account destination, and the avatar + name are on the bar itself
+  // directly above it, so the block was pure repetition there.
+  const accountIdentity = (
+    <li className="px-3 pb-2 pt-2.5">
+      <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Signed in as</span>
+      <span className="mt-1.5 flex items-center gap-2">
+        <span className="truncate text-sm font-semibold text-brand-content">{profile?.name || user?.email}</span>
+        {role && (
+          <span
+            className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${ROLE_BADGE_CLASSES[role]}`}
+          >
+            {ROLE_LABELS[role]}
+          </span>
+        )}
+      </span>
+    </li>
+  )
+
   const accountActions = (
     <>
-      <li className="px-3 pb-2 pt-2.5">
-        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Signed in as</span>
-        <span className="mt-1.5 flex items-center gap-2">
-          <span className="truncate text-sm font-semibold text-brand-content">{profile?.name || user?.email}</span>
-          {role && (
-            <span
-              className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${ROLE_BADGE_CLASSES[role]}`}
-            >
-              {ROLE_LABELS[role]}
-            </span>
-          )}
-        </span>
-      </li>
       <li>
         <button
           onClick={() => {
@@ -244,13 +268,16 @@ const Navbar = () => {
     </>
   )
 
-  const searchField = (id) => (
+  // Desktop bar only (the `md:` block). There is no mobile equivalent: below
+  // `md` a phone visitor tracks from the hero's "Track a Parcel" CTA, and
+  // `HeroCopy`'s tracking hint is keyed to this same `md` boundary so it never
+  // points at a field that is not on screen.
+  const searchField = () => (
     <form onSubmit={handleTrackingSubmit} role="search" className="w-full">
       <div className="relative flex items-center">
         <MdSearch className="pointer-events-none absolute left-3.5 size-4 shrink-0 text-brand-content-muted" />
         <input
-          id={id}
-          ref={id === 'nav-tracking' ? searchInputRef : undefined}
+          ref={searchInputRef}
           type="text"
           value={trackingId}
           onChange={(event) => setTrackingId(event.target.value)}
@@ -359,7 +386,7 @@ const Navbar = () => {
                 }`}
               >
                 {isSearchOpen ? (
-                  searchField('nav-tracking')
+                  searchField()
                 ) : (
                   <button
                     type="button"
@@ -455,6 +482,7 @@ const Navbar = () => {
                   tabIndex={0}
                   className="menu dropdown-content z-50 mt-3 w-64 gap-0.5 rounded-2xl border border-white/70 bg-white/95 p-2 text-sm shadow-[0_16px_48px_rgba(31,42,29,0.16)] backdrop-blur-xl"
                 >
+                  {accountIdentity}
                   {accountActions}
                 </ul>
               </div>
@@ -492,9 +520,14 @@ const Navbar = () => {
             aria-label="Primary mobile"
             className="nav-panel-in absolute inset-x-0 top-full z-40 mx-3 mt-2 overflow-hidden rounded-2xl border border-white/70 bg-white/95 p-3 shadow-[0_24px_60px_rgba(31,42,29,0.18)] backdrop-blur-xl sm:mx-5 lg:hidden"
           >
-            <div className="md:hidden">{searchField('nav-tracking-mobile')}</div>
-
-            <ul className="mt-3 space-y-1 md:mt-0">
+            {/* No tracking field here on purpose. There have been three mobile
+                tracking inputs in the viewport at various points - this one, the
+                hamburger panel, and a hero field - and the panel copy is the one
+                that survives, because it is where `/track/[id]` is constructed and
+                the `searchField` helper below reuses the same submit. A phone
+                visitor tracks a parcel from the hero's "Track a Parcel" CTA, which
+                lands on `/track` and opens on a full-width lookup field. */}
+            <ul className="space-y-1">
               {navLinks.map((link, index) => {
                 const isActive = isLinkActive(pathname, link.href)
                 const Icon = NAV_ICONS[link.href]

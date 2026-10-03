@@ -1,10 +1,16 @@
 import Logo from "@/app/components/logo";
 import React from "react";
 
-const Footer = () => {
+/**
+ * `className` exists so `SiteShell` can extend the footer's own bottom padding
+ * on the routes that render the fixed action bar. Extra padding on a wrapper div
+ * would leave a strip of page background under the bar instead of extending the
+ * footer's own background, which reads as a rendering bug rather than spacing.
+ */
+const Footer = ({ className = '' }) => {
   return (
- 
-      <footer className="footer sm:footer-horizontal bg-brand-content-on-dark/86 text-base-content p-10">
+   
+      <footer className={`footer sm:footer-horizontal bg-brand-content-on-dark/86 text-base-content p-10 ${className}`}>
         <Logo />
         <nav>
           <h6 className="footer-title">Services</h6>
